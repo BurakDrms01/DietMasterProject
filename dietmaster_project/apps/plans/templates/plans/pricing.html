@@ -1,0 +1,303 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Paket Seçimi | DietMaster{% endblock %}
+
+{% block content %}
+<style>
+    /* PRICING KARTLARI İÇİN ÖZEL STİL */
+    .pricing-card {
+        border: 1px solid #f1f5f9;
+        border-radius: 24px; /* Daha yumuşak köşeler */
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        background: #fff;
+        position: relative;
+        overflow: hidden;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+    }
+
+    /* Hover Efekti */
+    .pricing-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        border-color: var(--primary-light);
+    }
+
+    /* POPÜLER KART (Özel Vurgu) */
+    .pricing-card.popular {
+        border: 2px solid var(--primary);
+        box-shadow: 0 10px 15px -3px rgba(99, 102, 241, 0.15);
+        transform: scale(1.05); /* Diğerlerinden biraz büyük */
+        z-index: 2;
+    }
+    .pricing-card.popular:hover {
+        transform: scale(1.05) translateY(-10px);
+    }
+
+    /* Popüler Etiketi */
+    .popular-badge {
+        background: var(--primary);
+        color: white;
+        position: absolute;
+        top: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        padding: 0.5rem 1.5rem;
+        border-bottom-left-radius: 12px;
+        border-bottom-right-radius: 12px;
+        font-weight: 600;
+        font-size: 0.85rem;
+        letter-spacing: 0.5px;
+        box-shadow: 0 4px 6px -1px rgba(79, 70, 229, 0.3);
+    }
+
+    /* Fiyat Alanı */
+    .price-tag {
+        font-family: 'Inter', sans-serif;
+        color: #1f2937;
+    }
+    .currency {
+        font-size: 1.5rem;
+        vertical-align: top;
+        margin-right: 2px;
+        color: #6b7280;
+    }
+    .amount {
+        font-size: 3.5rem;
+        font-weight: 800;
+        line-height: 1;
+        letter-spacing: -2px;
+    }
+    .period {
+        font-size: 1rem;
+        color: #9ca3af;
+        font-weight: 500;
+    }
+
+    /* Özellik Listesi */
+    .feature-list li {
+        margin-bottom: 1rem;
+        color: #4b5563;
+        font-size: 0.95rem;
+        display: flex;
+        align-items: center;
+    }
+    .check-icon {
+        background-color: #eff6ff;
+        color: var(--primary);
+        width: 24px;
+        height: 24px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-right: 12px;
+        font-size: 0.8rem;
+        flex-shrink: 0;
+    }
+    .cross-icon {
+        color: #d1d5db;
+        width: 24px;
+        margin-right: 12px;
+        text-align: center;
+        font-size: 1.2rem;
+    }
+</style>
+
+<div class="container py-5">
+    
+    <!-- BAŞLIK ALANI -->
+    <div class="text-center mb-5">
+        <span class="badge bg-primary bg-opacity-10 text-primary px-3 py-2 rounded-pill fw-bold mb-3">
+            ✨ Sana Özel Planlar
+        </span>
+        <h1 class="fw-bold display-5 text-dark mb-3">Hedefine Uygun Paketi Seç</h1>
+        <p class="text-muted lead" style="max-width: 600px; margin: 0 auto;">
+            Tüm paketlerimizde yapay zeka analizi standarttır. İhtiyacın olan diyetisyen desteğine göre seçimini yap.
+        </p>
+    </div>
+
+    <!-- PAKETLER GRİD -->
+    <div class="row align-items-center g-4">
+        
+        <!-- DÖNGÜ: Paketleri Listele -->
+        {% for plan in plans %}
+        <div class="col-lg-4">
+            <div class="pricing-card p-4 p-lg-5 {% if plan.is_popular %}popular{% endif %}">
+                
+                {% if plan.is_popular %}
+                <div class="popular-badge">
+                    <i class="bi bi-star-fill me-1"></i> EN ÇOK TERCİH EDİLEN
+                </div>
+                {% endif %}
+
+                <!-- Kart Başlığı -->
+                <div class="text-center mb-4 mt-2">
+                    <div class="icon-box bg-opacity-10 rounded-4 mx-auto mb-3 d-flex align-items-center justify-content-center" 
+                         style="width: 64px; height: 64px; font-size: 2rem; background-color: var(--bs-{{ plan.color_theme }}-bg-subtle); color: var(--bs-{{ plan.color_theme }});">
+                        <i class="bi {{ plan.icon_class }}"></i>
+                    </div>
+                    <h3 class="fw-bold text-dark mb-2">{{ plan.name }}</h3>
+                    <p class="text-muted small mb-0">{{ plan.description }}</p>
+                </div>
+
+                <!-- Fiyat -->
+                <div class="text-center price-tag mb-4">
+                    <span class="currency">{{ plan.currency }}</span>
+                    <span class="amount">{{ plan.price|stringformat:".0f" }}</span>
+                    <span class="period">/ {{ plan.duration_days }} Gün</span>
+                </div>
+
+                <!-- Buton -->
+                <div class="d-grid mb-4">
+                    {% if existing_request %}
+                        <button class="btn btn-warning py-3 rounded-3 fw-bold text-white" disabled>
+                            <i class="bi bi-clock-history me-2"></i> Onay Bekliyor
+                        </button>
+                    {% else %}
+                        <!-- Form ID'si atadık ki JS ile tetikleyelim -->
+                        <form id="plan-form-{{ plan.id }}" action="{% url 'plans:select_plan' plan.id %}" method="POST">
+                            {% csrf_token %}
+                            <!-- Button type="button" yaptık, modalı açacak -->
+                            <button type="button" class="btn {% if plan.is_popular %}btn-primary{% else %}btn-outline-primary{% endif %} py-3 rounded-3 fw-bold shadow-sm w-100 transition-hover"
+                                    onclick="openConfirmModal('{{ plan.name }}', '{{ plan.id }}')">
+                                Başvuruyu Başlat
+                            </button>
+                        </form>
+                    {% endif %}
+                </div>
+                <hr class="text-muted opacity-25 mb-4">
+
+                <!-- Özellikler -->
+                <ul class="list-unstyled feature-list mb-0">
+                    {% for feature in plan.features.all %}
+                    <li class="{% if not feature.is_included %}text-muted opacity-50{% endif %}">
+                        {% if feature.is_included %}
+                            <span class="check-icon"><i class="bi bi-check-lg"></i></span>
+                        {% else %}
+                            <span class="cross-icon"><i class="bi bi-x-lg"></i></span>
+                        {% endif %}
+                        {{ feature.title }}
+                    </li>
+                    {% endfor %}
+                </ul>
+
+            </div>
+        </div>
+        {% empty %}
+            <!-- EĞER HİÇ PAKET EKLENMEMİŞSE -->
+            <div class="col-12 text-center py-5">
+                <div class="alert alert-warning d-inline-block">
+                    <i class="bi bi-exclamation-circle me-2"></i>
+                    Henüz admin panelinden paket eklenmedi.
+                </div>
+            </div>
+        {% endfor %}
+
+    </div>
+
+    <!-- ALT BİLGİ / GÜVEN -->
+    <div class="row mt-5 pt-4">
+        <div class="col-12 text-center">
+            <p class="text-muted small mb-0">
+                <i class="bi bi-shield-lock-fill me-1"></i> Ödemeleriniz 256-bit SSL ile korunmaktadır. | 
+                <i class="bi bi-arrow-repeat me-1 ms-3"></i> 7 gün içinde koşulsuz iade garantisi.
+            </p>
+        </div>
+    </div>
+
+</div>
+
+
+<!-- PREMIUM ONAY MODALI -->
+<div class="modal fade" id="planConfirmModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-0 rounded-5 shadow-2xl overflow-hidden" style="background: #fff;">
+            
+            <!-- Dekoratif Arka Plan -->
+            <div class="position-absolute top-0 start-0 w-100 h-100" style="background: radial-gradient(circle at 50% -20%, rgba(99, 102, 241, 0.15) 0%, transparent 60%); pointer-events: none;"></div>
+            
+            <div class="modal-body p-5 text-center position-relative z-1">
+                
+                <!-- Kapatma Butonu -->
+                <button type="button" class="btn-close position-absolute top-0 end-0 m-4" data-bs-dismiss="modal"></button>
+
+                <!-- Animasyonlu İkon -->
+                <div class="mb-4 position-relative d-inline-block">
+                    <div class="bg-primary bg-opacity-10 rounded-circle p-4 d-inline-flex align-items-center justify-content-center" style="width: 100px; height: 100px;">
+                        <i class="bi bi-stars text-primary display-3"></i>
+                    </div>
+                    <!-- Uçan Roket Efekti -->
+                    <div class="position-absolute top-0 end-0 translate-middle badge rounded-pill bg-warning text-dark border border-2 border-white shadow-sm" style="font-size: 1.5rem; animation: float 3s ease-in-out infinite;">
+                        🚀
+                    </div>
+                </div>
+
+                <h3 class="fw-bold text-dark mb-2">Harika Bir Seçim!</h3>
+                <div class="d-flex justify-content-center align-items-center gap-2 mb-4">
+                    <span class="text-muted">Seçilen Paket:</span>
+                    <span class="badge bg-primary bg-opacity-10 text-primary px-3 py-2 rounded-pill fw-bold fs-6" id="modalPlanName">
+                        Premium Paket
+                    </span>
+                </div>
+
+                <div class="card border-0 bg-light bg-opacity-50 rounded-4 p-3 mb-4 text-start">
+                    <div class="d-flex gap-3">
+                        <div class="flex-shrink-0">
+                            <i class="bi bi-info-circle-fill text-primary fs-4"></i>
+                        </div>
+                        <div>
+                            <h6 class="fw-bold mb-1 text-dark">Sırada Ne Var?</h6>
+                            <p class="text-muted small mb-0 line-clamp-2">
+                                Hedeflerine ulaşman için seni uzmanımıza atayacağız. Ancak önce metabolizmanı ve yaşam tarzını tanımamız gerekiyor.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="d-grid gap-2">
+                    <button type="button" class="btn btn-primary py-3 rounded-3 fw-bold shadow-lg hover-scale" id="confirmStartBtn" style="font-size: 1.1rem;">
+                        Analizi Başlat & Devam Et <i class="bi bi-arrow-right ms-2"></i>
+                    </button>
+                    <button type="button" class="btn btn-link text-muted text-decoration-none small" data-bs-dismiss="modal">
+                        Daha sonra karar vereceğim
+                    </button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    /* Modal Animasyonları */
+    @keyframes float {
+        0% { transform: translate(50%, -50%) translateY(0px); }
+        50% { transform: translate(50%, -50%) translateY(-10px); }
+        100% { transform: translate(50%, -50%) translateY(0px); }
+    }
+    .hover-scale { transition: transform 0.2s; }
+    .hover-scale:hover { transform: translateY(-2px); }
+    .shadow-2xl { box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); }
+</style>
+
+<script>
+    let selectedPlanId = null;
+
+    function openConfirmModal(planName, planId) {
+        document.getElementById('modalPlanName').textContent = planName;
+        selectedPlanId = planId;
+        var myModal = new bootstrap.Modal(document.getElementById('planConfirmModal'));
+        myModal.show();
+    }
+
+    document.getElementById('confirmStartBtn').addEventListener('click', function() {
+        // İlgili formu bul ve gönder
+        if(selectedPlanId) {
+            document.getElementById('plan-form-' + selectedPlanId).submit();
+        }
+    });
+</script>
+{% endblock %}

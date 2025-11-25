@@ -1,0 +1,93 @@
+{% extends 'base.html' %}
+
+{% block title %}Görevi Düzenle{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-6">
+            <div class="card border-0 shadow-sm rounded-4">
+                <div class="card-header bg-white border-0 pt-4 ps-4 d-flex justify-content-between align-items-center">
+                    <h5 class="fw-bold text-primary m-0"><i class="bi bi-pencil-square me-2"></i>Görevi Düzenle</h5>
+                    <a href="{% url 'gamification:manager' %}" class="btn btn-sm btn-light text-muted"><i class="bi bi-x-lg"></i></a>
+                </div>
+                
+                <div class="card-body p-4">
+                    <form method="post">
+                        {% csrf_token %}
+                        
+                        <!-- Başlık -->
+                        <div class="mb-3">
+                            <label class="form-label small fw-bold text-muted">Görev Başlığı</label>
+                            {{ form.title }}
+                        </div>
+
+                        <!-- Açıklama -->
+                        <div class="mb-3">
+                            <label class="form-label small fw-bold text-muted">Açıklama</label>
+                            {{ form.description }}
+                        </div>
+
+                        <!-- Puan ve Tip -->
+                        <div class="row g-2 mb-3">
+                            <div class="col-6">
+                                <label class="form-label small fw-bold text-muted">Puan</label>
+                                {{ form.points }}
+                            </div>
+                            <div class="col-6">
+                                <label class="form-label small fw-bold text-muted">Tip</label>
+                                {{ form.task_type }}
+                            </div>
+                        </div>
+
+                        <!-- İlişkili Öğün -->
+                        <div class="mb-3">
+                            <label class="form-label small fw-bold text-muted">İlişkili Öğün</label>
+                            {{ form.related_meal_type }}
+                        </div>
+                        
+                        <hr class="border-secondary opacity-10 my-4">
+
+                        <!-- Süre (DİKKAT: Düzenleme yaparken süre sıfırlanır ve bugünden başlar) -->
+                        <div class="mb-3">
+                            <label class="form-label small fw-bold text-muted text-warning">
+                                <i class="bi bi-exclamation-triangle me-1"></i> Süreyi Güncelle (Bugünden İtibaren)
+                            </label>
+                            {{ form.duration }}
+                        </div>
+
+                        <!-- Atama Alanı -->
+                        <div class="mb-3">
+                            <div class="form-check form-switch p-3 bg-light rounded-3 border mb-3 d-flex justify-content-between align-items-center">
+                                <label class="form-check-label fw-bold text-dark mb-0" for="{{ form.is_for_everyone.id_for_label }}">
+                                    📢 Tüm Danışanlara Ata
+                                </label>
+                                {{ form.is_for_everyone }}
+                            </div>
+
+                            <label class="form-label small fw-bold text-muted">Veya Kişi Seç:</label>
+                            <div class="border rounded-3 p-2 bg-white" style="max-height: 150px; overflow-y: auto;">
+                                {{ form.assigned_users }}
+                            </div>
+                        </div>
+
+                        <div class="d-flex gap-2">
+                            <a href="{% url 'gamification:manager' %}" class="btn btn-light w-50 rounded-pill fw-bold">İptal</a>
+                            <button type="submit" class="btn btn-primary w-50 rounded-pill fw-bold shadow-sm">
+                                Değişiklikleri Kaydet
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    ul { list-style-type: none; padding: 0; margin: 0; }
+    li label { display: flex; align-items: center; padding: 8px 10px; cursor: pointer; border-radius: 6px; transition: background 0.2s; }
+    li label:hover { background-color: #f8f9fa; }
+    li label input { margin-right: 10px; width: 1.2em; height: 1.2em; accent-color: var(--primary); }
+</style>
+{% endblock %}

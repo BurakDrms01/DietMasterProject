@@ -1,0 +1,81 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Tarif Ekle | DietMaster{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            
+            <!-- Başlık -->
+            <div class="text-center mb-5">
+                <h2 class="fw-bold">Yeni Tarif Paylaş 🥗</h2>
+                <p class="text-muted">Sağlıklı lezzetlerini toplulukla paylaş.</p>
+            </div>
+
+            <div class="card border-0 shadow rounded-4 overflow-hidden">
+                <div class="card-body p-5">
+                    <form method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        
+                        <!-- Görsel ve Başlık -->
+                        <div class="row g-4 mb-4">
+                            <div class="col-md-6">
+                                <label class="form-label fw-bold">Tarif Başlığı</label>
+                                {{ form.title }}
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label fw-bold">Kategori</label>
+                                {{ form.category }}
+                            </div>
+                        </div>
+
+                        <!-- İstatistikler -->
+                        <div class="row g-4 mb-4">
+                            <div class="col-md-6">
+                                <label class="form-label fw-bold">Kalori (kcal)</label>
+                                {{ form.calories }}
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label fw-bold">Hazırlama Süresi (dk)</label>
+                                {{ form.prep_time }}
+                            </div>
+                        </div>
+
+                        <!-- Görsel -->
+                        <div class="mb-4">
+                            <label class="form-label fw-bold">Kapak Fotoğrafı</label>
+                            {{ form.image }}
+                        </div>
+
+                        <!-- Detaylar -->
+                        <div class="mb-4">
+                            <label class="form-label fw-bold">Malzemeler</label>
+                            <div class="form-text mb-2">Her malzemeyi yeni bir satıra yazın.</div>
+                            {{ form.ingredients }}
+                        </div>
+
+                        <div class="mb-5">
+                            <label class="form-label fw-bold">Hazırlanışı</label>
+                            <div class="form-text mb-2">Adımları satır satır anlatın.</div>
+                            {{ form.instructions }}
+                        </div>
+
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-primary btn-lg rounded-pill shadow fw-bold">
+                                {% if user.role == 'ADMIN' %}
+                                    <i class="bi bi-send-check me-2"></i>Yayınla
+                                {% else %}
+                                    <i class="bi bi-send me-2"></i>Onaya Gönder
+                                {% endif %}
+                            </button>
+                            <a href="{% url 'recipes:list' %}" class="btn btn-light rounded-pill text-muted">Vazgeç</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

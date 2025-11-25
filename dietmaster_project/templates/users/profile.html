@@ -1,0 +1,201 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Profilim | DietMaster{% endblock %}
+
+{% block content %}
+<div class="container-fluid py-4">
+    
+    <!-- Başlık -->
+    <div class="row mb-4 animate-in">
+        <div class="col-12">
+            <div class="d-flex align-items-center">
+                <div class="bg-white p-3 rounded-circle shadow-sm me-3 border border-light">
+                    <i class="bi bi-person-circle fs-3 text-primary"></i>
+                </div>
+                <div>
+                    <h3 class="fw-bold text-dark mb-0">Profil Bilgileri</h3>
+                    <p class="text-muted small mb-0">Hesap detaylarını buradan yönetebilirsin.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- FORM BAŞLANGICI (HTMX) -->
+    <!-- enctype="multipart/form-data" resim yükleme için şart -->
+    <form id="profile-form" 
+          hx-post="{% url 'users:profile' %}" 
+          hx-encoding="multipart/form-data" 
+          hx-target="#toast-container" 
+          hx-swap="innerHTML">
+        
+        {% csrf_token %}
+
+        <div class="row g-4 animate-in" style="animation-delay: 0.1s;">
+            
+            <!-- SOL KOLON: AVATAR -->
+            <div class="col-lg-4">
+                <div class="card border-0 shadow-sm rounded-4 h-100 text-center overflow-hidden">
+                    <div class="card-body p-5 d-flex flex-column align-items-center justify-content-center">
+                        
+                        <div class="position-relative mb-4">
+                            <!-- Profil Fotoğrafı (Varsa göster, yoksa Baş harf) -->
+                            {% if user.profile_photo %}
+                                <img id="profile-photo-preview"
+                                     src="{{ user.profile_photo.url }}"
+                                     class="rounded-circle shadow-lg object-fit-cover"
+                                     style="width: 120px; height: 120px;">
+                            {% else %}
+                                <div id="profile-photo-fallback"
+                                     class="bg-primary bg-gradient text-white rounded-circle d-flex align-items-center justify-content-center shadow-lg" 
+                                     style="width: 120px; height: 120px; font-size: 3rem; font-weight: bold;">
+                                    {{ user.first_name|slice:":1"|upper }}{{ user.last_name|slice:":1"|upper }}
+                                </div>
+                            {% endif %}
+                            
+                            <span class="position-absolute bottom-0 end-0 p-2 bg-success border border-4 border-white rounded-circle"></span>
+                        </div>
+
+                        <h4 class="fw-bold text-dark mb-1">{{ user.get_full_name|default:user.username }}</h4>
+                        <span class="badge bg-primary bg-opacity-10 text-primary rounded-pill px-3 py-2 mb-3">
+                            {{ user.role|default:"Danışan" }}
+                        </span>
+
+                        <p class="text-muted small mb-4">
+                            <i class="bi bi-calendar-check me-1"></i> Üyelik: {{ user.date_joined|date:"d F Y" }}
+                        </p>
+
+                        <!-- Fotoğraf Yükleme Butonu -->
+                        <div class="d-grid gap-2 w-100">
+                            <input type="file" name="profile_photo" id="id_profile_photo" class="d-none" accept="image/*">
+                            <button type="button" class="btn btn-outline-primary rounded-pill py-2"
+                                    onclick="document.getElementById('id_profile_photo').click()">
+                                <i class="bi bi-camera me-2"></i>Fotoğrafı Değiştir
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SAĞ KOLON: BİLGİLER -->
+            <div class="col-lg-8">
+                <div class="card border-0 shadow-sm rounded-4 h-100">
+                    <div class="card-header bg-white border-bottom py-3 px-4">
+                        <h6 class="fw-bold mb-0 text-dark">Kişisel Bilgiler</h6>
+                    </div>
+                    <div class="card-body p-4">
+                        <div class="row g-4">
+                            
+                            <!-- İsim -->
+                            <div class="col-md-6">
+                                <label class="form-label small text-muted fw-bold">İSİM</label>
+                                <input type="text" name="first_name" class="form-control bg-light border-0" value="{{ user.first_name }}">
+                            </div>
+
+                            <!-- Soyisim -->
+                            <div class="col-md-6">
+                                <label class="form-label small text-muted fw-bold">SOYİSİM</label>
+                                <input type="text" name="last_name" class="form-control bg-light border-0" value="{{ user.last_name }}">
+                            </div>
+
+                            <!-- Kullanıcı Adı (Readonly - Değiştirilemez) -->
+                            <div class="col-md-6">
+                                <label class="form-label small text-muted fw-bold">KULLANICI ADI</label>
+                                <input type="text" class="form-control bg-white border text-muted" value="{{ user.username }}" readonly disabled>
+                            </div>
+
+                            <!-- E-posta (Readonly - Güvenlik için) -->
+                            <div class="col-md-6">
+                                <label class="form-label small text-muted fw-bold">E-MAIL</label>
+                                <input type="email" class="form-control bg-white border text-muted" value="{{ user.email }}" readonly disabled>
+                            </div>
+
+                             <!-- Telefon -->
+                             <div class="col-md-6">
+                                 <label class="form-label small text-muted fw-bold">TELEFON</label>
+                                 <input type="text"
+                                        name="phone_number"
+                                        class="form-control bg-light border-0"
+                                        value="{{ user.phone_number|default:'' }}"
+                                        placeholder="05xxxxxxxxx">
+                             </div>
+                          
+                             <!-- Doğum Tarihi (PatientProfile.birth_date) -->
+                              <div class="col-md-6">
+                                  <label class="form-label small text-muted fw-bold">DOĞUM TARİHİ</label>
+                                  <input type="date"
+                                         name="birth_date"
+                                         class="form-control bg-light border-0"
+                                         value="{{ profile.birth_date|date:'Y-m-d' }}">
+                              </div>
+                          
+                           <!-- Cinsiyet (PatientProfile.gender: 'M' / 'F') -->
+                           <div class="col-md-6">
+                               <label class="form-label small text-muted fw-bold">CİNSİYET</label>
+                               <select name="gender" class="form-select bg-light border-0">
+                                   <option value="">Seçiniz</option>
+                                   <option value="M" {% if profile.gender == "M" %}selected{% endif %}>Erkek</option>
+                                   <option value="F" {% if profile.gender == "F" %}selected{% endif %}>Kadın</option>
+                               </select>
+                           </div>
+
+                           </div>
+                       </div>
+                    
+                    <!-- Kaydet Butonu -->
+                    <div class="card-footer bg-white border-top p-3 text-end">
+                        <button type="submit" id="submit-btn" class="btn btn-primary rounded-pill px-4 shadow-sm">
+                            <i class="bi bi-check2-circle me-2"></i>Bilgileri Güncelle
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+<!-- HTMX Toast Bildirim Alanı -->
+<div id="toast-container"></div>
+
+<style>
+    .animate-in { animation: fadeInUp 0.5s ease-out forwards; opacity: 0; transform: translateY(20px); }
+    @keyframes fadeInUp { to { opacity: 1; transform: translateY(0); } }
+    
+    /* Input odaklanınca */
+    .form-control:focus {
+        background-color: #fff !important;
+        box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+        border-color: #6366f1;
+    }
+</style>
+
+<script>
+    const fileInput = document.getElementById('id_profile_photo');
+    const imgPreview = document.getElementById('profile-photo-preview');
+    const fallback = document.getElementById('profile-photo-fallback');
+
+    if (fileInput) {
+        fileInput.addEventListener('change', function (e) {
+            const file = e.target.files[0];
+            if (!file) return;
+
+            const url = URL.createObjectURL(file);
+
+            // Eğer daha önce foto yoksa, fallback div yerine img oluştur
+            if (!imgPreview && fallback) {
+                const img = document.createElement('img');
+                img.id = 'profile-photo-preview';
+                img.className = 'rounded-circle shadow-lg object-fit-cover';
+                img.style.width = '120px';
+                img.style.height = '120px';
+                img.src = url;
+
+                fallback.replaceWith(img);
+            } else if (imgPreview) {
+                imgPreview.src = url;
+            }
+        });
+    }
+</script>
+
+{% endblock %}

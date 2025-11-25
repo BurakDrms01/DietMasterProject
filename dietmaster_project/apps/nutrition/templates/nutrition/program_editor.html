@@ -1,0 +1,85 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container py-4">
+    
+    <!-- HEADER -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h3 class="fw-bold">{{ program.title }}</h3>
+            <p class="text-muted mb-0">Danışan: <strong>{{ program.user.get_full_name }}</strong></p>
+        </div>
+        <a href="{% url 'core:dashboard' %}" class="btn btn-outline-secondary rounded-pill">
+            <i class="bi bi-check-lg"></i> Kaydet ve Çık
+        </a>
+    </div>
+
+    <div class="row g-4">
+        <!-- SOL: GÜNLER (TAB) -->
+        <div class="col-md-3">
+            <div class="list-group shadow-sm rounded-4 overflow-hidden">
+                {% for day in days %}
+                <a href="?day_id={{ day.id }}" 
+                   class="list-group-item list-group-item-action p-3 fw-bold {% if day.id == active_day.id %}active bg-primary border-primary{% endif %}">
+                    <div class="d-flex justify-content-between align-items-center">
+                        {{ day.get_day_of_week_display }}
+                        {% if day.breakfast %}<i class="bi bi-check-circle-fill small {% if day.id == active_day.id %}text-white{% else %}text-success{% endif %}"></i>{% endif %}
+                    </div>
+                </a>
+                {% endfor %}
+            </div>
+        </div>
+
+        <!-- SAĞ: EDİTÖR FORM -->
+        <div class="col-md-9">
+            <div class="card border-0 shadow-sm rounded-4">
+                <div class="card-header bg-white p-4 border-bottom">
+                    <h5 class="fw-bold text-primary mb-0">
+                        <i class="bi bi-pencil-square me-2"></i>{{ active_day.get_day_of_week_display }} Menüsü
+                    </h5>
+                </div>
+                <div class="card-body p-4">
+                    <form method="post">
+                        {% csrf_token %}
+                        
+                        <div class="row g-4">
+                            <div class="col-12">
+                                <label class="fw-bold text-muted small text-uppercase mb-1">🍳 Kahvaltı</label>
+                                {{ form.breakfast }}
+                            </div>
+                            <div class="col-md-6">
+                                <label class="fw-bold text-muted small text-uppercase mb-1">🥗 Öğle Yemeği</label>
+                                {{ form.lunch }}
+                            </div>
+                            <div class="col-md-6">
+                                <label class="fw-bold text-muted small text-uppercase mb-1">🍲 Akşam Yemeği</label>
+                                {{ form.dinner }}
+                            </div>
+                            
+                            <div class="col-12"><hr class="text-muted opacity-25"></div>
+                            
+                            <div class="col-md-4">
+                                <label class="fw-bold text-muted small text-uppercase mb-1">🍎 Ara Öğün 1</label>
+                                {{ form.snack_1 }}
+                            </div>
+                            <div class="col-md-4">
+                                <label class="fw-bold text-muted small text-uppercase mb-1">🥜 Ara Öğün 2</label>
+                                {{ form.snack_2 }}
+                            </div>
+                            <div class="col-md-4">
+                                <label class="fw-bold text-muted small text-uppercase mb-1">🍵 Ara Öğün 3</label>
+                                {{ form.snack_3 }}
+                            </div>
+                        </div>
+
+                        <div class="d-flex justify-content-end mt-4 pt-3 border-top">
+                            <button type="submit" class="btn btn-success px-5 py-2 rounded-pill fw-bold shadow-sm">
+                                <i class="bi bi-save me-2"></i>Değişiklikleri Kaydet
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

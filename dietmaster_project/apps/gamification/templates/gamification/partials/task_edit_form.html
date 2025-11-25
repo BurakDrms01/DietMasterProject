@@ -1,0 +1,69 @@
+<!-- MODAL HEADER -->
+<div class="modal-header border-0 pb-0">
+    <h5 class="modal-title fw-bold text-primary">
+        <i class="bi bi-pencil-square me-2"></i>Görevi Düzenle
+    </h5>
+    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+</div>
+
+<!-- FORM -->
+<form method="post" action="{% url 'gamification:edit_task' task.id %}">
+    {% csrf_token %}
+    <div class="modal-body">
+        
+        <div class="mb-3">
+            <label class="form-label small fw-bold text-muted">Görev Başlığı</label>
+            {{ form.title }}
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label small fw-bold text-muted">Açıklama</label>
+            {{ form.description }}
+        </div>
+
+        <div class="row g-2 mb-3">
+            <div class="col-6">
+                <label class="form-label small fw-bold text-muted">Puan</label>
+                {{ form.points }}
+            </div>
+            <div class="col-6">
+                <label class="form-label small fw-bold text-muted">Tip</label>
+                {{ form.task_type }}
+            </div>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label small fw-bold text-muted">İlişkili Öğün</label>
+            {{ form.related_meal_type }}
+        </div>
+        
+        <div class="mb-3 p-2 bg-warning bg-opacity-10 rounded border border-warning border-opacity-25">
+            <label class="form-label small fw-bold text-warning-emphasis mb-1">
+                <i class="bi bi-clock-history me-1"></i> Süreyi Güncelle
+            </label>
+            {{ form.duration }}
+            <div class="form-text small" style="font-size: 0.7rem;">Sadece süreyi uzatmak/değiştirmek istiyorsanız seçin.</div>
+        </div>
+
+        <div class="mb-3">
+            <div class="form-check form-switch">
+                {{ form.is_for_everyone }}
+                <label class="form-check-label fw-bold" for="{{ form.is_for_everyone.id_for_label }}">
+                    Tüm Danışanlara Ata
+                </label>
+            </div>
+        </div>
+        
+        <div class="mb-3">
+            <label class="form-label small fw-bold text-muted">Veya Kişi Seç:</label>
+            <div class="border rounded p-2" style="max-height: 100px; overflow-y: auto;">
+                {{ form.assigned_users }}
+            </div>
+        </div>
+
+    </div>
+    <div class="modal-footer border-0 pt-0">
+        <button type="button" class="btn btn-light rounded-pill" data-bs-dismiss="modal">İptal</button>
+        <button type="submit" class="btn btn-primary rounded-pill px-4">Değişiklikleri Kaydet</button>
+    </div>
+</form>

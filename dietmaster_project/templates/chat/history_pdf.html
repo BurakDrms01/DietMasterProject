@@ -1,0 +1,142 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="tr" xmlns:pdf="http://ns.adobe.com/pdf/1.3/">
+<head>
+    <meta charset="utf-8">
+    <title>Sohbet Geçmişi</title>
+    <style>
+        @font-face {
+            font-family: 'TurkishFont';
+            src: url("{% static 'fonts/Roboto-Regular.ttf' %}");
+            -pdf-embed: embed;
+            -pdf-font-name: 'TurkishFont';
+        }
+
+        /* xhtml2pdf'in desteklediği sade @page kullanımı */
+        @page {
+            size: A4;
+            margin: 2cm;
+        }
+        
+        body {
+            font-family: 'TurkishFont', sans-serif;
+            font-size: 12px;
+            color: #333;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            border-bottom: 2px solid #6366f1;
+            padding-bottom: 10px;
+        }
+
+        .logo {
+            color: #6366f1;
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .meta {
+            color: #666;
+            font-size: 10px;
+            margin-top: 5px;
+        }
+
+        .message-container {
+            margin-bottom: 15px;
+            padding: 10px;
+            border-radius: 8px;
+        }
+
+        .msg-client {
+            background-color: #f0fdf4;
+            border-left: 4px solid #16a34a;
+        }
+
+        .msg-ai {
+            background-color: #f8fafc;
+            border-left: 4px solid #6366f1;
+        }
+
+        .sender-name {
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: #444;
+        }
+
+        .timestamp {
+            font-size: 9px;
+            color: #999;
+            float: right;
+        }
+
+        .content {
+            line-height: 1.5;
+            clear: both;
+            margin-top: 3px;
+        }
+
+        .food-image {
+            margin-top: 10px;
+            margin-bottom: 10px;
+            max-width: 300px;
+            height: auto;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+        }
+
+        /* Alt sabit sayfa numarası */
+        #footer {
+            position: fixed;
+            bottom: 1cm;
+            right: 2cm;
+            font-family: 'TurkishFont', sans-serif;
+            font-size: 9px;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <div class="logo">DietMaster AI</div>
+        <div class="meta">
+            Danışan: {{ user.get_full_name|default:user.username }} <br>
+            Rapor Tarihi: {{ date|date:"d.m.Y H:i" }}
+        </div>
+    </div>
+
+    {% for msg in messages %}
+        <div class="message-container {% if msg.sender_type == 'client' %}msg-client{% else %}msg-ai{% endif %}">
+            
+            <div class="sender-name">
+                {% if msg.sender_type == 'client' %}
+                    SİZ
+                {% else %}
+                    DIETMASTER AI
+                {% endif %}
+                <span class="timestamp">{{ msg.created_at|date:"H:i - d.m.Y" }}</span>
+            </div>
+
+            <div class="content">
+                {% if msg.image %}
+                    <div>
+                        <!-- URL üzerinden gelsin ki link_callback dosya yoluna çevirebilsin -->
+                        <img src="{{ msg.image.url }}" class="food-image">
+                    </div>
+                {% endif %}
+
+                {{ msg.message|linebreaksbr }}
+            </div>
+
+        </div>
+    {% endfor %}
+
+    <!-- Sayfa numarası -->
+    <div id="footer">
+        Sayfa <pdf:pagenumber /> / <pdf:pagecount />
+    </div>
+
+</body>
+</html>

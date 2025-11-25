@@ -1,0 +1,382 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Hoş Geldin | DietMaster{% endblock %}
+
+{% block content %}
+<!-- ÖZEL CSS (Sadece bu sayfa için Timeline stili) -->
+<style>
+    /* Süreç Adımları (Timeline) */
+    .timeline-item {
+        position: relative;
+        padding-left: 3rem;
+        padding-bottom: 2rem;
+        border-left: 2px solid #e5e7eb;
+    }
+    .timeline-item:last-child {
+        border-left: transparent;
+    }
+    .timeline-icon {
+        position: absolute;
+        left: -1rem;
+        top: 0;
+        width: 2rem;
+        height: 2rem;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #fff;
+        border: 2px solid #e5e7eb;
+        z-index: 1;
+    }
+    .timeline-item.active .timeline-icon {
+        background-color: var(--primary);
+        border-color: var(--primary);
+        color: white;
+        box-shadow: 0 0 0 4px var(--primary-light);
+    }
+    .timeline-item.completed .timeline-icon {
+        background-color: var(--success);
+        border-color: var(--success);
+        color: white;
+    }
+    .timeline-item.completed {
+        border-left-color: var(--success);
+    }
+    
+    /* Paket Kartı Animasyonu */
+    .premium-card {
+        transition: all 0.3s ease;
+        border: 1px solid rgba(99, 102, 241, 0.1);
+    }
+    .premium-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        border-color: var(--primary);
+    }
+
+     /* Yeni Eklenen: Hazırlık Görevleri Stili */
+    .prep-task {
+        transition: all 0.2s;
+        cursor: pointer;
+    }
+    .prep-task:hover {
+        background-color: #f8fafc;
+    }
+    .prep-check {
+        width: 24px; height: 24px;
+        border: 2px solid #cbd5e1;
+        border-radius: 6px;
+        display: flex; align-items: center; justify-content: center;
+        color: transparent;
+        transition: all 0.2s;
+    }
+    .prep-input:checked + .prep-label .prep-check {
+        background-color: var(--success);
+        border-color: var(--success);
+        color: white;
+    }
+    .prep-input:checked + .prep-label .prep-text {
+        text-decoration: line-through;
+        color: #94a3b8;
+</style>
+
+<div class="container-fluid py-2">
+
+    <!-- 1. HERO SECTION (Karşılama) -->
+<div class="container-fluid py-2">
+
+    <!-- 1. HERO SECTION (DURUMA GÖRE DEĞİŞİR) -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="welcome-card p-5 rounded-4 text-white position-relative overflow-hidden shadow-lg" 
+                 style="background: {% if plan_request %}linear-gradient(120deg, #059669, #047857){% else %}linear-gradient(120deg, #4f46e5, #3730a3){% endif %};">
+                
+                <!-- Arka Plan Süsü -->
+                <div class="position-absolute top-0 end-0 opacity-10 pe-none">
+                    {% if plan_request %}
+                        <i class="bi bi-hourglass-split" style="font-size: 15rem; transform: rotate(15deg) translate(50px, -50px);"></i>
+                    {% else %}
+                        <i class="bi bi-rocket-takeoff-fill" style="font-size: 15rem; transform: rotate(-15deg) translate(50px, -50px);"></i>
+                    {% endif %}
+                </div>
+                
+                <div class="position-relative z-1 row align-items-center">
+                    <div class="col-lg-8">
+                        
+                        {% if plan_request %}
+                            <!-- DURUM: BAŞVURU YAPILDI -->
+                            <span class="badge bg-white bg-opacity-20 border border-white border-opacity-25 mb-3 px-3 py-2 rounded-pill">
+                                ⏳ Onay Bekleniyor
+                            </span>
+                            <h1 class="fw-bold display-5 mb-3">Harikasın, {{ request.user.first_name }}!</h1>
+                            <p class="lead opacity-90 mb-4" style="max-width: 600px;">
+                                <strong>{{ plan_request.plan.name }}</strong> başvurunu aldık. Diyetisyenimiz profilini inceliyor.
+                                Bu sırada senin için hazırladığımız başlangıç görevlerine göz atabilirsin.
+                            </p>
+                        {% else %}
+                            <!-- DURUM: YENİ BAŞLANGIÇ -->
+                            <span class="badge bg-white bg-opacity-20 border border-white border-opacity-25 mb-3 px-3 py-2 rounded-pill">
+                                🚀 Yolculuk Başlıyor
+                            </span>
+                            <h1 class="fw-bold display-5 mb-3">Hoş Geldin, {{ request.user.first_name }}!</h1>
+                            <p class="lead opacity-90 mb-4" style="max-width: 600px;">
+                                Sağlıklı yaşam yolculuğuna başlamak için ilk adımı attın. Şimdi senin için en uygun planı seçme zamanı.
+                            </p>
+                            <a href="{% url 'plans:pricing' %}" class="btn btn-light text-primary fw-bold px-4 py-3 rounded-3 shadow-sm">
+                                <i class="bi bi-star-fill me-2"></i> Paketleri İncele
+                            </a>
+                        {% endif %}
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+       <div class="row g-4">
+        
+        <!-- 2. SOL KOLON: SÜREÇ TAKİBİ -->
+        <div class="col-lg-8">
+            <div class="card border-0 shadow-sm rounded-4 h-100">
+                <div class="card-header bg-white border-0 pt-4 ps-4">
+                    <h5 class="fw-bold text-dark d-flex align-items-center">
+                        <i class="bi bi-map-fill text-primary me-2"></i> Yolculuk Haritası
+                    </h5>
+                </div>
+                <div class="card-body p-4">
+                    <div class="timeline-wrapper ps-2 pt-2">
+                        
+                        <!-- Adım 1 -->
+                        <div class="timeline-item completed">
+                            <div class="timeline-icon"><i class="bi bi-check-lg"></i></div>
+                            <h6 class="fw-bold text-dark">Hesap Oluşturuldu</h6>
+                            <p class="text-muted small mb-0">Başvurunuz sistemimize ulaştı.</p>
+                        </div>
+
+                        <!-- Adım 2: Paket Seçimi -->
+                        <div class="timeline-item {% if plan_request %}completed{% else %}active{% endif %}">
+                            <div class="timeline-icon">
+                                {% if plan_request %}<i class="bi bi-check-lg"></i>{% else %}<div class="spinner-grow spinner-grow-sm" role="status"></div>{% endif %}
+                            </div>
+                            <h6 class="fw-bold {% if plan_request %}text-dark{% else %}text-primary{% endif %}">
+                                Paket ve Profil Analizi
+                            </h6>
+                            {% if not plan_request %}
+                                <p class="text-muted small mb-3">Sana uygun paketi seç ve formunu doldur.</p>
+                                <a href="{% url 'plans:pricing' %}" class="btn btn-sm btn-primary rounded-pill px-3">Paketleri Gör -></a>
+                            {% else %}
+                                <p class="text-muted small mb-0">Profilin ve <strong>{{ plan_request.plan.name }}</strong> talebin alındı.</p>
+                            {% endif %}
+                        </div>
+
+                        <!-- Adım 3: Diyetisyen Onayı -->
+                        <div class="timeline-item {% if plan_request %}active{% endif %}">
+                            <div class="timeline-icon {% if not plan_request %}text-muted{% endif %}">
+                                {% if plan_request %}
+                                    <div class="spinner-border spinner-border-sm text-primary" role="status"></div>
+                                {% else %}
+                                    <i class="bi bi-person-check"></i>
+                                {% endif %}
+                            </div>
+                            <h6 class="fw-bold {% if plan_request %}text-primary{% else %}text-muted{% endif %}">
+                                Diyetisyen Eşleşmesi & Onay
+                            </h6>
+                            <p class="text-muted small mb-0">
+                                {% if plan_request %}
+                                    Uzmanımız verilerini inceliyor. Tahmini süre: <strong>24 Saat</strong>.
+                                {% else %}
+                                    Seçtiğin pakete göre uzman atanacak.
+                                {% endif %}
+                            </p>
+                        </div>
+
+                        <!-- Adım 4 -->
+                        <div class="timeline-item">
+                            <div class="timeline-icon text-muted"><i class="bi bi-flag"></i></div>
+                            <h6 class="fw-bold text-muted">Program Başlangıcı</h6>
+                            <p class="text-muted small mb-0">Kişisel planınla yeni hayatına başla.</p>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 3. SAĞ KOLON: HIZLI AKSİYON & BİLGİ -->
+                <!-- 3. SAĞ KOLON: DİNAMİK İÇERİK -->
+        <div class="col-lg-4">
+            
+            {% if plan_request %}
+                <!-- MOD: HAZIRLIK GÖREVLERİ (CHECKLIST) -->
+                <div class="card border-0 shadow-sm rounded-4 mb-4 bg-white">
+                    <div class="card-header bg-white border-0 pt-4 ps-4 pb-0">
+                        <div class="d-flex align-items-center mb-1">
+                            <span class="badge bg-warning bg-opacity-10 text-warning rounded-pill me-2">Ödev</span>
+                            <h6 class="fw-bold text-dark mb-0">Beklerken Hazırlan 🥑</h6>
+                        </div>
+                        <p class="text-muted small mb-0">Program başlamadan bunları yapmanı öneririz.</p>
+                    </div>
+                    <div class="card-body p-4">
+                        <div class="d-flex flex-column gap-3">
+                            
+                            <!-- Görev 1 -->
+                            <label class="prep-task d-flex align-items-start p-2 rounded-3">
+                                <input type="checkbox" class="prep-input d-none">
+                                <div class="prep-label d-flex">
+                                    <div class="prep-check me-3 flex-shrink-0"><i class="bi bi-check-lg"></i></div>
+                                    <div>
+                                        <span class="prep-text fw-medium text-dark d-block">Mutfağı Sadeleştir</span>
+                                        <small class="text-muted" style="font-size: 0.75rem;">Zararlı atıştırmalıkları evden uzaklaştır.</small>
+                                    </div>
+                                </div>
+                            </label>
+
+                            <!-- Görev 2 -->
+                            <label class="prep-task d-flex align-items-start p-2 rounded-3">
+                                <input type="checkbox" class="prep-input d-none">
+                                <div class="prep-label d-flex">
+                                    <div class="prep-check me-3 flex-shrink-0"><i class="bi bi-check-lg"></i></div>
+                                    <div>
+                                        <span class="prep-text fw-medium text-dark d-block">Su Şişeni Hazırla</span>
+                                        <small class="text-muted" style="font-size: 0.75rem;">Yarın sabah güne su ile başla.</small>
+                                    </div>
+                                </div>
+                            </label>
+
+                            <!-- Görev 3 -->
+                            <label class="prep-task d-flex align-items-start p-2 rounded-3">
+                                <input type="checkbox" class="prep-input d-none">
+                                <div class="prep-label d-flex">
+                                    <div class="prep-check me-3 flex-shrink-0"><i class="bi bi-check-lg"></i></div>
+                                    <div>
+                                        <span class="prep-text fw-medium text-dark d-block">Bildirimleri Aç</span>
+                                        <small class="text-muted" style="font-size: 0.75rem;">Diyetisyen mesajlarını kaçırma.</small>
+                                    </div>
+                                </div>
+                            </label>
+
+                        </div>
+                    </div>
+                </div>
+
+            {% else %}
+                <!-- MOD: SATIŞ (PREMIUM KART) -->
+                <div class="card border-0 shadow-sm rounded-4 mb-4 premium-card bg-white position-relative overflow-hidden">
+                    <div class="card-body p-4 text-center">
+                        <div class="mb-3">
+                            <img src="https://cdn-icons-png.flaticon.com/512/4436/4436481.png" width="80" alt="Premium">
+                        </div>
+                        <h5 class="fw-bold text-dark">DiyetMaster Premium</h5>
+                        <p class="text-muted small">Yapay zeka destekli analizler, sınırsız diyetisyen iletişimi ve kişisel planlar.</p>
+                        
+                        <div class="d-grid">
+                            <a href="{% url 'plans:pricing' %}" class="btn btn-primary py-3 rounded-3 fw-bold shadow-sm">
+                                Hemen Başla
+                            </a>
+                        </div>
+                        <div class="mt-3">
+                            <small class="text-muted">⚠️ Sınırlı kontenjan</small>
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+
+            <!-- SSS (Her İki Durumda da Görünsün) -->
+            <div class="card border-0 shadow-sm rounded-4">
+                <div class="card-header bg-white border-0 pt-4 ps-4">
+                    <h6 class="fw-bold text-dark">Yardım Merkezi</h6>
+                </div>
+                <div class="card-body p-4 pt-2">
+                    <div class="d-flex align-items-start mb-3">
+                        <i class="bi bi-question-circle-fill text-primary mt-1 me-2"></i>
+                        <div>
+                            <small class="d-block fw-bold text-dark">Onay süreci ne kadar sürer?</small>
+                            <small class="text-muted">Genellikle 2-4 saat içinde dönüş yapıyoruz.</small>
+                        </div>
+                    </div>
+                    <div class="mt-2 pt-3 border-top">
+                        <a href="#" class="text-decoration-none fw-bold small d-block text-center">
+                            <i class="bi bi-chat-dots me-1"></i> Canlı Desteğe Bağlan
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<!-- ========================================== -->
+<!-- BAŞVURU BAŞARILI MODALI (AUTO OPEN) -->
+<!-- ========================================== -->
+<div class="modal fade" id="successModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-0 rounded-5 shadow-lg text-center overflow-hidden" style="background: #fff;">
+            
+            <!-- Dekoratif Üst Kısım -->
+            <div class="modal-header border-0 d-flex justify-content-center pt-5 pb-0" style="background: linear-gradient(to bottom, #f0fdf4 0%, #fff 100%);">
+                <div class="bg-success bg-opacity-10 text-success rounded-circle p-4 mb-3 d-inline-flex align-items-center justify-content-center shadow-sm" 
+                     style="width: 100px; height: 100px;">
+                    <i class="bi bi-check-lg display-3"></i>
+                </div>
+            </div>
+
+            <div class="modal-body p-5 pt-2">
+                <h2 class="fw-bold text-dark mb-3">Başvurun Bize Ulaştı! 🎉</h2>
+                
+                <p class="text-muted lead mb-4" style="font-size: 1.1rem;">
+                    Tebrikler! Profilin ve paket tercihin <strong>Diyetisyen ekibimize</strong> iletildi. 
+                </p>
+
+                <div class="card border-0 bg-light rounded-4 p-3 mb-4 text-start">
+                    <h6 class="fw-bold text-dark mb-2"><i class="bi bi-hourglass-split me-2 text-primary"></i>Şimdi Ne Olacak?</h6>
+                    <ul class="list-unstyled text-muted small mb-0 ps-1" style="line-height: 1.6;">
+                        <li class="mb-1">✅ Profilin uzmanımız tarafından incelenecek.</li>
+                        <li class="mb-1">✅ Seçtiğin pakete göre ödeme/onay süreci tamamlanacak.</li>
+                        <li>✅ 24 saat içinde seninle iletişime geçeceğiz.</li>
+                    </ul>
+                </div>
+
+                <button type="button" class="btn btn-primary py-3 px-5 rounded-pill fw-bold shadow-md w-100" data-bs-dismiss="modal">
+                    Tamam, Anlaşıldı 👍
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- EFEKT VE OTOMATİK AÇILMA SCRİPTİ -->
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Django messages içinde 'application_submitted' var mı kontrol et
+        {% if messages %}
+            {% for message in messages %}
+                {% if message.message == 'application_submitted' %}
+                    // 1. Modalı Aç
+                    var myModal = new bootstrap.Modal(document.getElementById('successModal'));
+                    myModal.show();
+
+                    // 2. Konfeti Patlat (Kutlama Efekti)
+                    var duration = 3 * 1000;
+                    var animationEnd = Date.now() + duration;
+                    var defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 9999 };
+
+                    function randomInRange(min, max) { return Math.random() * (max - min) + min; }
+
+                    var interval = setInterval(function() {
+                        var timeLeft = animationEnd - Date.now();
+                        if (timeLeft <= 0) { return clearInterval(interval); }
+                        var particleCount = 50 * (timeLeft / duration);
+                        confetti(Object.assign({}, defaults, { particleCount, origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 } }));
+                        confetti(Object.assign({}, defaults, { particleCount, origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 } }));
+                    }, 250);
+                {% endif %}
+            {% endfor %}
+        {% endif %}
+    });
+</script>
+
+{% endblock %}

@@ -1,0 +1,103 @@
+{% extends 'base.html' %}
+{% block title %}Beslenme Planım{% endblock %}
+
+{% block content %}
+<div class="container-fluid py-4">
+    
+    {% if program %}
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <div>
+                <h3 class="fw-bold text-dark"><i class="bi bi-journal-bookmark-fill text-primary me-2"></i>{{ program.title }}</h3>
+                <p class="text-muted mb-0">
+                    <i class="bi bi-calendar-range me-1"></i> {{ program.start_date|date:"d M" }} - {{ program.end_date|date:"d M Y" }}
+                </p>
+            </div>
+        </div>
+
+        <div class="card border-0 shadow-sm rounded-4 overflow-hidden">
+            <div class="card-header bg-white border-bottom p-0">
+                <!-- GÜNLER (TABS) -->
+                <ul class="nav nav-tabs nav-fill border-0" id="dietTabs" role="tablist">
+                    {% for day in days %}
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link py-3 fw-bold rounded-0 border-0 border-bottom border-3 {% if day.day_of_week == today_index %}active border-primary text-primary{% else %}text-muted border-transparent{% endif %}" 
+                                id="day-{{ day.id }}-tab" 
+                                data-bs-toggle="tab" 
+                                data-bs-target="#day-{{ day.id }}" 
+                                type="button" 
+                                role="tab">
+                            <span class="d-block small text-uppercase opacity-50">Gün</span>
+                            {{ day.get_day_of_week_display }}
+                        </button>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+
+            <div class="card-body p-4 bg-light bg-opacity-50">
+                <div class="tab-content" id="dietTabsContent">
+                    {% for day in days %}
+                    <div class="tab-pane fade {% if day.day_of_week == today_index %}show active{% endif %}" id="day-{{ day.id }}" role="tabpanel">
+                        
+                        <div class="row g-4 justify-content-center">
+                            <!-- Kahvaltı -->
+                            <div class="col-md-6 col-lg-4">
+                                <div class="card h-100 border-0 shadow-sm rounded-4">
+                                    <div class="card-body">
+                                        <h6 class="fw-bold text-warning text-uppercase small mb-2">🍳 Kahvaltı</h6>
+                                        <p class="mb-0 text-dark">{{ day.breakfast|default:"Belirtilmemiş"|linebreaks }}</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Öğle -->
+                            <div class="col-md-6 col-lg-4">
+                                <div class="card h-100 border-0 shadow-sm rounded-4">
+                                    <div class="card-body">
+                                        <h6 class="fw-bold text-success text-uppercase small mb-2">🥗 Öğle Yemeği</h6>
+                                        <p class="mb-0 text-dark">{{ day.lunch|default:"Belirtilmemiş"|linebreaks }}</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Akşam -->
+                            <div class="col-md-6 col-lg-4">
+                                <div class="card h-100 border-0 shadow-sm rounded-4">
+                                    <div class="card-body">
+                                        <h6 class="fw-bold text-primary text-uppercase small mb-2">🍲 Akşam Yemeği</h6>
+                                        <p class="mb-0 text-dark">{{ day.dinner|default:"Belirtilmemiş"|linebreaks }}</p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Ara Öğünler -->
+                            {% if day.snack_1 or day.snack_2 or day.snack_3 %}
+                            <div class="col-12">
+                                <div class="card border-0 border-start border-4 border-info shadow-sm rounded-3 bg-white">
+                                    <div class="card-body d-flex flex-wrap gap-4 align-items-center">
+                                        <div class="fw-bold text-info"><i class="bi bi-cup-hot-fill me-2"></i>Ara Öğünler:</div>
+                                        {% if day.snack_1 %}<span class="badge bg-light text-dark border">{{ day.snack_1 }}</span>{% endif %}
+                                        {% if day.snack_2 %}<span class="badge bg-light text-dark border">{{ day.snack_2 }}</span>{% endif %}
+                                        {% if day.snack_3 %}<span class="badge bg-light text-dark border">{{ day.snack_3 }}</span>{% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                            {% endif %}
+                        </div>
+
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+
+    {% else %}
+        <!-- Program Yoksa -->
+        <div class="text-center py-5">
+            <div class="bg-light rounded-circle d-inline-flex p-4 mb-3">
+                <i class="bi bi-journal-x fs-1 text-muted"></i>
+            </div>
+            <h4>Aktif Beslenme Programı Bulunamadı</h4>
+            <p class="text-muted">Diyetisyeniniz henüz programınızı oluşturmamış veya süresi dolmuş olabilir.</p>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

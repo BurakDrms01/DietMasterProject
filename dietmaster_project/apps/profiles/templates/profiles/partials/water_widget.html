@@ -1,0 +1,64 @@
+<!-- apps/profiles/templates/profiles/partials/water_widget.html -->
+
+<div id="water-widget-container" class="h-100">
+    <div class="d-flex align-items-center mb-3">
+        <div class="icon-box water rounded-circle me-3 animate__animated animate__pulse" 
+             style="width: 40px; height: 40px; background-color: #ecfeff; color: #06b6d4; display:grid; place-items:center;">
+            <i class="bi bi-droplet-fill"></i>
+        </div>
+        <div>
+            <h6 class="fw-bold mb-0 text-dark">Su Tüketimi</h6>
+            <small class="text-muted">{{ water.current_amount }} / {{ water.target_amount }} ml</small>
+        </div>
+    </div>
+    
+    <!-- İLERLEME ÇUBUĞU (DÜZELTİLDİ) -->
+    <div class="progress mb-3" style="height: 12px; background-color: #ecfeff; border-radius: 6px;">
+        <!-- 
+            DÜZELTME: |stringformat:"d" filtresi eklendi.
+            Bu, sayıyı (örn: 64,0) tam sayıya (64) çevirir, böylece CSS çalışır.
+            Rengi bg-info yerine bg-primary yaptık ki daha net görünsün.
+        -->
+        <div class="progress-bar bg-primary progress-bar-striped progress-bar-animated" 
+             role="progressbar" 
+             style="width: {{ water.progress_percent|stringformat:'d' }}%; transition: width 0.5s ease;"
+             aria-valuenow="{{ water.progress_percent|stringformat:'d' }}" aria-valuemin="0" aria-valuemax="100">
+        </div>
+    </div>
+    
+    <!-- Kontrol Butonları -->
+    <div class="d-flex gap-2">
+        <button class="btn btn-sm btn-outline-info flex-grow-1"
+            hx-post="{% url 'profiles:add_water' 200 %}"
+            hx-target="#water-widget-container"
+            hx-swap="outerHTML"
+            hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'>
+            +200ml
+        </button>
+        
+        <button class="btn btn-sm btn-outline-info flex-grow-1"
+            hx-post="{% url 'profiles:add_water' 500 %}"
+            hx-target="#water-widget-container"
+            hx-swap="outerHTML"
+            hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'>
+            +500ml
+        </button>
+    </div>
+
+    <!-- Hedef Tamamlandıysa Konfeti -->
+    {% if water.progress_percent >= 100 %}
+    <script>
+        if (typeof confetti === 'function') {
+            confetti({
+                particleCount: 100,
+                spread: 70,
+                origin: { y: 0.6 },
+                colors: ['#0dcaf0', '#0099cc']
+            });
+        }
+    </script>
+    <div class="mt-2 text-center text-primary fw-bold small animate__animated animate__fadeInUp">
+        🎉 Harikasın! Hedefe Ulaştın! 💧
+    </div>
+    {% endif %}
+</div>

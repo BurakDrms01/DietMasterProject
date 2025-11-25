@@ -1,0 +1,56 @@
+<div class="list-group-item border-0 px-0 py-3 d-flex justify-content-between align-items-start border-bottom" id="modal-appointment-{{ appointment.id }}">
+    <div class="d-flex align-items-start flex-grow-1">
+        <div class="bg-primary bg-opacity-10 rounded-circle p-2 me-3 text-primary fw-bold flex-shrink-0" style="width: 45px; height: 45px; display: grid; place-items: center;">
+            {{ appointment.time|time:"H:i" }}
+        </div>
+        <div class="flex-grow-1">
+            <h6 class="mb-1 fw-bold text-dark">{{ appointment.client.get_full_name }}</h6>
+            <small class="text-muted d-block mb-2">
+                {% if appointment.status == 'pending' %}
+                    <span class="text-warning"><i class="bi bi-hourglass-split"></i> Onay Bekliyor</span>
+                {% elif appointment.status == 'approved' %}
+                    <span class="text-success"><i class="bi bi-check-circle-fill"></i> Onaylandı</span>
+                {% elif appointment.status == 'cancelled' %}
+                    <span class="text-danger"><i class="bi bi-x-circle"></i> İptal Edildi</span>
+                {% elif appointment.status == 'rejected' %}
+                    <span class="text-danger"><i class="bi bi-x-circle"></i> Reddedildi</span>
+                {% endif %}
+            </small>
+            {% comment %} BUGFIX: Client notes were not displayed in modal {% endcomment %}
+            {% if appointment.notes %}
+            <div class="bg-light rounded-2 p-2 mt-2">
+                <small class="text-muted d-block mb-1 fw-bold"><i class="bi bi-sticky"></i> Danışan Notu:</small>
+                <small class="text-secondary">{{ appointment.notes }}</small>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+    <div class="btn-group">
+        {% if appointment.status == 'pending' %}
+            <button class="btn btn-sm btn-success rounded-start-pill px-3" 
+                    hx-post="{% url 'appointments:update_status' appointment.id %}?status=approved&context=modal"
+                    hx-target="#modal-appointment-{{ appointment.id }}"
+                    hx-swap="outerHTML"
+                    hx-disabled-elt="this"
+                    title="Onayla">
+                <i class="bi bi-check-lg"></i>
+            </button>
+            <button class="btn btn-sm btn-danger rounded-end-pill px-3"
+                    hx-post="{% url 'appointments:update_status' appointment.id %}?status=rejected&context=modal"
+                    hx-target="#modal-appointment-{{ appointment.id }}"
+                    hx-swap="outerHTML"
+                    hx-disabled-elt="this"
+                    title="Reddet">
+                <i class="bi bi-x-lg"></i>
+            </button>
+        {% elif appointment.status == 'approved' %}
+            <button class="btn btn-sm btn-outline-danger rounded-pill px-3"
+                    hx-post="{% url 'appointments:update_status' appointment.id %}?status=cancelled&context=modal"
+                    hx-target="#modal-appointment-{{ appointment.id }}"
+                    hx-swap="outerHTML"
+                    hx-disabled-elt="this">
+                İptal Et
+            </button>
+        {% endif %}
+    </div>
+</div>

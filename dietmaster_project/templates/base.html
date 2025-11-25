@@ -1,0 +1,220 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DietMaster | {% block title %}Anasayfa{% endblock %}</title>
+    
+    <!-- CSS Dosyaları -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/main.css' %}">
+
+    <!-- HTMX Script'i -->
+    <script src="https://unpkg.com/htmx.org@1.9.10" integrity="sha384-D1Kt99CQMDuVetoL1lrYwg5t+9QdHe7NLX/SoJYkXDFfX37iInKRy5xLSi8nO7UC" crossorigin="anonymous"></script>
+</head>
+<body>
+    
+<div class="container-fluid">
+    <div class="row">
+        <!-- Sol Yan Menü (Sidenav) -->
+        {% if user.is_authenticated %}
+        <nav id="sidebar" class="col-md-3 col-lg-2 d-none d-md-block sidebar min-vh-100">
+            <div class="position-sticky pt-3">
+                <div class="px-4 pb-4 pt-2">
+                    <a class="navbar-brand fs-4 fw-bold text-primary d-flex align-items-center" href="{% url 'core:dashboard' %}">
+                        <i class="bi bi-heart-pulse-fill me-2"></i> DietMaster
+                    </a>
+                </div>
+                
+                <ul class="nav flex-column px-2">
+                    <!-- ORTAK: KONTROL PANELİ -->
+                    <li class="nav-item mb-1">
+                        <a class="nav-link {% if request.resolver_match.view_name == 'core:dashboard' %}active{% endif %}" href="{% url 'core:dashboard' %}">
+                            <i class="bi bi-grid-1x2-fill"></i>
+                            <span>Kontrol Paneli</span>
+                        </a>
+                    </li>
+
+                    <!-- 1. SADECE ADMIN (DİYETİSYEN) MENÜSÜ -->
+                    {% if user.role == 'ADMIN' %}
+                    <li class="nav-item mb-1">
+                        <a class="nav-link {% if 'gamification' in request.path %}active{% endif %}" href="{% url 'gamification:manager' %}">
+                            <i class="bi bi-list-check"></i>
+                            <span>Görev Yönetimi</span>
+                        </a>
+                    </li>
+                    <li class="nav-item mb-1">
+                        <a class="nav-link {% if 'nutrition/clients' in request.path %}active{% endif %}" href="{% url 'nutrition:client_list' %}">
+                            <i class="bi bi-people-fill"></i>
+                            <span>Danışan Listesi</span>
+                        </a>
+                    </li>
+                    <li class="nav-item mb-1">
+                        <a class="nav-link {% if 'appointments' in request.path %}active{% endif %}" href="{% url 'appointments:calendar' %}">
+                            <i class="bi bi-calendar-check"></i>
+                            <span>Randevu Talepleri</span>
+                        </a>
+                    </li>
+                    {% endif %}
+
+                    <!-- ORTAK: YEMEK TARİFLERİ -->
+                    <li class="nav-item mb-1">
+                        <a class="nav-link {% if 'recipes' in request.resolver_match.view_name %}active{% endif %}" href="{% url 'recipes:list' %}">
+                            <i class="bi bi-journal-richtext"></i>
+                            <span>Tarifler</span>
+                        </a>
+                    </li>
+
+                    <!-- 2. SADECE CLIENT (AKTİF DANIŞAN) MENÜSÜ -->
+                    {% if user.role == 'CLIENT' %}
+                    <li class="nav-item mb-1">
+                        <a class="nav-link {% if 'profiles' in request.path %}active{% endif %}" href="{% url 'profiles:detail' %}">
+                            <i class="bi bi-person-vcard-fill"></i>
+                            <span>Sağlık Karnem</span>
+                        </a>
+                    </li>
+                    <!-- GÜNLÜK PUANLAMAYA GÖRE LİDERLİK KISMI -->
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'leaderboard:ranking' %}">
+                            <i class="bi bi-trophy-fill me-2"></i> Liderlik
+                        </a>
+                    </li>
+
+
+                    <li class="nav-item mb-1">
+                        <a class="nav-link {% if 'nutrition/my-plan' in request.path %}active{% endif %}" href="{% url 'nutrition:my_plan' %}">
+                            <i class="bi bi-journal-text"></i>
+                            <span>Beslenme Planım</span>
+                        </a>
+                    </li>
+                    <li class="nav-item mb-1">
+                        <a class="nav-link {% if 'appointments' in request.path %}active{% endif %}" href="{% url 'appointments:calendar' %}">
+                            <i class="bi bi-calendar-check"></i>
+                            <span>Randevularım</span>
+                        </a>
+                    </li>
+                    <!-- Soru Sor Linki -->
+                    <li class="nav-item mb-1">
+                        <a class="nav-link {% if 'chat' in request.path %}active{% endif %}" href="{% url 'chat:room' %}">
+                            <i class="bi bi-chat-dots-fill"></i>
+                            <span>AI Asistan</span>
+                        </a>
+                    </li>
+                    {% endif %}
+
+                    <!-- 3. SADECE NEW_CLIENT (ADAY/YENİ ÜYE) MENÜSÜ -->
+                    {% if user.role == 'NEW_CLIENT' %}
+                    <li class="nav-item mb-1">
+                        <a class="nav-link text-dark" href="#">
+                            <i class="bi bi-box-seam"></i>
+                            <span>Diyet Paketlerimiz</span>
+                            <span class="badge bg-danger ms-2" style="font-size: 0.65rem;">YENİ</span>
+                        </a>
+                    </li>
+                    <li class="nav-item mb-1">
+                        <a class="nav-link text-dark" href="#">
+                            <i class="bi bi-chat-dots"></i>
+                            <span>Soru Sor</span>
+                        </a>
+                    </li>
+                    {% endif %}
+                    
+                    <!-- DİNAMİK MENU (Diğer Linkler - Varsayılan) -->
+                    {% for item in nav_items %}
+                        {% if item.url_name != 'core:dashboard' %}
+                        <li class="nav-item mb-1">
+                            {% if item.url_name and item.url_name != '#' %}
+                                <a class="nav-link {% if request.resolver_match.url_name == item.url_name %}active{% endif %}" href="{% url item.url_name %}">
+                                    <i class="bi {{ item.icon }}"></i>
+                                    <span>{{ item.title }}</span>
+                                </a>
+                            {% else %}
+                                <a class="nav-link disabled text-muted" href="#" style="opacity: 0.6%;">
+                                    <i class="bi {{ item.icon }}"></i>
+                                    <span>{{ item.title }} <span class="badge bg-light text-secondary ms-1" style="font-size: 0.6rem;">Yakında</span></span>
+                                </a>
+                            {% endif %}
+                        </li>
+                        {% endif %}
+                    {% endfor %}
+                </ul>
+            </div>
+        </nav>
+        {% endif %}
+
+        <!-- Ana İçerik ve Üst Bar -->
+        <div class="col-md-9 ms-sm-auto col-lg-10 p-0 bg-light bg-opacity-50 min-vh-100">
+            <!-- Üst Header -->
+            <header class="header-navbar sticky-top bg-white border-bottom d-flex align-items-center justify-content-between px-4 py-3">
+                <div class="d-md-none">
+                    <i class="bi bi-list fs-4"></i>
+                </div>
+                <div class="d-none d-md-block">
+                    <span class="text-muted small">DietMaster / </span>
+                    <span class="fw-bold text-dark">{% block title_breadcrumb %}Panel{% endblock %}</span>
+                </div>
+                <div class="dropdown">
+                    <button class="btn btn-light bg-gray-50 border-0 dropdown-toggle d-flex align-items-center gap-2 py-2 px-3 rounded-pill" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center" style="width: 32px; height: 32px;">
+                            {{ request.user.first_name|slice:":1"|default:request.user.username|slice:":1"|upper }}
+                        </div>
+                        <span class="fw-medium small d-none d-md-inline">{{ request.user.get_full_name|default:request.user.username }}</span>
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-end shadow-sm border-0 mt-2">
+                        <!-- PROFİLİM LİNKİ -->
+                        <li>
+                            <a class="dropdown-item py-2 d-flex align-items-center" href="{% url 'users:profile' %}">
+                                <i class="bi bi-person-circle me-2 text-primary"></i> 
+                                <span>Profilim</span>
+                            </a>
+                        </li>
+                        {% if user.role == 'CLIENT' %}
+                        <li>
+                            <a class="dropdown-item py-2" href="{% url 'profiles:detail' %}">
+                                <i class="bi bi-person-badge me-2"></i> Karnem
+                            </a>
+                        </li>
+                        {% endif %}
+                        <li><hr class="dropdown-divider"></li>
+                        <li>
+                            <form method="post" action="{% url 'logout' %}">
+                                {% csrf_token %}
+                                <button class="dropdown-item text-danger py-2" type="submit">
+                                    <i class="bi bi-box-arrow-right me-2"></i> Çıkış
+                                </button>
+                            </form>
+                        </li>
+                    </ul>
+                </div>
+            </header>
+
+            <main class="p-4">
+                {# Django Messages: JS için gizli container #}
+                {% if messages %}
+                    <div id="django-messages-container" style="display: none;">
+                        {% for message in messages %}
+                            <span class="django-message-data" data-type="{{ message.tags }}" data-message="{{ message }}"></span>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+
+                {% block content %}{% endblock %}
+            </main>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script src="{% static 'js/main.js' %}"></script>
+<script>
+    document.body.addEventListener('htmx:configRequest', function(evt) {
+        evt.detail.headers['X-CSRFToken'] = '{{ csrf_token }}';
+    });
+</script>
+{% block extra_body %}{% endblock %}
+</body>
+</html>

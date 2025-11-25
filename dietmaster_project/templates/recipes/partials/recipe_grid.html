@@ -1,0 +1,79 @@
+{% for recipe in recipes %}
+<div class="col-md-6 col-lg-4 col-xl-3 fade-in">
+    <div class="card h-100 border-0 shadow-sm rounded-4 recipe-card overflow-hidden bg-white position-relative">
+        
+        <!-- Link (Sadece Onaylıysa veya Adminse detaya gidebilir) -->
+        <a href="{{ recipe.get_absolute_url }}" class="text-decoration-none">
+            
+            <!-- Resim Alanı -->
+            <div class="position-relative" style="height: 220px;">
+                {% if recipe.image %}
+                    <img src="{{ recipe.image.url }}" class="w-100 h-100 object-fit-cover" alt="{{ recipe.title }}">
+                {% else %}
+                    <div class="w-100 h-100 bg-light d-flex align-items-center justify-content-center text-muted">
+                        <i class="bi bi-card-image fs-1"></i>
+                    </div>
+                {% endif %}
+                
+                <!-- Kategori Rozeti -->
+                <span class="position-absolute top-0 start-0 m-3 badge bg-white text-dark shadow-sm rounded-pill px-3 opacity-90">
+                    {{ recipe.category.name }}
+                </span>
+
+                <!-- Kim Ekledi? (Küçük Avatar) -->
+                {% if recipe.author %}
+                <div class="position-absolute bottom-0 start-0 m-3 d-flex align-items-center bg-black bg-opacity-50 rounded-pill pe-3 p-1">
+                    <div class="bg-white text-dark rounded-circle d-flex align-items-center justify-content-center fw-bold me-2" style="width: 24px; height: 24px; font-size: 0.7rem;">
+                        {{ recipe.author.first_name|slice:":1" }}
+                    </div>
+                    <span class="text-white small" style="font-size: 0.75rem;">{{ recipe.author.first_name }}</span>
+                </div>
+                {% endif %}
+            </div>
+
+            <div class="card-body p-4 pb-0 d-flex flex-column">
+                <h5 class="fw-bold text-dark mb-2 text-truncate">{{ recipe.title }}</h5>
+                
+                <div class="mt-auto pt-3 border-top border-light d-flex justify-content-between text-muted small pb-4">
+                    <div class="d-flex align-items-center">
+                        <i class="bi bi-fire text-danger me-1"></i>
+                        <span>{{ recipe.calories }} kcal</span>
+                    </div>
+                    <div class="d-flex align-items-center">
+                        <i class="bi bi-clock text-primary me-1"></i>
+                        <span>{{ recipe.prep_time }} dk</span>
+                    </div>
+                </div>
+            </div>
+        </a>
+
+        <!-- ONAY AKSİYONLARI (Sadece Admin ve PENDING durumundaysa) -->
+        {% if user.role == 'ADMIN' and recipe.status == 'PENDING' %}
+        <div class="card-footer bg-light border-0 p-3">
+            <div class="d-flex gap-2">
+                <button 
+                    hx-post="{% url 'recipes:review' recipe.id 'approve' %}"
+                    hx-target="#recipe-grid"
+                    class="btn btn-success btn-sm flex-grow-1 rounded-pill fw-bold">
+                    <i class="bi bi-check-lg me-1"></i>Onayla
+                </button>
+                <button 
+                    hx-post="{% url 'recipes:review' recipe.id 'reject' %}"
+                    hx-target="#recipe-grid"
+                    hx-confirm="Bu tarifi reddetmek istediğine emin misin?"
+                    class="btn btn-outline-danger btn-sm rounded-pill">
+                    <i class="bi bi-x-lg"></i>
+                </button>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% empty %}
+<div class="col-12 text-center py-5">
+    <div class="bg-light rounded-circle d-inline-flex p-4 mb-3">
+        <i class="bi bi-inbox fs-1 text-muted"></i>
+    </div>
+    <h5 class="text-muted">Bu kriterlere uygun tarif bulunamadı.</h5>
+</div>
+{% endfor %}

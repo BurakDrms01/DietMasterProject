@@ -1,0 +1,518 @@
+{% extends 'base.html' %}
+{% block title %}Sağlık Karnem | DietMaster{% endblock %}
+
+{% block content %}
+
+<!-- ApexCharts Kütüphanesi -->
+<script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+
+<!-- ÖZEL CSS: Modern Stil Tanımlamaları -->
+<style>
+    .glass-card {
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+    .metric-card {
+        transition: all 0.3s ease;
+        border: 1px solid #f3f4f6;
+        background-color: #fff;
+        position: relative;
+        overflow: hidden;
+    }
+    .metric-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+        border-color: var(--primary);
+    }
+    .bmi-gradient {
+        height: 8px;
+        border-radius: 4px;
+        background: linear-gradient(90deg, 
+            #3b82f6 0%,    /* Zayıf */
+            #3b82f6 18.5%, 
+            #22c55e 18.5%, /* Normal */
+            #22c55e 25%, 
+            #eab308 25%,   /* Fazla */
+            #eab308 30%, 
+            #ef4444 30%,   /* Obez */
+            #ef4444 100%
+        );
+        position: relative;
+        margin-top: 10px;
+    }
+    .bmi-marker {
+        position: absolute;
+        top: -6px;
+        width: 4px;
+        height: 20px;
+        background-color: #111827;
+        border-radius: 2px;
+        transform: translateX(-50%);
+        box-shadow: 0 0 4px rgba(0,0,0,0.5);
+        transition: left 0.5s ease; /* Animasyon eklendi */
+    }
+</style>
+
+<div class="container-fluid py-4">
+    
+    <!-- 1. ANA PROFİL KARTI (HEADER) -->
+    <div class="card border-0 shadow-lg overflow-hidden mb-4 rounded-4">
+        <div class="row g-0">
+            
+            <!-- SOL: PROFİL KİMLİK KARTI -->
+            <div class="col-lg-4 text-white position-relative d-flex flex-column align-items-center justify-content-center p-5" 
+                 style="background: radial-gradient(circle at top right, #6366f1, #4338ca);">
+                
+                <!-- Dekoratif Arka Plan -->
+                <div class="position-absolute top-0 start-0 opacity-25 pe-none">
+                    <svg width="200" height="200" viewBox="0 0 200 200">
+                        <circle cx="100" cy="100" r="80" fill="none" stroke="white" stroke-width="2" opacity="0.3" />
+                        <circle cx="100" cy="100" r="60" fill="none" stroke="white" stroke-width="2" opacity="0.5" />
+                    </svg>
+                </div>
+
+                <!-- Profil Avatarı -->
+                <div class="position-relative mb-4 z-1">
+                    <div class="rounded-circle d-flex align-items-center justify-content-center shadow-lg glass-card" 
+                         style="width: 120px; height: 120px;">
+                        <span class="display-4 fw-bold text-white">
+                            {{ user.first_name|slice:":1"|default:user.username|slice:":1"|upper }}
+                        </span>
+                    </div>
+                </div>
+
+                <h3 class="fw-bold mb-1 z-1">{{ user.get_full_name|default:user.username }}</h3>
+                <p class="text-white-50 mb-4 z-1 small">{{ user.email }}</p>
+
+                <!-- Hap Bilgiler -->
+                <div class="d-flex gap-2 z-1">
+                    <span class="glass-card px-3 py-2 rounded-pill small d-flex align-items-center">
+                        <i class="bi bi-calendar-event me-2"></i>
+                        {% if profile.age %}{{ profile.age }} Yaş{% else %}--{% endif %}
+                    </span>
+                    <span class="glass-card px-3 py-2 rounded-pill small d-flex align-items-center">
+                        {% if profile.gender == 'M' %}
+                            <i class="bi bi-gender-male me-2"></i> Erkek
+                        {% elif profile.gender == 'F' %}
+                            <i class="bi bi-gender-female me-2"></i> Kadın
+                        {% else %}
+                            <i class="bi bi-person me-2"></i> --
+                        {% endif %}
+                    </span>
+                </div>
+            </div>
+
+            <!-- SAĞ: METRİKLER VE ANALİZ -->
+            <div class="col-lg-8 bg-white p-4 p-md-5 d-flex flex-column justify-content-center">
+                
+                <!-- Başlık ve Düzenle Butonu -->
+                <div class="d-flex justify-content-between align-items-center mb-5">
+                    <div>
+                        <h6 class="text-uppercase text-muted fw-bold small ls-1 mb-1">Vücut Kompozisyonu</h6>
+                        <h4 class="fw-bold text-dark m-0">Ölçümleriniz</h4>
+                    </div>
+                    <button class="btn btn-light text-primary fw-bold rounded-pill px-4 shadow-sm border" data-bs-toggle="modal" data-bs-target="#updateProfileModal">
+                        <i class="bi bi-pencil-square me-2"></i>Düzenle
+                    </button>
+                </div>
+
+                <!-- ÜÇLÜ KART YAPISI -->
+                <div class="row g-4">
+                    <!-- 1. KİLO -->
+                    <div class="col-md-4">
+                        <div class="metric-card p-4 rounded-4 h-100 text-center">
+                            <i class="bi bi-speedometer2 position-absolute top-0 end-0 m-3 text-muted opacity-25 fs-1"></i>
+                            <div class="text-muted small fw-bold text-uppercase mb-2">Güncel Kilo</div>
+                            <div class="d-flex justify-content-center align-items-baseline">
+                                <span class="display-6 fw-bold text-dark">{{ profile.weight|default:"--"|floatformat:1 }}</span>
+                                <span class="text-muted ms-1 small">kg</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 2. BOY -->
+                    <div class="col-md-4">
+                        <div class="metric-card p-4 rounded-4 h-100 text-center">
+                            <i class="bi bi-rulers position-absolute top-0 end-0 m-3 text-muted opacity-25 fs-1"></i>
+                            <div class="text-muted small fw-bold text-uppercase mb-2">Boy</div>
+                            <div class="d-flex justify-content-center align-items-baseline">
+                                <span class="display-6 fw-bold text-dark">{{ profile.height|default:"--" }}</span>
+                                <span class="text-muted ms-1 small">cm</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 3. VKİ (GÖRSEL) -->
+                    <div class="col-md-4">
+                        <div class="metric-card p-4 rounded-4 h-100 text-center" 
+                             style="background: {% if profile.bmi > 25 %}#fffbeb{% elif profile.bmi < 18.5 %}#fef2f2{% else %}#f0fdf4{% endif %};">
+                            
+                            <div class="text-muted small fw-bold text-uppercase mb-1">VKİ (BMI)</div>
+                            <div class="display-6 fw-bold {% if profile.bmi > 25 %}text-warning{% elif profile.bmi < 18.5 %}text-danger{% else %}text-success{% endif %}">
+                                {{ profile.bmi|default:"--" }}
+                            </div>
+                            <div class="badge rounded-pill mt-1 mb-3 {% if profile.bmi > 25 %}bg-warning text-dark{% elif profile.bmi < 18.5 %}bg-danger text-white{% else %}bg-success text-white{% endif %}">
+                                {{ profile.bmi_status }}
+                            </div>
+                            
+                            <!-- BMI Çubuğu -->
+                            <div class="mt-auto">
+                                <div class="bmi-gradient w-100">
+                                    <!-- Marker pozisyonu widthratio ile hesaplanır (Max 100) -->
+                                    <div class="bmi-marker" style="left: {% widthratio profile.bmi|default:0 40 100 %}%;"></div>
+                                </div>
+                                <div class="d-flex justify-content-between w-100 mt-1 text-muted opacity-50" style="font-size: 9px;">
+                                    <span>18.5</span>
+                                    <span>25</span>
+                                    <span>30</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- HEDEF KİLO İLERLEMESİ -->
+                {% if profile.weight and profile.goal_weight %}
+                <div class="mt-5 pt-2">
+                    <div class="d-flex justify-content-between align-items-end mb-2">
+                        <div>
+                            <span class="text-uppercase text-muted small fw-bold">Hedef</span>
+                            <span class="fs-5 fw-bold text-dark ms-1">{{ profile.goal_weight|floatformat:1 }} kg</span>
+                        </div>
+                        
+                        <span class="badge {% if profile.weight_difference > 0 %}bg-primary-subtle text-primary{% else %}bg-info-subtle text-info{% endif %} rounded-pill px-3 py-2 fw-normal">
+                             {% if profile.weight_difference > 0 %}
+                                🔥 Hedefe {{ profile.weight_difference|floatformat:1 }} kg kaldı
+                            {% elif profile.weight_difference < 0 %}
+                                💪 Hedefe {{ profile.weight_difference|stringformat:"+f"|slice:"1:"|floatformat:1 }} kg kaldı
+                            {% else %}
+                                🎉 Tebrikler! Hedefine ulaştın!
+                            {% endif %}
+                        </span>
+                    </div>
+                    
+                    <!-- İlerleme Çubuğu (Basit Mantık: Kalan / Toplam) -->
+                    <div class="progress" style="height: 8px; border-radius: 10px; background-color: #f1f5f9;">
+                        <!-- İlerleme yüzdesini hesaplamak karmaşıktır, şimdilik statik %75 veya dinamik bir oran verebiliriz -->
+                        <div class="progress-bar bg-primary rounded-pill" role="progressbar" style="width: 75%;"></div>
+                    </div>
+                </div>
+                {% endif %}
+                
+                <!-- KİLO GRAFİĞİ ALANI -->
+                <div class="mt-5">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h6 class="text-uppercase text-muted fw-bold small ls-1 m-0">Kilo Değişim Grafiği</h6>
+                    </div>
+                    <!-- Grafik Konteyneri -->
+                    <div id="weightChart" style="min-height: 350px;"></div>
+                    <!-- Veri Yok Mesajı (JS ile kontrol edilecek) -->
+                    <div id="noDataMessage" class="text-center py-5 text-muted fst-italic bg-light rounded-4 border border-dashed mt-2" style="display: none;">
+                        <i class="bi bi-graph-up-arrow fs-1 d-block mb-2 opacity-25"></i>
+                        Henüz yeterli veri yok. Kilonuzu güncelledikçe grafik oluşacaktır.
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- 2. ALT KARTLAR (SAĞLIK & YAŞAM) -->
+    <div class="row g-4">
+        
+        <!-- SOL: TIBBİ GEÇMİŞ -->
+        <div class="col-lg-8">
+            <div class="card border-0 shadow-sm h-100 rounded-4">
+                <div class="card-header bg-white border-0 pt-4 ps-4">
+                    <h5 class="fw-bold mb-0 text-dark"><i class="bi bi-clipboard2-pulse me-2 text-danger"></i>Tıbbi Geçmiş & Notlar</h5>
+                </div>
+                <div class="card-body p-4">
+                    <div class="row g-4">
+                        <div class="col-12">
+                            <label class="small fw-bold text-muted mb-2 text-uppercase">Kronik Rahatsızlıklar</label>
+                            <div class="p-3 bg-light rounded-3 border border-light">
+                                {{ profile.chronic_diseases|default:"<span class='text-muted fst-italic opacity-75'><i class='bi bi-check2-circle'></i> Kayıtlı bilgi yok.</span>"|safe }}
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="small fw-bold text-muted mb-2 text-uppercase">Alerjiler</label>
+                            <div class="p-3 bg-danger bg-opacity-10 rounded-3 border border-danger border-opacity-10 text-danger-emphasis">
+                                {{ profile.allergies|default:"<span class='text-muted fst-italic opacity-75'>Yok</span>"|safe }}
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="small fw-bold text-muted mb-2 text-uppercase">İlaçlar</label>
+                            <div class="p-3 bg-warning bg-opacity-10 rounded-3 border border-warning border-opacity-10 text-warning-emphasis">
+                                {{ profile.medications|default:"<span class='text-muted fst-italic opacity-75'>Yok</span>"|safe }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SAĞ: YAŞAM TARZI -->
+        <div class="col-lg-4">
+            <div class="card border-0 shadow-sm h-100 rounded-4">
+                <div class="card-header bg-white border-0 pt-4 ps-4">
+                    <h5 class="fw-bold mb-0 text-dark"><i class="bi bi-activity me-2 text-success"></i>Yaşam Tarzı</h5>
+                </div>
+                <div class="card-body p-4 text-center d-flex flex-column justify-content-center">
+                    <div class="mb-3 mx-auto position-relative">
+                        <div class="p-4 rounded-circle bg-success bg-opacity-10 text-success d-flex align-items-center justify-content-center" style="width: 110px; height: 110px;">
+                            {% if profile.activity_level == 'sedentary' %}
+                                <i class="bi bi-person-workspace display-4"></i>
+                            {% elif profile.activity_level == 'athlete' %}
+                                <i class="bi bi-trophy display-4"></i>
+                            {% else %}
+                                <i class="bi bi-person-walking display-4"></i>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <h5 class="fw-bold text-dark">{{ profile.get_activity_level_display }}</h5>
+                    <p class="text-muted small mb-4">Günlük Aktivite Düzeyi</p>
+
+                    <div class="alert alert-success bg-opacity-10 border-success border-opacity-25 text-start d-flex align-items-start mb-0 rounded-3">
+                        <i class="bi bi-stars text-success fs-5 me-2 mt-1"></i>
+                        <div class="small text-dark opacity-75">
+                            <strong>Tavsiye:</strong> 
+                            {% if profile.activity_level == 'sedentary' %}
+                                Gün içinde daha sık hareket etmeye çalış. 30dk yürüyüş iyi bir başlangıç olabilir.
+                            {% else %}
+                                Aktivite düzeyin gayet iyi! Su tüketimini artırmayı unutma.
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ======================================== -->
+<!-- MODAL: PROFİL DÜZENLEME -->
+<!-- ======================================== -->
+<div class="modal fade" id="updateProfileModal" tabindex="-1" aria-hidden="true" data-bs-backdrop="static">
+    <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content border-0 shadow-lg rounded-4">
+            
+            <!-- MODAL HEADER -->
+            <div class="modal-header border-bottom-0 pb-0 ps-4 pt-4">
+                <h5 class="modal-title fw-bold text-primary d-flex align-items-center">
+                    <i class="bi bi-person-gear fs-4 me-2"></i> Profil Bilgilerini Güncelle
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+
+            <!-- MODAL BODY -->
+            <div class="modal-body p-4 pt-2">
+                <!-- FORM (ID: profileForm) -->
+                <form method="post" id="profileForm">
+                    {% csrf_token %}
+                    
+                    <!-- 1. Bölüm: Fiziksel -->
+                    <div class="p-3 bg-light rounded-4 border mb-4">
+                        <h6 class="text-uppercase text-muted fw-bold small mb-3 border-bottom pb-2">
+                            <i class="bi bi-rulers me-1"></i> Fiziksel Özellikler
+                        </h6>
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label class="form-label fw-medium small text-secondary">Doğum Tarihi</label>
+                                {{ form.birth_date }}
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label fw-medium small text-secondary">Cinsiyet</label>
+                                {{ form.gender }} <!-- Select -->
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label fw-medium small text-secondary">Boy</label>
+                                <div class="input-group">
+                                    {{ form.height }}
+                                    <span class="input-group-text bg-white text-muted small">cm</span>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label fw-medium small text-secondary">Kilo</label>
+                                <div class="input-group">
+                                    {{ form.weight }}
+                                    <span class="input-group-text bg-white text-muted small">kg</span>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label fw-bold small text-primary">Hedef Kilo</label>
+                                <div class="input-group">
+                                    {{ form.goal_weight }}
+                                    <span class="input-group-text bg-primary text-white border-primary">kg</span>
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label fw-medium small text-secondary">Aktivite Seviyesi</label>
+                                {{ form.activity_level }}
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 2. Bölüm: Tıbbi -->
+                    <div class="p-3 bg-light rounded-4 border">
+                        <h6 class="text-uppercase text-muted fw-bold small mb-3 border-bottom pb-2">
+                            <i class="bi bi-prescription2 me-1"></i> Sağlık Geçmişi
+                        </h6>
+                        <div class="row g-3">
+                            <div class="col-12">
+                                <label class="form-label fw-medium small text-secondary">Kronik Rahatsızlıklar</label>
+                                {{ form.chronic_diseases }}
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label fw-medium small text-secondary">Alerjiler</label>
+                                {{ form.allergies }}
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label fw-medium small text-secondary">Kullanılan İlaçlar</label>
+                                {{ form.medications }}
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <!-- MODAL FOOTER -->
+            <div class="modal-footer bg-white border-top-0 rounded-bottom-4 pt-0 pe-4 pb-4">
+                <button type="button" class="btn btn-link text-secondary text-decoration-none fw-bold" data-bs-dismiss="modal">Vazgeç</button>
+                <button type="submit" form="profileForm" class="btn btn-primary px-5 rounded-pill fw-bold shadow-md hover-scale">
+                    <i class="bi bi-check-lg me-1"></i> Kaydet ve Güncelle
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- MESAJLAR (TOAST / ALERT) -->
+{% if messages %}
+    <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 1060">
+        {% for message in messages %}
+            <div class="toast show align-items-center text-white bg-{{ message.tags }} border-0 shadow-lg" role="alert" aria-live="assertive" aria-atomic="true">
+                <div class="d-flex">
+                    <div class="toast-body fw-bold">
+                        {% if message.tags == 'success' %}<i class="bi bi-check-circle-fill me-2"></i>{% endif %}
+                        {{ message }}
+                    </div>
+                    <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+    <script>
+        setTimeout(function() {
+            document.querySelectorAll('.toast').forEach(el => el.classList.remove('show'));
+        }, 4000);
+    </script>
+{% endif %}
+
+<!-- APEXCHARTS SCRİPTİ -->
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // Verileri güvenli al
+        var rawDates = {{ chart_dates|default:"[]"|safe }};
+        var rawWeights = {{ chart_weights|default:"[]"|safe }};
+        var goalWeight = {{ chart_goal|safe }};
+
+        // Veri Kontrolü
+        if (!rawWeights || rawWeights.length === 0) {
+            document.getElementById('weightChart').style.display = 'none';
+            document.getElementById('noDataMessage').style.display = 'block';
+            return;
+        }
+
+        // Min/Max Ayarı
+        var minWeight = Math.min(...rawWeights);
+        var maxWeight = Math.max(...rawWeights);
+
+        var options = {
+            series: [{
+                name: "Kilo",
+                data: rawWeights
+            }],
+            chart: {
+                type: 'area',
+                height: 350,
+                fontFamily: '"Inter", sans-serif',
+                toolbar: { show: false },
+                zoom: { enabled: false },
+                parentHeightOffset: 0,
+            },
+            dataLabels: { enabled: false },
+            stroke: { curve: 'smooth', width: 3 },
+            colors: ['#6366f1'],
+            fill: {
+                type: 'gradient',
+                gradient: {
+                    shadeIntensity: 1,
+                    opacityFrom: 0.6,
+                    opacityTo: 0.05,
+                    stops: [0, 100]
+                }
+            },
+            markers: { size: 0, colors: ['#fff'], strokeColors: '#6366f1', strokeWidth: 3, hover: { size: 6 } },
+            xaxis: {
+                categories: rawDates,
+                tooltip: { enabled: false },
+                axisBorder: { show: false },
+                axisTicks: { show: false },
+                labels: { style: { colors: '#64748b', fontSize: '12px' }, offsetY: 5 }
+            },
+            yaxis: {
+                opposite: true,
+                min: minWeight - 2,
+                max: maxWeight + 2,
+                tickAmount: 5,
+                labels: {
+                    style: { colors: '#64748b', fontSize: '11px' },
+                    formatter: function (value) { return value.toFixed(1); },
+                    offsetX: -10
+                }
+            },
+            grid: {
+                borderColor: '#f1f5f9',
+                strokeDashArray: 5,
+                padding: { top: 0, right: 20, bottom: 10, left: 20 }
+            },
+            tooltip: {
+                theme: 'light',
+                y: { formatter: function (val) { return val + " kg" } },
+                x: { show: true },
+                marker: { show: false },
+            },
+            // HEDEF ÇİZGİSİ
+            annotations: {
+                yaxis: goalWeight ? [{
+                    y: goalWeight,
+                    borderColor: '#10b981',
+                    strokeDashArray: 6,
+                    borderWidth: 1,
+                    opacity: 0.8,
+                    label: {
+                        borderColor: '#10b981',
+                        style: {
+                            color: '#fff',
+                            background: '#10b981',
+                            fontSize: '11px',
+                            fontWeight: 600,
+                            padding: { left: 6, right: 6, top: 3, bottom: 3 }
+                        },
+                        text: 'Hedef: ' + goalWeight + ' kg',
+                        position: 'right',
+                        offsetX: -5,
+                        offsetY: -10,
+                    }
+                }] : []
+            }
+        };
+
+        var chart = new ApexCharts(document.querySelector("#weightChart"), options);
+        chart.render();
+    });
+</script>
+
+{% endblock %}

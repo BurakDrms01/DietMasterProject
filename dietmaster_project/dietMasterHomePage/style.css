@@ -1,0 +1,296 @@
+/* FONT IMPORT */
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap");
+
+:root {
+  /* Renk Paleti */
+  --primary: #6366f1; /* Modern İndigo */
+  --primary-dark: #4f46e5;
+  --primary-light: #e0e7ff;
+  --secondary: #64748b;
+  --success: #10b981;
+  --warning: #f59e0b;
+  --danger: #ef4444;
+
+  /* Arka Planlar */
+  --bg-body: #f3f4f6; /* Açık Gri Zemin */
+  --bg-card: #ffffff;
+
+  /* Gradyanlar */
+  --gradient-primary: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);
+
+  /* Gölgeler (Depth) */
+  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -1px rgb(0 0 0 / 0.06);
+  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1),
+    0 4px 6px -2px rgb(0 0 0 / 0.05);
+
+  /* Yapısal */
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-full: 9999px;
+  --transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 80px;
+}
+
+body {
+  font-family: "Inter", sans-serif;
+}
+
+/* Navbar Glass Effect */
+nav.scrolled {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+}
+
+/* Custom Buttons */
+.btn-primary {
+  background: linear-gradient(
+    135deg,
+    var(--primary) 0%,
+    var(--primary-dark) 100%
+  );
+  color: white;
+  padding: 0.85rem 2.5rem;
+  border-radius: 9999px;
+  font-weight: 600;
+  transition: var(--transition);
+  box-shadow: 0 10px 20px -5px rgba(99, 102, 241, 0.4);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+.btn-primary:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 15px 25px -5px rgba(99, 102, 241, 0.5);
+}
+
+.btn-outline {
+  background: white;
+  border: 2px solid var(--primary);
+  color: var(--primary);
+  padding: 0.8rem 2.5rem;
+  border-radius: 9999px;
+  font-weight: 600;
+  transition: var(--transition);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+.btn-outline:hover {
+  background: var(--primary-light);
+}
+
+/* Nav Link Hover Efekti */
+.nav-item {
+  color: #4b5563;
+  font-weight: 500;
+  position: relative;
+  transition: color 0.3s;
+}
+.nav-item:hover {
+  color: var(--primary);
+}
+.nav-item::after {
+  content: "";
+  position: absolute;
+  width: 0;
+  height: 2px;
+  bottom: -4px;
+  left: 0;
+  background-color: var(--primary);
+  transition: width 0.3s;
+}
+.nav-item:hover::after {
+  width: 100%;
+}
+
+/* Hizmet Kartları */
+.service-card {
+  background: white;
+  border-radius: var(--radius-lg);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+  transition: var(--transition);
+  border: 1px solid #f3f4f6;
+}
+.service-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+  border-color: var(--primary-light);
+}
+
+/* Before/After Kartları */
+.before-after-card {
+  position: relative;
+  border-radius: 12px;
+  overflow: hidden;
+  aspect-ratio: 3/4;
+  cursor: pointer;
+}
+.before-after-card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s;
+}
+.before-after-card:hover img {
+  transform: scale(1.1);
+}
+.before-after-card .badge {
+  position: absolute;
+  bottom: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(0, 0, 0, 0.7);
+  color: white;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-weight: bold;
+  font-size: 0.9rem;
+}
+
+/* Animations */
+.section-title {
+  font-size: 2.25rem;
+  font-weight: 700;
+  color: #1f2937;
+  position: relative;
+  display: inline-block;
+}
+
+.animate-bounce-slow {
+  animation: bounce 3s infinite;
+}
+
+@keyframes bounce {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+/* Custom Animations */
+@keyframes bounce-slow {
+  0%,
+  100% {
+    transform: translateY(-5%);
+    animation-timing-function: cubic-bezier(0.8, 0, 1, 1);
+  }
+  50% {
+    transform: translateY(0);
+    animation-timing-function: cubic-bezier(0, 0, 0.2, 1);
+  }
+}
+.animate-bounce-slow {
+  animation: bounce-slow 3s infinite;
+}
+
+/* Fade In Animation Class */
+.fade-in-up {
+  animation: fadeInUp 0.8s ease-out forwards;
+  opacity: 0;
+  transform: translateY(20px);
+}
+.delay-200 {
+  animation-delay: 0.2s;
+}
+.delay-300 {
+  animation-delay: 0.3s;
+}
+.delay-400 {
+  animation-delay: 0.4s;
+}
+.delay-500 {
+  animation-delay: 0.5s;
+}
+
+@keyframes fadeInUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes hero-float {
+  0%,
+  100% {
+    transform: translateY(0);
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  }
+  50% {
+    transform: translateY(-15px);
+    box-shadow: 0 35px 60px -15px rgba(0, 0, 0, 0.3);
+  }
+}
+
+.hero-image-animate {
+  animation: hero-float 6s ease-in-out infinite;
+}
+
+@keyframes text-flow {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.animate-text-flow {
+  background-size: 200% auto;
+  animation: text-flow 3s linear infinite;
+}
+
+/* Modern Marquee Animation */
+.marquee-container {
+  overflow: hidden;
+  position: relative;
+  width: 100%;
+  mask-image: linear-gradient(
+    to right,
+    transparent,
+    black 5%,
+    black 95%,
+    transparent
+  );
+  -webkit-mask-image: linear-gradient(
+    to right,
+    transparent,
+    black 5%,
+    black 95%,
+    transparent
+  );
+}
+
+.marquee-track {
+  display: flex;
+  gap: 2rem;
+  width: max-content;
+  animation: marquee-scroll 60s linear infinite; /* Slower for better readability */
+  padding: 1rem 0; /* Space for shadows */
+}
+
+.marquee-track:hover {
+  animation-play-state: paused;
+}
+
+@keyframes marquee-scroll {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}

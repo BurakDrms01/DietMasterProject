@@ -1,0 +1,203 @@
+{% extends 'base.html' %}
+
+{% block title %}Görev Yönetimi{% endblock %}
+
+{% block content %}
+<div class="container-fluid py-4">
+    <div class="row">
+        <!-- SOL: GÖREV OLUŞTURMA FORMU -->
+        <div class="col-lg-4">
+            <div class="card border-0 shadow-sm rounded-4 sticky-top" style="top: 90px;">
+                <div class="card-header bg-white border-0 pt-4 ps-4">
+                    <h5 class="fw-bold text-primary"><i class="bi bi-plus-circle-fill me-2"></i>Yeni Görev Ata</h5>
+                </div>
+                <div class="card-body p-4">
+                    <form method="post">
+                        {% csrf_token %}
+                        
+                        <!-- Başlık -->
+                        <div class="mb-3">
+                            <label class="form-label small fw-bold text-muted">Görev Başlığı</label>
+                            {{ form.title }}
+                        </div>
+
+                        <!-- Açıklama -->
+                        <div class="mb-3">
+                            <label class="form-label small fw-bold text-muted">Açıklama (Opsiyonel)</label>
+                            {{ form.description }}
+                        </div>
+
+                        <!-- Puan ve Tip (Yan Yana) -->
+                        <div class="row g-2 mb-3">
+                            <div class="col-6">
+                                <label class="form-label small fw-bold text-muted">Puan</label>
+                                {{ form.points }}
+                            </div>
+                            <div class="col-6">
+                                <label class="form-label small fw-bold text-muted">Tip</label>
+                                {{ form.task_type }}
+                            </div>
+                        </div>
+
+                        <!-- İlişkili Öğün -->
+                        <div class="mb-3">
+                            <label class="form-label small fw-bold text-muted">İlişkili Öğün (Fotoğraf ise)</label>
+                            {{ form.related_meal_type }}
+                        </div>
+                        
+                        <!-- SÜRE SEÇİMİ (YENİ) -->
+                        <div class="mb-3">
+                            <label class="form-label small fw-bold text-muted">Tekrar Süresi</label>
+                            {{ form.duration }}
+                            <div class="form-text small">Görev bu süre boyunca her gün tekrar eder.</div>
+                        </div>
+                        <hr class="border-secondary opacity-10 my-4">
+
+                        <!-- ATAMA ALANI -->
+                        <div class="mb-3">
+                            <div class="form-check form-switch p-3 bg-light rounded-3 border mb-3 d-flex justify-content-between align-items-center">
+                                <label class="form-check-label fw-bold text-dark mb-0" for="{{ form.is_for_everyone.id_for_label }}">
+                                    📢 Tüm Danışanlara Ata
+                                </label>
+                                {{ form.is_for_everyone }}
+                            </div>
+
+                            <label class="form-label small fw-bold text-muted">Veya Kişi Seç:</label>
+                            <div class="border rounded-3 p-2 bg-white" style="max-height: 150px; overflow-y: auto;">
+                                {{ form.assigned_users }}
+                            </div>
+                            <small class="text-muted fst-italic" style="font-size: 0.75rem;">"Tüm Danışanlar" seçiliyse alttaki seçimler yoksayılır.</small>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary w-100 rounded-pill fw-bold py-2 shadow-sm">
+                            <i class="bi bi-send-fill me-2"></i> Görevi Oluştur ve Ata
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- SAĞ: AKTİF GÖREV LİSTESİ -->
+        <div class="col-lg-8">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h4 class="fw-bold text-dark m-0">Sistemdeki Aktif Görevler</h4>
+                <span class="badge bg-white text-dark border shadow-sm px-3 py-2 rounded-pill">{{ tasks.count }} Görev</span>
+            </div>
+
+            <div class="row g-3">
+                {% for task in tasks %}
+                <div class="col-md-6">
+                    <div class="card border-0 shadow-sm h-100 rounded-3 transition-hover">
+                        <div class="card-body d-flex align-items-center">
+                            <!-- İkon -->
+                            <div class="icon-box rounded-3 me-3 flex-shrink-0 
+                                {% if task.task_type == 'PHOTO' %}bg-purple-subtle text-purple
+                                {% elif task.task_type == 'WATER' %}bg-info-subtle text-info
+                                {% else %}bg-primary-subtle text-primary{% endif %}"
+                                style="width: 50px; height: 50px; display:grid; place-items:center;">
+                                <i class="bi {% if task.task_type == 'PHOTO' %}bi-camera-fill{% elif task.task_type == 'WATER' %}bi-droplet-fill{% else %}bi-check-circle-fill{% endif %} fs-4"></i>
+                            </div>
+                            
+                            <!-- İçerik -->
+                            <div class="flex-grow-1">
+                                <h6 class="fw-bold mb-1 text-dark">{{ task.title }}</h6>
+                                <p class="text-muted small mb-2 text-truncate" style="max-width: 200px;">{{ task.description|default:"-" }}</p>
+                                
+                                <div class="d-flex gap-2 text-muted small">
+                                    <span class="badge bg-light text-secondary border">{{ task.points }} Puan</span>
+                                    
+                                    {% if task.is_for_everyone %}
+                                        <span class="badge bg-success-subtle text-success border border-success-subtle">
+                                            <i class="bi bi-globe me-1"></i>Herkese
+                                        </span>
+                                    {% else %}
+                                        <span class="badge bg-warning-subtle text-warning border border-warning-subtle">
+                                            <i class="bi bi-person-check-fill me-1"></i>{{ task.assigned_users.count }} Kişiye
+                                        </span>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            
+                            <!-- YENİ KOD (BUNU YAPIŞTIR) -->
+                            <div class="dropdown ms-2">
+                                <button class="btn btn-sm btn-light text-muted" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <i class="bi bi-three-dots-vertical"></i>
+                                </button>
+                                <ul class="dropdown-menu dropdown-menu-end border-0 shadow-sm">
+                                    <li><h6 class="dropdown-header text-uppercase small fw-bold">İşlemler</h6></li>
+                                    <!--  Düzenle Linki -->
+                                    <li>
+                                         <a class="dropdown-item d-flex align-items-center" 
+                                           href="#" 
+                                           hx-get="{% url 'gamification:edit_task' task.id %}"
+                                           hx-target="#editTaskModalContent"
+                                           data-bs-toggle="modal" 
+                                           data-bs-target="#editTaskModal">
+                                            <i class="bi bi-pencil me-2 text-muted"></i> Düzenle
+                                        </a>
+                                    </li>
+                                
+                                    <li><hr class="dropdown-divider"></li>
+                                
+                                    <!-- Silme Linki -->
+                                    <li>
+                                        <a class="dropdown-item text-danger d-flex align-items-center" 
+                                           href="{% url 'gamification:delete_task' task.id %}"
+                                           onclick="return confirm('Bu görevi silmek istediğine emin misin? Bu işlem geri alınamaz.')">
+                                            <i class="bi bi-trash me-2"></i> Sil
+                                        </a>
+                                    </li>
+
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% empty %}
+                <div class="col-12">
+                    <div class="text-center py-5 text-muted border border-dashed rounded-4 bg-light">
+                        <i class="bi bi-inbox display-4 mb-3 d-block opacity-50"></i>
+                        <p>Henüz oluşturulmuş aktif bir görev yok.</p>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- SAYFAYA ÖZEL CSS -->
+<style>
+    /* Checkbox Listesini Güzelleştirme */
+    ul { list-style-type: none; padding: 0; margin: 0; }
+    li label { 
+        display: flex; 
+        align-items: center; 
+        padding: 8px 10px; 
+        cursor: pointer; 
+        border-radius: 6px;
+        transition: background 0.2s;
+    }
+    li label:hover { background-color: #f8f9fa; }
+    li label input { margin-right: 10px; width: 1.2em; height: 1.2em; accent-color: var(--primary); }
+    
+    /* Renkler */
+    .bg-purple-subtle { background-color: #f3e8ff; }
+    .text-purple { color: #7e22ce; }
+    .transition-hover:hover { transform: translateY(-3px); box-shadow: 0 10px 20px rgba(0,0,0,0.05) !important; }
+</style>
+
+
+<!-- DÜZENLEME MODALI (İskelet) -->
+<div class="modal fade" id="editTaskModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-0 shadow-lg rounded-4" id="editTaskModalContent">
+            <!-- HTMX Buraya Formu Yükleyecek -->
+            <div class="modal-body text-center py-5">
+                <div class="spinner-border text-primary" role="status"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

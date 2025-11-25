@@ -1,0 +1,145 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Başvuru İncele{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    
+    <!-- Üst Başlık -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <a href="{% url 'core:dashboard' %}" class="text-decoration-none text-muted small fw-bold">
+                <i class="bi bi-arrow-left me-1"></i> Panele Dön
+            </a>
+            <h3 class="fw-bold mt-1">Başvuru Detayı: {{ req.user.get_full_name }}</h3>
+        </div>
+        <span class="badge bg-light text-dark border px-3 py-2">
+            {{ req.created_at|date:"d M Y - H:i" }}
+        </span>
+    </div>
+
+    <div class="row g-4">
+        
+        <!-- SOL KOLON: Profil Özeti -->
+        <div class="col-lg-4">
+            <!-- Kullanıcı Kartı -->
+            <div class="card border-0 shadow-sm rounded-4 mb-4 text-center p-4">
+                <div class="bg-primary bg-opacity-10 text-primary rounded-circle mx-auto d-flex align-items-center justify-content-center fw-bold display-4 mb-3" style="width: 80px; height: 80px;">
+                    {{ req.user.first_name|slice:":1" }}
+                </div>
+                <h5 class="fw-bold mb-1">{{ req.user.get_full_name }}</h5>
+                <p class="text-muted small">{{ req.user.email }}</p>
+                <hr>
+                <div class="row text-center">
+                    <div class="col-4">
+                        <small class="text-muted d-block text-uppercase" style="font-size: 0.7rem;">Yaş</small>
+                        <span class="fw-bold">{{ profile.age|default:"--" }}</span>
+                    </div>
+                    <div class="col-4 border-start border-end">
+                        <small class="text-muted d-block text-uppercase" style="font-size: 0.7rem;">Boy</small>
+                        <span class="fw-bold">{{ profile.height }} cm</span>
+                    </div>
+                    <div class="col-4">
+                        <small class="text-muted d-block text-uppercase" style="font-size: 0.7rem;">Kilo</small>
+                        <span class="fw-bold">{{ profile.weight }} kg</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Paket Bilgisi -->
+            <div class="card border-0 shadow-sm rounded-4 p-4 bg-primary text-white">
+                <h6 class="opacity-75 mb-3">Talep Edilen Paket</h6>
+                <div class="d-flex align-items-center">
+                    <div class="bg-white bg-opacity-20 p-3 rounded-3 me-3">
+                        <i class="{{ req.plan.icon_class }} fs-3"></i>
+                    </div>
+                    <div>
+                        <h4 class="fw-bold mb-0">{{ req.plan.name }}</h4>
+                        <small class="opacity-75">{{ req.plan.price }} ₺ / Aylık</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SAĞ KOLON: Sağlık Analizi -->
+        <div class="col-lg-8">
+            <div class="card border-0 shadow-sm rounded-4 p-4 h-100">
+                <h5 class="fw-bold text-dark mb-4 border-bottom pb-3">
+                    <i class="bi bi-clipboard-pulse me-2 text-primary"></i>Sağlık ve Hedef Analizi
+                </h5>
+
+                <div class="row g-4">
+                    <!-- Hedef -->
+                    <div class="col-md-6">
+                        <div class="p-3 rounded-3 bg-light border border-dashed">
+                            <label class="small text-muted fw-bold text-uppercase">Hedef Kilo</label>
+                            <div class="d-flex align-items-center mt-1">
+                                <i class="bi bi-flag-fill text-success me-2"></i>
+                                <span class="fs-5 fw-bold text-dark">{{ profile.goal_weight }} kg</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Beslenme -->
+                    <div class="col-md-6">
+                        <div class="p-3 rounded-3 bg-light border border-dashed">
+                            <label class="small text-muted fw-bold text-uppercase">Beslenme Tercihi</label>
+                            <div class="d-flex align-items-center mt-1">
+                                <i class="bi bi-basket2-fill text-warning me-2"></i>
+                                <span class="fs-5 fw-bold text-dark">{{ profile.get_diet_preference_display }}</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Aktivite -->
+                    <div class="col-12">
+                        <div class="p-3 rounded-3 bg-light border border-dashed">
+                            <label class="small text-muted fw-bold text-uppercase">Yaşam Tarzı</label>
+                            <div class="mt-1 fw-bold text-dark">{{ profile.get_daily_activity_display }}</div>
+                        </div>
+                    </div>
+
+                    <!-- Kırmızı Çizgiler -->
+                    <div class="col-12">
+                        <div class="p-3 rounded-3 bg-danger bg-opacity-10 border border-danger border-opacity-25">
+                            <label class="small text-danger fw-bold text-uppercase mb-1">
+                                <i class="bi bi-slash-circle me-1"></i>Yasaklı Besinler
+                            </label>
+                            <p class="mb-0 fw-medium text-dark">{{ profile.disliked_foods|default:"Belirtilmemiş" }}</p>
+                        </div>
+                    </div>
+
+                    <!-- Sağlık Sorunları -->
+                    <div class="col-md-6">
+                        <div class="p-3 rounded-3 bg-light">
+                            <label class="small text-muted fw-bold">Kronik Rahatsızlıklar</label>
+                            <p class="mb-0 mt-1">{{ profile.chronic_diseases|default:"Yok" }}</p>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="p-3 rounded-3 bg-light">
+                            <label class="small text-muted fw-bold">İlaçlar</label>
+                            <p class="mb-0 mt-1">{{ profile.medications|default:"Kullanmıyor" }}</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- AKSİYON BUTONLARI -->
+                <div class="mt-5 pt-4 border-top d-flex justify-content-end gap-3">
+                    <form method="post">
+                        {% csrf_token %}
+                        <button type="submit" name="action" value="reject" class="btn btn-light text-danger border fw-bold px-4" onclick="return confirm('Reddetmek istediğine emin misin?')">
+                            Reddet
+                        </button>
+                        <button type="submit" name="action" value="approve" class="btn btn-success text-white px-5 fw-bold shadow-sm">
+                            <i class="bi bi-check-lg me-2"></i> Onayla ve Danışan Yap
+                        </button>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

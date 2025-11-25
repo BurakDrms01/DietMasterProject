@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Yeni Randevu{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-6">
+            <div class="card border-0 shadow-lg rounded-4 overflow-hidden">
+                <div class="card-header bg-primary text-white p-4 border-0">
+                    <h4 class="fw-bold mb-0"><i class="bi bi-calendar-plus me-2"></i>Yeni Randevu Oluştur</h4>
+                </div>
+                <div class="card-body p-4 p-md-5 bg-white">
+                    <form method="post">
+                        {% csrf_token %}
+                        
+                        <div class="mb-4">
+                            <label for="{{ form.date.id_for_label }}" class="form-label fw-bold text-muted small text-uppercase">Tarih</label>
+                            {{ form.date }}
+                            {% if form.date.errors %}
+                                <div class="text-danger small mt-1">{{ form.date.errors.0 }}</div>
+                            {% endif %}
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="{{ form.time.id_for_label }}" class="form-label fw-bold text-muted small text-uppercase">Saat</label>
+                            {{ form.time }}
+                            {% if form.time.errors %}
+                                <div class="text-danger small mt-1">{{ form.time.errors.0 }}</div>
+                            {% endif %}
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="{{ form.notes.id_for_label }}" class="form-label fw-bold text-muted small text-uppercase">Notlar (Opsiyonel)</label>
+                            {{ form.notes }}
+                            {% if form.notes.errors %}
+                                <div class="text-danger small mt-1">{{ form.notes.errors.0 }}</div>
+                            {% endif %}
+                        </div>
+
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-primary btn-lg rounded-pill fw-bold shadow-sm">
+                                Randevu Talebi Gönder
+                            </button>
+                            <a href="{% url 'appointments:list' %}" class="btn btn-light btn-lg rounded-pill text-muted">
+                                Vazgeç
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,234 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Diyetisyen Paneli{% endblock %}
+
+{% block content %}
+<!-- ÖZEL STİLLER -->
+<style>
+    .admin-card {
+        background: #fff;
+        border-radius: 16px;
+        border: 1px solid #f1f5f9;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+        transition: transform 0.2s;
+    }
+    .admin-card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 10px 15px rgba(0,0,0,0.05);
+    }
+    .icon-square {
+        width: 50px; height: 50px;
+        border-radius: 12px;
+        display: flex; align-items: center; justify-content: center;
+        font-size: 1.5rem;
+    }
+</style>
+
+<div class="container-fluid py-2">
+
+    <!-- 1. HERO SECTION -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="p-5 rounded-4 text-white d-flex align-items-center justify-content-between" 
+                 style="background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);">
+                <div>
+                    <h2 class="fw-bold mb-2">Hoş Geldin, Diyetisyen {{ request.user.first_name }}! 🩺</h2>
+                    <p class="text-white-50 mb-0">Danışanlarının takibini buradan yönetebilirsin.</p>
+                </div>
+                <div class="d-none d-md-block opacity-25">
+                    <i class="bi bi-activity" style="font-size: 4rem;"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 2. İSTATİSTİK KARTLARI -->
+    <div class="row g-4 mb-5">
+        <!-- Aktif Danışanlar -->
+        <div class="col-md-3">
+            <div class="admin-card p-4 d-flex align-items-center">
+                <div class="icon-square bg-primary bg-opacity-10 text-primary me-3">
+                    <i class="bi bi-people-fill"></i>
+                </div>
+                <div>
+                    <h3 class="fw-bold mb-0 text-dark">{{ aktif_danisan_sayisi }}</h3>
+                    <small class="text-muted">Aktif Danışan</small>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Yeni Başvurular (Bekleyen Talepler) -->
+        <div class="col-md-3">
+            <div class="admin-card p-4 d-flex align-items-center">
+                <div class="icon-square bg-warning bg-opacity-10 text-warning me-3">
+                    <i class="bi bi-person-plus-fill"></i>
+                </div>
+                <div>
+                    <!-- Backend'den gelen 'yeni_basvuru_sayisi' değişkeni -->
+                    <h3 class="fw-bold mb-0 text-dark">{{ yeni_basvuru_sayisi }}</h3>
+                    <small class="text-muted">Onay Bekleyen</small>
+                </div>
+            </div>
+        </div>
+
+        <!-- Randevular: HTMX widget ile -->
+        <div class="col-md-3" id="bugunku-randevu-widget">
+            {% include 'core/partials/bugunku_randevu_widget.html' %}
+        </div>
+
+        <!-- Mesajlar -->
+        <div class="col-md-3">
+            <div class="admin-card p-4 d-flex align-items-center">
+                <div class="icon-square bg-danger bg-opacity-10 text-danger me-3">
+                    <i class="bi bi-chat-dots-fill"></i>
+                </div>
+                <div>
+                    <h3 class="fw-bold mb-0 text-dark">{{ okunmamis_mesaj_sayisi }}</h3>
+                    <small class="text-muted">Okunmamış Mesaj</small>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 3. BUGÜNKÜ RANDEVULAR -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card border-0 shadow-sm rounded-4 overflow-hidden">
+                <div class="card-header bg-white border-0 pt-4 ps-4 pb-0 d-flex justify-content-between align-items-center">
+                    <h5 class="fw-bold text-dark mb-0">Bugünkü Randevular</h5>
+                    <a href="{% url 'appointments:calendar' %}" class="btn btn-sm btn-light rounded-pill px-3">Tümünü Gör</a>
+                </div>
+                <div class="card-body p-0">
+                    <div class="table-responsive">
+                        <table class="table table-hover align-middle mb-0">
+                            <thead class="bg-light">
+                                <tr>
+                                    <th class="ps-4 py-3 text-muted small text-uppercase fw-bold">Danışan</th>
+                                    <th class="text-muted small text-uppercase fw-bold">Saat</th>
+                                    <th class="text-muted small text-uppercase fw-bold">Notlar</th>
+                                    <th class="text-muted small text-uppercase fw-bold">Durum</th>
+                                    <th class="text-end pe-4 text-muted small text-uppercase fw-bold">İşlemler</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Sadece aktif (pending/approved) randevular listelenir -->
+                                {% for appointment in bugunku_randevular %}
+                                    {% include 'appointments/partials/admin_row.html' %}
+                                {% empty %}
+                                    <tr>
+                                        <td colspan="5" class="text-center py-5 text-muted">
+                                            <div class="d-flex flex-column align-items-center">
+                                                <i class="bi bi-calendar-x text-muted opacity-25 mb-3" style="font-size: 2rem;"></i>
+                                                <span>Bugün için aktif randevu bulunmuyor.</span>
+                                                <small class="text-muted d-block mt-1">(İptal/reddedilen randevular gösterilmez)</small>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 4. ORTA BÖLÜM: HIZLI İŞLEMLER VE YENİ BAŞVURULAR -->
+    <div class="row g-4 mb-4">
+        <!-- Hızlı İşlemler -->
+        <div class="col-lg-4">
+            <div class="card border-0 shadow-sm h-100 rounded-4">
+                <div class="card-header bg-white border-0 pt-4 ps-4">
+                    <h5 class="fw-bold text-dark">Hızlı İşlemler</h5>
+                </div>
+                <div class="card-body p-4">
+                    <div class="d-grid gap-3">
+                        <a href="{% url 'gamification:manager' %}" class="btn btn-primary p-3 text-start rounded-3 d-flex align-items-center justify-content-between transition-hover">
+                            <span><i class="bi bi-list-check me-2"></i> Görev Ata / Yönet</span>
+                            <i class="bi bi-chevron-right"></i>
+                        </a>
+                        <button class="btn btn-light border p-3 text-start rounded-3 d-flex align-items-center justify-content-between text-muted" disabled>
+                            <span><i class="bi bi-person-plus me-2"></i> Yeni Danışan Ekle</span>
+                            <small>(Yakında)</small>
+                        </button>
+                        <button class="btn btn-light border p-3 text-start rounded-3 d-flex align-items-center justify-content-between text-muted" disabled>
+                            <span><i class="bi bi-calendar-plus me-2"></i> Randevu Oluştur</span>
+                            <small>(Yakında)</small>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- YENİ BAŞVURULAR TABLOSU (DİNAMİK) -->
+        <div class="col-lg-8">
+            <div class="card border-0 shadow-sm h-100 rounded-4">
+                <div class="card-header bg-white border-0 pt-4 ps-4 d-flex justify-content-between align-items-center">
+                    <div class="d-flex align-items-center">
+                        <h5 class="fw-bold text-dark mb-0 me-2">Yeni Başvurular</h5>
+                        <span class="badge bg-danger bg-opacity-10 text-danger rounded-pill">{{ yeni_basvuru_sayisi }}</span>
+                    </div>
+                </div>
+                <div class="card-body p-0">
+                    <div class="table-responsive">
+                        <table class="table table-hover align-middle mb-0">
+                            <thead class="bg-light">
+                                <tr>
+                                    <th class="ps-4 py-3 text-muted small text-uppercase">Danışan Adayı</th>
+                                    <th class="text-muted small text-uppercase">Paket</th>
+                                    <th class="text-muted small text-uppercase">Tarih</th>
+                                    <th class="text-muted small text-uppercase">Durum</th>
+                                    <th class="text-end pe-4 text-muted small text-uppercase">İşlem</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for req in bekleyen_talepler %}
+                                <tr>
+                                    <td class="ps-4">
+                                        <div class="d-flex align-items-center">
+                                            <div class="bg-primary bg-opacity-10 text-primary rounded-circle d-flex align-items-center justify-content-center me-3 fw-bold shadow-sm" style="width: 40px; height: 40px;">
+                                                {{ req.user.first_name|slice:":1"|default:"?" }}
+                                            </div>
+                                            <div>
+                                                <div class="fw-bold text-dark">{{ req.user.get_full_name|default:req.user.username }}</div>
+                                                <small class="text-muted">{{ req.user.email }}</small>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <span class="badge bg-light text-dark border rounded-pill fw-normal px-3">
+                                            <i class="{{ req.plan.icon_class }} me-1 text-primary"></i>{{ req.plan.name }}
+                                        </span>
+                                    </td>
+                                    <td class="text-muted small">{{ req.created_at|date:"d M, H:i" }}</td>
+                                    <td>
+                                        <span class="badge bg-warning bg-opacity-10 text-warning border border-warning border-opacity-25 px-2 py-1 rounded-pill">
+                                            Onay Bekliyor
+                                        </span>
+                                    </td>
+                                    <td class="text-end pe-4">
+                                        <a href="{% url 'plans:manage_request' req.id %}" class="btn btn-sm btn-primary rounded-pill px-3 fw-bold shadow-sm">
+                                            İncele
+                                        </a>
+                                    </td>
+                                </tr>
+                                {% empty %}
+                                <tr>
+                                    <td colspan="5" class="text-center py-5">
+                                        <div class="d-flex flex-column align-items-center justify-content-center opacity-50">
+                                            <i class="bi bi-inbox fs-1 mb-2 text-muted"></i>
+                                            <p class="text-muted mb-0">Şu an bekleyen yeni bir başvuru yok.</p>
+                                        </div>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

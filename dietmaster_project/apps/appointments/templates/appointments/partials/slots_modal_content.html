@@ -1,0 +1,133 @@
+<div class="row g-0">
+    <!-- Sol Taraf: Tarih Bilgisi -->
+    <div class="col-md-4 border-end bg-light bg-opacity-50 p-4 d-flex flex-column justify-content-center align-items-center text-center">
+        <h1 class="display-1 fw-bold text-primary mb-0" style="letter-spacing: -2px;">{{ selected_date|date:"d" }}</h1>
+        <h4 class="text-uppercase text-muted fw-bold mb-1">{{ selected_date|date:"F" }}</h4>
+        <h5 class="text-muted fw-light mb-4">{{ selected_date|date:"l" }}</h5>
+        
+        {% if user.role == 'ADMIN' %}
+            <div class="alert alert-info bg-info bg-opacity-10 border-0 rounded-3 small w-100">
+                <i class="bi bi-info-circle me-2"></i>
+                Bugün <strong>{{ day_appointments.count }}</strong> randevu var.
+            </div>
+        {% endif %}
+    </div>
+
+    <!-- Sağ Taraf: Saatler / Randevular -->
+    <div class="col-md-8 p-4">
+        {% if user.role == 'ADMIN' %}
+            <!-- ADMIN GÖRÜNÜMÜ -->
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h6 class="fw-bold mb-0 text-dark">Bugünün Randevuları</h6>
+                <span class="badge bg-light text-dark border">{{ day_appointments.count }} Randevu</span>
+            </div>
+            
+            <div class="list-group list-group-flush">
+                {% for app in day_appointments %}
+                    {% include 'appointments/partials/modal_appointment_item.html' with appointment=app %}
+                {% empty %}
+                    <div class="text-center py-5">
+                        <i class="bi bi-calendar-check text-muted opacity-25" style="font-size: 3rem;"></i>
+                        <p class="text-muted mt-3">Bugün için kayıtlı randevu bulunmuyor.</p>
+                    </div>
+                {% endfor %}
+            </div>
+
+        {% else %}
+            <!-- CLIENT GÖRÜNÜMÜ -->
+            <h6 class="fw-bold mb-3 text-dark">Müsait Saatler</h6>
+            
+            {% if slots %}
+                <!-- BUGFIX: Show warning when no available slots (all past or taken) -->
+                {% if not has_available_slots %}
+                    <div class="alert alert-warning bg-warning bg-opacity-10 border-0 rounded-3 mb-3">
+                        <i class="bi bi-exclamation-triangle me-2"></i>
+                        <strong>Bu tarih için müsait saat bulunmuyor.</strong>
+                        <small class="d-block mt-1 text-muted">Tüm saatler geçmiş veya dolu.</small>
+                    </div>
+                {% endif %}
+                
+                <form hx-post="{% url 'appointments:create' %}" hx-swap="none" hx-indicator="#loadingIndicator" id="appointmentForm">
+                    {% csrf_token %}
+                    <input type="hidden" name="date" value="{{ selected_date|date:'Y-m-d' }}">
+                    
+                    <div class="slot-grid">
+                        {% for slot in slots %}
+                            <div class="position-relative">
+                                <input type="radio" class="btn-check" name="time" id="slot_{{ forloop.counter }}" value="{{ slot.display }}" 
+                                       {% if not slot.available %}disabled{% endif %} required>
+                                
+                                <label class="btn w-100 py-2 rounded-3 position-relative time-slot-label
+                                    {% if not slot.available %}bg-light text-muted border-0 opacity-50{% endif %}" 
+                                    for="slot_{{ forloop.counter }}"
+                                    {% if slot.is_taken %}data-bs-toggle="tooltip" title="Bu saat dolu - başka danışan randevusu var"
+                                    {% elif slot.is_past %}data-bs-toggle="tooltip" title="Bu saat geçmiş"
+                                    {% endif %}>
+                                    {{ slot.display }}
+                                    {% if slot.is_taken %}
+                                        <i class="bi bi-lock-fill ms-1"></i>
+                                    {% elif slot.is_past %}
+                                        <i class="bi bi-clock-history ms-1"></i>
+                                    {% endif %}
+                                </label>
+                            </div>
+                        {% endfor %}
+                    </div>
+                    
+                    <div class="mb-3 mt-3">
+                        <label for="notes" class="form-label small fw-bold text-muted">
+                            <i class="bi bi-pencil-square me-1"></i> Notlar (Opsiyonel)
+                        </label>
+                        <textarea class="form-control" name="notes" id="notes" rows="2" 
+                                  placeholder="Diyetisyene iletmek istediğiniz notlar..." 
+                                  maxlength="500"></textarea>
+                        <small class="text-muted">Maksimum 500 karakter</small>
+                    </div>
+
+                    <div class="mt-4 pt-3 border-top">
+                        <button type="submit" class="btn btn-primary w-100 rounded-pill py-3 fw-bold shadow-sm" id="submitBtn">
+                            <i class="bi bi-check-circle me-2"></i> Randevuyu Onayla
+                        </button>
+                    </div>
+                </form>
+                
+                <script>
+                // Form validation and submit handling
+                document.getElementById('appointmentForm').addEventListener('submit', function(e) {
+                    const submitBtn = document.getElementById('submitBtn');
+                    submitBtn.classList.add('btn-loading');
+                    submitBtn.disabled = true;
+                });
+                
+                // Auto-enable submit when slot selected
+                document.querySelectorAll('input[name=\"time\"]').forEach(function(radio) {
+                    radio.addEventListener('change', function() {
+                        const submitBtn = document.getElementById('submitBtn');
+                        submitBtn.classList.add('pulse');
+                        setTimeout(function() {
+                            submitBtn.classList.remove('pulse');
+                        }, 600);
+                    });
+                });
+                </script>
+            {% else %}
+                <div class="text-center py-5">
+                    <i class="bi bi-calendar-x text-muted opacity-25" style="font-size: 3rem;"></i>
+                    {% if not is_working_day %}
+                        <p class="text-muted mt-3">Bu gün için diyetisyen çalışma saatleri tanımlı değil.</p>
+                    {% else %}
+                        <p class="text-muted mt-3">Bugün için müsait randevu saati bulunmuyor.</p>
+                    {% endif %}
+                </div>
+            {% endif %}
+        {% endif %}
+    </div>
+</div>
+
+<script>
+    // Tooltipleri etkinleştir
+    var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+    var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+      return new bootstrap.Tooltip(tooltipTriggerEl)
+    })
+</script>

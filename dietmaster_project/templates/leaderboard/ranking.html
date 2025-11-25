@@ -1,0 +1,273 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Liderlik Tablosu | DietMaster{% endblock %}
+
+{% block content %}
+<style>
+    /* --- ÖZEL STİLLER --- */
+    
+    /* Kart Efektleri */
+    .rank-card { transition: transform 0.2s ease, background-color 0.2s ease; }
+    .rank-card:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
+    
+    /* Sıralama Renkleri */
+    .rank-1 { background: linear-gradient(135deg, #fffde7 0%, #ffffff 100%); border-left: 4px solid #fdd835 !important; }
+    .rank-2 { background: linear-gradient(135deg, #f8fafc 0%, #ffffff 100%); border-left: 4px solid #94a3b8 !important; }
+    .rank-3 { background: linear-gradient(135deg, #fff3e0 0%, #ffffff 100%); border-left: 4px solid #fb923c !important; }
+
+    /* Avatar */
+    .avatar-circle {
+        width: 50px; height: 50px; border-radius: 50%;
+        display: flex; align-items: center; justify-content: center;
+        font-weight: 700; font-size: 1.2rem;
+        border: 3px solid #fff; box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+    }
+
+    /* Sticky User Card */
+    .my-rank-card {
+        background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);
+        color: white; border: none; position: relative; overflow: hidden;
+    }
+
+    /* Rozetler */
+    .custom-badge { font-size: 0.65rem; padding: 0.35em 0.65em; font-weight: 500; }
+    
+    /* Sağ Menüdeki Görev Kartları */
+    .clickable-task { cursor: pointer; transition: all 0.2s; }
+    .clickable-task:hover { background-color: rgba(255,255,255,0.2) !important; transform: translateX(5px); }
+</style>
+
+<div class="container-fluid py-2">
+
+    <!-- 1. ÜST BÖLÜM: BAŞLIK, FİLTRELER VE SENİN KARTIN -->
+    <div class="row mb-4 align-items-end">
+        <div class="col-md-6">
+            <h3 class="fw-bold text-dark mb-1">{{ label }}</h3>
+            <p class="text-muted mb-0">{{ desc }}</p>
+        </div>
+        <div class="col-md-6 text-md-end mt-3 mt-md-0">
+            <!-- Filtre Butonları -->
+            <div class="bg-white p-1 rounded-pill shadow-sm border d-inline-flex">
+                <a href="?period=daily" class="btn btn-sm rounded-pill px-3 fw-bold transition-hover {% if period == 'daily' %}btn-primary shadow-sm{% else %}text-muted bg-transparent border-0{% endif %}">Bugün</a>
+                <a href="?period=weekly" class="btn btn-sm rounded-pill px-3 fw-bold transition-hover {% if period == 'weekly' %}btn-primary shadow-sm{% else %}text-muted bg-transparent border-0{% endif %}">Hafta</a>
+                <a href="?period=monthly" class="btn btn-sm rounded-pill px-3 fw-bold transition-hover {% if period == 'monthly' %}btn-primary shadow-sm{% else %}text-muted bg-transparent border-0{% endif %}">Ay</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- SENİN SIRALAMAN (Sticky Card) -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card my-rank-card rounded-4 shadow-sm p-4">
+                <div class="position-absolute top-0 end-0 opacity-10 pe-3 pt-2">
+                    <i class="bi bi-trophy-fill" style="font-size: 6rem;"></i>
+                </div>
+                <div class="d-flex align-items-center position-relative z-1">
+                    <div class="bg-white text-primary rounded-circle d-flex align-items-center justify-content-center me-4 shadow-sm fw-bold" style="width: 64px; height: 64px; font-size: 1.75rem;">
+                        #{{ my_rank }}
+                    </div>
+                    <div>
+                        <h5 class="mb-1 fw-bold">Senin Sıralaman</h5>
+                        <p class="mb-0 opacity-90 small">
+                            {% if my_rank == 0 %}Henüz puanın yok. Bir görev tamamla ve listeye gir! 🚀
+                            {% elif my_rank <= 3 %}İnanılmaz! Zirvedesin, bu tempoyu koru! 🏆
+                            {% else %}Hedefe adım adım! Görevleri tamamla, yükselmeye başla. 💪{% endif %}
+                        </p>
+                    </div>
+                    <div class="ms-auto text-end d-none d-sm-block">
+                        <div class="display-6 fw-bold">{{ my_points }}</div>
+                        <div class="small opacity-75 text-uppercase fw-bold">Toplam Puan</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 2. ANA İÇERİK: LİSTE (SOL) vs BOOST (SAĞ) -->
+    <div class="row g-4">
+        
+        <!-- SOL SÜTUN: LİDERLİK TABLOSU -->
+        <div class="col-lg-8">
+            <div class="card border-0 shadow-sm rounded-4 overflow-hidden">
+                <div class="card-body p-0">
+                    <div class="list-group list-group-flush">
+                        
+                        {% for user in leaderboard %}
+                        <div class="list-group-item border-0 p-3 p-md-4 d-flex align-items-center rank-card
+                                    {% if forloop.counter == 1 %}rank-1{% elif forloop.counter == 2 %}rank-2{% elif forloop.counter == 3 %}rank-3{% else %}bg-white{% endif %} 
+                                    {% if not forloop.last %}border-bottom{% endif %}">
+                            
+                            <!-- A. SIRA NO -->
+                            <div class="me-4 text-center" style="width: 30px;">
+                                {% if forloop.counter == 1 %}<span class="fs-1">🥇</span>
+                                {% elif forloop.counter == 2 %}<span class="fs-1">🥈</span>
+                                {% elif forloop.counter == 3 %}<span class="fs-1">🥉</span>
+                                {% else %}<span class="fs-5 fw-bold text-muted text-opacity-50">#{{ forloop.counter }}</span>{% endif %}
+                            </div>
+
+                            <!-- B. AVATAR -->
+                            <div class="avatar-circle me-3 flex-shrink-0
+                                {% if forloop.counter == 1 %}bg-warning text-white border-warning
+                                {% elif forloop.counter == 2 %}bg-secondary text-white border-secondary
+                                {% elif forloop.counter == 3 %}bg-danger text-white border-danger
+                                {% else %}bg-light text-primary border-white{% endif %}">
+                                {{ user.first_name|slice:":1"|default:"?" }}
+                            </div>
+
+                            <!-- C. DETAYLAR (İsim, Mesaj, Rozetler, DNA) -->
+                            <div class="flex-grow-1 pe-3">
+                                <div class="d-flex align-items-center justify-content-between mb-1">
+                                    <h6 class="fw-bold mb-0 text-dark d-flex align-items-center">
+                                        {{ user.first_name }} {{ user.last_name|slice:":1" }}.
+                                        {% if user == request.user %}<span class="badge bg-primary ms-2 rounded-pill px-2 py-1" style="font-size: 0.6em;">SEN</span>{% endif %}
+                                    </h6>
+                                    <!-- HEDEF ROZETİ -->
+                                    {% if user.points_to_pass > 0 %}
+                                        <span class="badge bg-light text-muted border rounded-pill fw-normal" style="font-size: 0.65rem;">
+                                            <i class="bi bi-arrow-up-short text-success"></i>Hedef: <strong>+{{ user.points_to_pass }}p</strong>
+                                        </span>
+                                    {% endif %}
+                                </div>
+
+                                <!-- MOTİVASYON MESAJI -->
+                                <div class="mb-2" style="font-size: 0.75rem; line-height: 1.2;">
+                                    {% if user == request.user %}
+                                        <span class="text-primary fw-medium fst-italic"><i class="bi bi-chat-quote-fill me-1 opacity-50"></i>{{ user.motivation_msg }}</span>
+                                    {% else %}
+                                        <span class="text-muted opacity-75 fst-italic">{{ user.motivation_msg }}</span>
+                                    {% endif %}
+                                </div>
+
+                                <!-- ROZETLER -->
+                                <div class="d-flex flex-wrap gap-1 mb-2">
+                                    {% if forloop.counter == 1 %}<span class="badge rounded-pill custom-badge bg-warning text-dark bg-opacity-25 border border-warning border-opacity-25">👑 Lider</span>{% endif %}
+                                    {% if user.water_count > 0 %}<span class="badge rounded-pill custom-badge bg-info text-info bg-opacity-10 border border-info border-opacity-25">💧 Su Canavarı</span>{% endif %}
+                                    {% if user.photo_count > 0 %}<span class="badge rounded-pill custom-badge bg-secondary text-secondary bg-opacity-10 border border-secondary border-opacity-25" style="color: #8b5cf6 !important; background-color: #f5f3ff !important; border-color: #ddd6fe !important;">📸 Gurme</span>{% endif %}
+                                    {% if user.total_tasks_done >= 3 %}<span class="badge rounded-pill custom-badge bg-success text-success bg-opacity-10 border border-success border-opacity-25">🔥 Çalışkan</span>{% endif %}
+                                </div>
+
+                                <!-- DNA BAR (PROGRESS) -->
+                                {% if user.total_points > 0 %}
+                                <div class="d-flex align-items-center gap-2" style="opacity: 0.8;">
+                                    <div class="progress flex-grow-1" style="height: 4px; border-radius: 2px; background-color: #f1f5f9;">
+                                        <div class="progress-bar bg-info" role="progressbar" style="width: {{ user.water_pct|floatformat:0 }}%"></div>
+                                        <div class="progress-bar" role="progressbar" style="width: {{ user.photo_pct|floatformat:0 }}%; background-color: #8b5cf6;"></div>
+                                    </div>
+                                </div>
+                                {% endif %}
+                            </div>
+
+                            <!-- D. PUAN -->
+                            <div class="text-end ps-2">
+                                <span class="fw-bold fs-4 text-dark lh-1 d-block">{{ user.total_points }}</span>
+                                <span class="small text-muted fw-bold" style="font-size: 0.7rem;">PUAN</span>
+                            </div>
+                        </div>
+                        {% empty %}
+                        <div class="text-center py-5">
+                            <i class="bi bi-trophy text-muted opacity-25" style="font-size: 3rem;"></i>
+                            <p class="text-muted mt-3 small">Henüz veri yok.</p>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SAĞ SÜTUN: FIRSATLAR VE BOOST (YENİ EKLENEN KISIM) -->
+        <div class="col-lg-4">
+            
+            <!-- 1. KUTU: RANK BOOSTER (HIZLANDIRICI) -->
+            <div class="card border-0 shadow-sm rounded-4 mb-4 position-relative overflow-hidden" 
+                 style="background: linear-gradient(135deg, #4f46e5 0%, #3730a3 100%); color: white;">
+                
+                <!-- Arkaplan Dekoru -->
+                <i class="bi bi-rocket-takeoff-fill position-absolute top-0 end-0 opacity-25" 
+                   style="font-size: 6rem; transform: translate(20px, -10px) rotate(15deg);"></i>
+                
+                <div class="card-body p-4 position-relative z-1">
+                    <h5 class="fw-bold mb-1"><i class="bi bi-lightning-charge-fill text-warning me-2"></i>Hızlandırıcı</h5>
+                    <p class="small text-white-50 mb-4">Bu görevleri yap, sıralamada füze gibi yüksel! 🚀</p>
+                    
+                    {% if pending_tasks %}
+                        <!-- Toplam Kazanç -->
+                        <div class="badge bg-warning text-dark mb-3 animate__animated animate__pulse animate__infinite">
+                            Potansiyel: +{{ potential_gain }} Puan
+                        </div>
+
+                        <div class="d-flex flex-column gap-2">
+                            {% for task in pending_tasks %}
+                            <!-- Görev Kartı -->
+                            <a href="{% url 'core:dashboard' %}" class="text-decoration-none">
+                                <div class="bg-white bg-opacity-10 rounded-3 p-2 d-flex align-items-center backdrop-blur border border-white border-opacity-10 clickable-task">
+                                    <div class="bg-white text-primary rounded-circle d-flex align-items-center justify-content-center me-3 flex-shrink-0" style="width: 36px; height: 36px; font-weight: bold;">
+                                        +{{ task.points }}
+                                    </div>
+                                    <div class="flex-grow-1 lh-1 text-white">
+                                        <div class="small fw-bold">{{ task.title }}</div>
+                                        <div class="text-white-50" style="font-size: 0.65rem;">Hemen Yap ></div>
+                                    </div>
+                                </div>
+                            </a>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        <div class="text-center py-3">
+                            <i class="bi bi-check-circle-fill fs-1 text-success mb-2"></i>
+                            <p class="mb-0 fw-bold">Harikasın!</p>
+                            <p class="small text-white-50">Bugünkü tüm fırsatları değerlendirdin.</p>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- 2. KUTU: HAFTALIK SU CHALLENGE -->
+            <div class="card border-0 shadow-sm rounded-4 bg-white">
+                <div class="card-header bg-white border-0 pt-4 px-4 pb-0 d-flex justify-content-between align-items-center">
+                    <h6 class="fw-bold mb-0 text-dark"><i class="bi bi-trophy text-danger me-2"></i>Haftalık Challenge</h6>
+                    <span class="badge bg-danger bg-opacity-10 text-danger rounded-pill">Süreli</span>
+                </div>
+                <div class="card-body p-4">
+                    
+                    <!-- Başlık -->
+                    <div class="d-flex align-items-center mb-3">
+                        <div class="bg-info bg-opacity-10 text-info rounded-3 p-2 me-3">
+                            <i class="bi bi-droplet-fill fs-4"></i>
+                        </div>
+                        <div>
+                            <div class="fw-bold text-dark">Su Zinciri 💧</div>
+                            <div class="small text-muted">7 gün boyunca hedefini tuttur</div>
+                        </div>
+                    </div>
+
+                    <!-- Progress Bar -->
+                    <div class="d-flex justify-content-between small mb-1">
+                        <span class="text-muted fw-bold">Durum:</span>
+                        <span class="fw-bold text-primary">{{ water_streak_days }} / 7 Gün</span>
+                    </div>
+                    <div class="progress mb-3" style="height: 8px; border-radius: 4px;">
+                        <!-- widthratio Django etiketi ile yüzde hesaplama -->
+                        <div class="progress-bar bg-info progress-bar-striped progress-bar-animated" 
+                             role="progressbar" 
+                             style="width: {% widthratio water_streak_days 7 100 %}%">
+                        </div>
+                    </div>
+
+                    <!-- Ödül -->
+                    <div class="bg-light rounded-3 p-3 border border-dashed d-flex align-items-center">
+                        <i class="bi bi-patch-check-fill text-warning fs-3 me-3"></i>
+                        <div class="lh-sm">
+                            <div class="small fw-bold text-dark">Ödül: "Su Ustası" Rozeti</div>
+                            <div class="small text-muted" style="font-size: 0.7rem;">Tamamlayınca profiline eklenir.</div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </div> <!-- Sağ Sütun Bitiş -->
+    </div> <!-- Row Bitiş -->
+
+</div>
+{% endblock %}

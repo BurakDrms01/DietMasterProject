@@ -1,0 +1,81 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Randevular{% endblock %}
+
+{% block content %}
+<div class="container-fluid py-2">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h2 class="fw-bold mb-1 text-dark">Randevular</h2>
+            <p class="text-muted mb-0">
+                {% if user.role == 'ADMIN' %}
+                    Tüm randevu taleplerini buradan yönetebilirsiniz.
+                {% else %}
+                    Randevu geçmişinizi ve durumlarını buradan takip edebilirsiniz.
+                {% endif %}
+            </p>
+        </div>
+        {% if user.role == 'CLIENT' %}
+        <a href="{% url 'appointments:calendar' %}" class="btn btn-primary rounded-pill px-4 shadow-sm fw-bold">
+            <i class="bi bi-plus-lg me-2"></i>Yeni Randevu Al
+        </a>
+        {% endif %}
+    </div>
+
+    {% if user.role == 'ADMIN' %}
+        <!-- ADMIN TABLOSU -->
+        <div class="card border-0 shadow-sm rounded-4 overflow-hidden">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0">
+                    <thead class="bg-light">
+                        <tr>
+                            <th class="ps-4 py-3 text-muted small text-uppercase fw-bold">Danışan</th>
+                            <th class="text-muted small text-uppercase fw-bold">Tarih & Saat</th>
+                            <th class="text-muted small text-uppercase fw-bold">Notlar</th>
+                            <th class="text-muted small text-uppercase fw-bold">Durum</th>
+                            <th class="text-end pe-4 text-muted small text-uppercase fw-bold">İşlemler</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for appointment in appointments %}
+                            {% include 'appointments/partials/admin_row.html' %}
+                        {% empty %}
+                            <tr>
+                                <td colspan="5" class="text-center py-5 text-muted">
+                                    <div class="d-flex flex-column align-items-center">
+                                        <i class="bi bi-inbox text-muted opacity-25 mb-3" style="font-size: 2rem;"></i>
+                                        <span>Henüz randevu talebi bulunmuyor.</span>
+                                    </div>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    {% else %}
+        <!-- CLIENT KARTLARI -->
+        <div class="row g-4">
+            {% for appointment in appointments %}
+                <div class="col-md-6 col-lg-4">
+                    {% include 'appointments/partials/client_card.html' %}
+                </div>
+            {% empty %}
+                <div class="col-12">
+                    <div class="text-center py-5">
+                        <div class="bg-light rounded-circle d-inline-flex p-4 mb-3">
+                            <i class="bi bi-calendar-x text-muted fs-1"></i>
+                        </div>
+                        <h5 class="text-muted">Henüz bir randevunuz yok.</h5>
+                        <p class="text-muted small">Yeni bir randevu oluşturarak başlayabilirsiniz.</p>
+                        <a href="{% url 'appointments:calendar' %}" class="btn btn-primary rounded-pill px-4 mt-3">
+                            Randevu Al
+                        </a>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,80 @@
+{% load static %}
+
+{% if msg.sender_type == 'client' %}
+    <!-- ========================================== -->
+    <!-- 1. KULLANICI (CLIENT) MESAJI -->
+    <!-- ========================================== -->
+    <div class="d-flex mb-4 justify-content-end animate-in-right">
+        
+        <!-- Mesaj Balonu -->
+        <div class="p-3 text-white rounded-4 rounded-bottom-end-0 shadow-sm position-relative" 
+             style="max-width: 75%; background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);">
+            
+            <!-- YENİ EKLENEN KISIM: Resim Varsa Göster -->
+            {% if msg.image %}
+                <div class="mb-2">
+                    <img src="{{ msg.image.url }}" 
+                         alt="Gönderilen Fotoğraf" 
+                         class="img-fluid rounded-3 border border-white border-opacity-25 shadow-sm" 
+                         style="max-height: 250px; width: 100%; object-fit: cover;">
+                </div>
+            {% endif %}
+            
+            <div class="mb-0 small" style="white-space: pre-wrap; line-height: 1.5;">{{ msg.message|linebreaksbr }}</div>
+            
+            <!-- Okunma Tik'i (Görsel) -->
+            <div class="text-end mt-1 opacity-50" style="font-size: 0.6rem;">
+                {{ msg.created_at|date:"H:i" }} <i class="bi bi-check2-all ms-1"></i>
+            </div>
+        </div>
+
+        <!-- Avatar (Sağda) -->
+        <div class="ms-2 flex-shrink-0">
+            <div class="bg-primary bg-opacity-10 text-primary fw-bold border border-primary border-opacity-25 rounded-circle d-flex align-items-center justify-content-center shadow-sm" 
+                 style="width: 35px; height: 35px;">
+                {{ request.user.first_name|slice:":1"|default:"U" }}
+            </div>
+        </div>
+
+    </div>
+
+{% else %}
+    <!-- ========================================== -->
+    <!-- 2. YAPAY ZEKA (AI) MESAJI -->
+    <!-- ========================================== -->
+    <div class="d-flex mb-4 align-items-end animate-in-left">
+        
+        <!-- Avatar (Solda) -->
+        <div class="me-2 flex-shrink-0 position-relative">
+            <div class="bg-white border border-secondary border-opacity-10 rounded-circle d-flex align-items-center justify-content-center shadow-sm" 
+                 style="width: 35px; height: 35px;">
+                <i class="bi bi-robot text-primary"></i>
+            </div>
+            <!-- Online Dot -->
+            <span class="position-absolute top-0 start-100 translate-middle p-1 bg-success border border-light rounded-circle" 
+                  style="width: 10px; height: 10px;"></span>
+        </div>
+
+        <!-- Mesaj Balonu -->
+        <div class="p-3 bg-white border border-light-subtle text-dark rounded-4 rounded-bottom-start-0 shadow-sm" 
+             style="max-width: 75%;">
+            
+            <!-- AI İsim Başlığı -->
+            <div class="d-flex align-items-center mb-1">
+                <span class="text-primary fw-bold" style="font-size: 0.7rem;">DietMaster AI</span>
+                <span class="text-muted mx-1">•</span>
+                <span class="text-muted" style="font-size: 0.65rem;">Asistan</span>
+            </div>
+
+            <!-- İçerik -->
+            <div class="mb-0 small text-secondary" style="line-height: 1.6;">
+                {{ msg.message|linebreaksbr }}
+            </div>
+
+            <!-- Zaman Damgası -->
+            <div class="text-end mt-1 text-muted opacity-50" style="font-size: 0.65rem;">
+                {{ msg.created_at|date:"H:i" }}
+            </div>
+        </div>
+    </div>
+{% endif %}

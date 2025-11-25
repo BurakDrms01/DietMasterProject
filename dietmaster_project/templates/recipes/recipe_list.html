@@ -1,0 +1,214 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Sağlık Mutfağı | DietMaster{% endblock %}
+
+{% block content %}
+<!-- ÖZEL STİLLER -->
+<style>
+    /* Hero Alanı */
+    .recipe-hero {
+        background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+        position: relative;
+        overflow: hidden;
+        /* Yüksekliği sınırla ama içeriğe göre esnesin */
+        min-height: 200px; 
+    }
+    
+    /* Dekorasyon İkonu - Boyutu küçültüldü */
+    .hero-decoration {
+        position: absolute;
+        right: -10px;
+        bottom: -30px;
+        font-size: 10rem; /* 15rem'den 10rem'e düştü */
+        color: white;
+        opacity: 0.1;
+        transform: rotate(-15deg);
+        pointer-events: none;
+    }
+
+    /* Kategori Butonları */
+    .cat-btn {
+        background: white;
+        border: 1px solid #e2e8f0;
+        color: #64748b;
+        transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        font-weight: 500;
+        padding: 0.5rem 1.2rem; /* Buton içi boşluk biraz daha kompakt */
+        font-size: 0.95rem;
+    }
+    .cat-btn:hover {
+        transform: translateY(-3px); /* Yukarı çıkma efekti */
+        border-color: #6366f1;
+        color: #6366f1;
+        box-shadow: 0 4px 12px rgba(99, 102, 241, 0.15);
+        z-index: 10; /* Hoverda öne çıkması için */
+    }
+    .cat-btn.active {
+        background: #6366f1;
+        color: white;
+        border-color: #6366f1;
+        box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+    }
+
+    /* Kart Hover Efekti */
+    .recipe-card {
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .recipe-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 15px 30px rgba(0,0,0,0.1) !important;
+    }
+</style>
+
+<div class="container-fluid py-2">
+    
+    <!-- 1. KOMPAKT HERO SECTION -->
+    <div class="row mb-4"> <!-- mb-5 yerine mb-4 -->
+        <div class="col-12">
+            <!-- p-5 yerine p-4 ve rounded-4 (Standart) -->
+            <div class="recipe-hero rounded-4 p-4 shadow-sm text-white d-flex align-items-center justify-content-between">
+                
+                <!-- Sol Taraf: Metin -->
+                <div class="z-1 position-relative" style="max-width: 650px;">
+                    <div class="d-flex align-items-center gap-2 mb-2">
+                        <span class="badge bg-white bg-opacity-20 border border-white border-opacity-25 rounded-pill px-2 py-1 backdrop-blur small">
+                            🥗 Diyetisyen Onaylı
+                        </span>
+                    </div>
+                    
+                    <!-- Başlık Küçültüldü: display-5 yerine h2 -->
+                    <h2 class="fw-bold mb-2">Bugün Ne Pişirmek İstersin?</h2>
+                    
+                    <p class="text-white-50 mb-3 small d-none d-md-block">
+                        Hedefine uygun, düşük kalorili ve lezzetli tarifler burada.
+                    </p>
+
+                    <!-- Arama Kutusu (Daha Kompakt) -->
+                    <div class="input-group bg-white rounded-pill p-1 shadow-sm" style="max-width: 350px;">
+                        <span class="input-group-text border-0 bg-transparent ps-3 text-muted small">
+                            <i class="bi bi-search"></i>
+                        </span>
+                        <input type="text" class="form-control border-0 shadow-none bg-transparent form-control-sm" placeholder="Tarif ara...">
+                        <button class="btn btn-primary rounded-pill px-3 fw-bold btn-sm">Bul</button>
+                    </div>
+                </div>
+
+                <!-- Sağ Taraf: Dekoratif İkon -->
+                <i class="bi bi-basket2-fill hero-decoration"></i>
+                
+                <!-- Sağ Üst İstatistik -->
+                <div class="d-none d-lg-block z-1 text-end align-self-start">
+                    <div class="bg-white bg-opacity-10 backdrop-blur rounded-3 p-2 px-3 border border-white border-opacity-10 text-center">
+                        <div class="h4 fw-bold mb-0">{{ recipes.count }}</div>
+                        <div class="small text-white-50" style="font-size: 0.7rem;">TARİF</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 2. KATEGORİ FİLTRELERİ -->
+    <div class="d-flex justify-content-between align-items-center mb-2">
+        <h6 class="fw-bold text-dark mb-0 d-flex align-items-center">
+            <i class="bi bi-funnel-fill me-2 text-primary"></i>Kategoriler
+        </h6>
+    </div>
+
+    <div class="d-flex gap-2 mb-4 overflow-auto py-3 px-1" style="scrollbar-width: none;">
+        <!-- Tümü Butonu -->
+        <button 
+            hx-get="{% url 'recipes:list' %}"
+            hx-target="#recipe-grid"
+            hx-push-url="true"
+            class="cat-btn rounded-pill shadow-sm {% if not active_category %}active{% endif %} text-nowrap">
+            <i class="bi bi-grid-fill me-2"></i>Tümü
+        </button>
+
+        {% for cat in categories %}
+        <button 
+            hx-get="{% url 'recipes:list' %}?category={{ cat.slug }}"
+            hx-target="#recipe-grid"
+            hx-push-url="true"
+            class="cat-btn rounded-pill shadow-sm {% if active_category == cat.slug %}active{% endif %} text-nowrap">
+            
+            <!-- GÖRSELLE EŞLEŞTİRİLMİŞ İKONLAR -->
+            {% if 'kahvaltı' in cat.name|lower %}
+                <i class="bi bi-egg-fried me-2"></i>             <!-- Tavada Yumurta (Kahvaltı Temsili) -->
+            
+            {% elif 'öğle' in cat.name|lower %}
+                <i class="bi bi-sun-fill me-2"></i>             <!-- Kase/Salata (Görseldeki Yeşil İkon) -->
+            
+            {% elif 'akşam' in cat.name|lower %}
+                <i class="bi bi-moon-stars-fill me-2"></i>       <!-- Akşam Vakti -->
+            
+            {% elif 'ara' in cat.name|lower or 'atıştırma' in cat.name|lower %}
+                <i class="bi bi-cup-hot-fill me-2"></i>          <!-- Fincan (Görseldeki Mavi İkon) -->
+            
+            {% elif 'tatlı' in cat.name|lower or 'kaçamak' in cat.name|lower %}
+                <i class="bi bi-cookie-fill me-2"></i>           <!-- Kurabiye -->
+            
+            {% elif 'içecek' in cat.name|lower or 'smoothie' in cat.name|lower %}
+                <i class="bi bi-cup-straw me-2"></i>             <!-- Soğuk İçecek -->
+            
+            {% else %}
+                <i class="bi bi-bookmark-star-fill me-2"></i>    <!-- Varsayılan -->
+            {% endif %}
+            
+            {{ cat.name }}
+        </button>
+        {% endfor %}
+    </div>
+
+    <div class="d-flex flex-column flex-md-row justify-content-between align-items-center mb-4 gap-3">
+    
+    <!-- Sol: Tarif Ekle Butonu (Herkese Görünür) -->
+    <a href="{% url 'recipes:add' %}" class="btn btn-primary rounded-pill shadow-sm px-4 fw-bold">
+        <i class="bi bi-plus-lg me-2"></i>Tarif Paylaş
+    </a>
+
+    <!-- Sağ: Admin Tabları (Onaylı / Bekleyen) -->
+    {% if user.role == 'ADMIN' %}
+    <div class="bg-white p-1 rounded-pill shadow-sm d-flex border">
+        <button 
+            hx-get="{% url 'recipes:list' %}?status=APPROVED"
+            hx-target="#recipe-grid"
+            class="btn btn-sm rounded-pill px-4 fw-medium transition-all {% if active_status == 'APPROVED' %}btn-dark{% else %}btn-white text-muted{% endif %}"
+            onclick="toggleActive(this)">
+            Yayındakiler
+        </button>
+        <button 
+            hx-get="{% url 'recipes:list' %}?status=PENDING"
+            hx-target="#recipe-grid"
+            class="btn btn-sm rounded-pill px-4 fw-medium transition-all position-relative {% if active_status == 'PENDING' %}btn-dark{% else %}btn-white text-muted{% endif %}"
+            onclick="toggleActive(this)">
+            Onay Bekleyen
+            {% if pending_count > 0 %}
+            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger border border-light">
+                {{ pending_count }}
+            </span>
+            {% endif %}
+        </button>
+    </div>
+
+    <script>
+        function toggleActive(btn) {
+            // Basit bir JS ile buton renklerini değiştiriyoruz
+            btn.parentElement.querySelectorAll('button').forEach(b => {
+                b.classList.remove('btn-dark');
+                b.classList.add('btn-white', 'text-muted');
+            });
+            btn.classList.remove('btn-white', 'text-muted');
+            btn.classList.add('btn-dark');
+        }
+    </script>
+    {% endif %}
+</div>
+
+    <!-- 3. TARİF GRID ALANI -->
+    <div id="recipe-grid" class="row g-4">
+        {% include 'recipes/partials/recipe_grid.html' %}
+    </div>
+
+</div>
+{% endblock %}

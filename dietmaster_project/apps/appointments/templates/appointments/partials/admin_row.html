@@ -1,0 +1,72 @@
+<tr id="appointment-row-{{ appointment.id }}">
+    <td class="ps-4">
+        <div class="d-flex align-items-center">
+            <div class="bg-primary bg-opacity-10 text-primary rounded-circle d-flex align-items-center justify-content-center me-3 fw-bold shadow-sm" style="width: 40px; height: 40px;">
+                {{ appointment.client.first_name|slice:":1"|default:"?" }}
+            </div>
+            <div>
+                <div class="fw-bold text-dark">{{ appointment.client.get_full_name|default:appointment.client.username }}</div>
+                <small class="text-muted">{{ appointment.client.email }}</small>
+            </div>
+        </div>
+    </td>
+    <td>
+        <div class="d-flex flex-column">
+            <span class="fw-bold text-dark">{{ appointment.date|date:"d M Y" }}</span>
+            <span class="text-muted small">{{ appointment.time|time:"H:i" }}</span>
+        </div>
+    </td>
+    <td>
+        {% if appointment.notes %}
+            <span class="text-muted small text-truncate d-inline-block" style="max-width: 200px;" title="{{ appointment.notes }}">
+                {{ appointment.notes }}
+            </span>
+        {% else %}
+            <span class="text-muted small">-</span>
+        {% endif %}
+    </td>
+    <td>
+        {% if appointment.status == 'pending' %}
+            <span class="badge bg-warning bg-opacity-10 text-warning border border-warning border-opacity-25 px-2 py-1 rounded-pill">Beklemede</span>
+        {% elif appointment.status == 'approved' %}
+            <span class="badge bg-success bg-opacity-10 text-success border border-success border-opacity-25 px-2 py-1 rounded-pill">Onaylandı</span>
+        {% elif appointment.status == 'rejected' %}
+            <span class="badge bg-danger bg-opacity-10 text-danger border border-danger border-opacity-25 px-2 py-1 rounded-pill">Reddedildi</span>
+        {% elif appointment.status == 'cancelled' %}
+            <span class="badge bg-secondary bg-opacity-10 text-secondary border border-secondary border-opacity-25 px-2 py-1 rounded-pill">İptal</span>
+        {% endif %}
+    </td>
+    <td class="text-end pe-4">
+        {% if appointment.status == 'pending' %}
+            <div class="btn-group" role="group">
+                <button class="btn btn-sm btn-success rounded-start-pill px-3" 
+                        hx-post="{% url 'appointments:update_status' appointment.id %}?status=approved&context=table"
+                        hx-target="#appointment-row-{{ appointment.id }}"
+                        hx-swap="outerHTML"
+                        hx-disabled-elt="this"
+                        title="Onayla">
+                    <i class="bi bi-check-lg"></i>
+                </button>
+                <button class="btn btn-sm btn-danger rounded-end-pill px-3"
+                        hx-post="{% url 'appointments:update_status' appointment.id %}?status=rejected&context=table"
+                        hx-target="#appointment-row-{{ appointment.id }}"
+                        hx-swap="outerHTML"
+                        hx-disabled-elt="this"
+                        title="Reddet">
+                    <i class="bi bi-x-lg"></i>
+                </button>
+            </div>
+        {% elif appointment.status == 'approved' %}
+            <button class="btn btn-sm btn-outline-danger rounded-pill px-3"
+                    hx-post="{% url 'appointments:update_status' appointment.id %}?status=cancelled&context=table"
+                    hx-target="#appointment-row-{{ appointment.id }}"
+                    hx-swap="outerHTML"
+                    hx-disabled-elt="this"
+                    hx-confirm="Randevuyu iptal etmek istediğinize emin misiniz?">
+                İptal Et
+            </button>
+        {% else %}
+            <span class="text-muted small">-</span>
+        {% endif %}
+    </td>
+</tr>

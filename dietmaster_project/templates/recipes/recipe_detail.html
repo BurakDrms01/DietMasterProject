@@ -1,0 +1,111 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ recipe.title }} | DietMaster{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    
+    <!-- GERİ BUTONU -->
+    <a href="{% url 'recipes:list' %}" class="btn btn-light rounded-pill mb-4 border shadow-sm px-3 text-muted">
+        <i class="bi bi-arrow-left me-2"></i>Tariflere Dön
+    </a>
+
+    <div class="row g-5">
+        <!-- SOL: GÖRSEL VE DETAYLAR -->
+        <div class="col-lg-7">
+            <!-- Ana Görsel -->
+            <div class="rounded-4 overflow-hidden shadow mb-4 position-relative" style="height: 400px;">
+                {% if recipe.image %}
+                    <img src="{{ recipe.image.url }}" class="w-100 h-100 object-fit-cover" alt="{{ recipe.title }}">
+                {% endif %}
+                <div class="position-absolute bottom-0 start-0 w-100 p-4" 
+                     style="background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);">
+                    <span class="badge bg-primary mb-2">{{ recipe.category.name }}</span>
+                    <h1 class="fw-bold text-white mb-0">{{ recipe.title }}</h1>
+                </div>
+            </div>
+
+            <!-- Bilgi Kartları (Mobil Uyumlu) -->
+            <div class="d-flex gap-3 mb-4">
+                <div class="flex-fill bg-white p-3 rounded-4 shadow-sm border text-center">
+                    <i class="bi bi-fire text-danger fs-4 mb-1 d-block"></i>
+                    <span class="fw-bold d-block h5 mb-0">{{ recipe.calories }}</span>
+                    <small class="text-muted">Kalori</small>
+                </div>
+                <div class="flex-fill bg-white p-3 rounded-4 shadow-sm border text-center">
+                    <i class="bi bi-clock-history text-primary fs-4 mb-1 d-block"></i>
+                    <span class="fw-bold d-block h5 mb-0">{{ recipe.prep_time }} dk</span>
+                    <small class="text-muted">Hazırlama</small>
+                </div>
+                <div class="flex-fill bg-white p-3 rounded-4 shadow-sm border text-center">
+                    <i class="bi bi-people-fill text-success fs-4 mb-1 d-block"></i>
+                    <span class="fw-bold d-block h5 mb-0">1</span>
+                    <small class="text-muted">Porsiyon</small>
+                </div>
+            </div>
+
+            <!-- Hazırlanışı -->
+            <div class="bg-white p-4 p-md-5 rounded-4 shadow-sm border mb-4">
+                <h4 class="fw-bold text-dark mb-4 border-bottom pb-3">
+                    <i class="bi bi-journal-text me-2 text-primary"></i>Hazırlanışı
+                </h4>
+                <div class="vstack gap-4">
+                    {% for step in recipe.instruction_list %}
+                    <div class="d-flex">
+                        <div class="flex-shrink-0 me-3">
+                            <div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center fw-bold shadow-sm" 
+                                 style="width: 32px; height: 32px;">
+                                {{ forloop.counter }}
+                            </div>
+                        </div>
+                        <div class="text-dark opacity-75 pt-1" style="line-height: 1.7;">
+                            {{ step }}
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+
+        <!-- SAĞ: MALZEMELER -->
+        <div class="col-lg-5">
+            <div class="card border-0 shadow rounded-4 sticky-top" style="top: 2rem; z-index: 10;">
+                <div class="card-header bg-white border-0 pt-4 px-4 pb-0">
+                    <h5 class="fw-bold text-dark mb-0">
+                        <i class="bi bi-basket2-fill me-2 text-warning"></i>Malzemeler
+                    </h5>
+                </div>
+                <div class="card-body p-4">
+                    <ul class="list-group list-group-flush">
+                        {% for item in recipe.ingredient_list %}
+                        <li class="list-group-item px-0 py-3 border-bottom-dashed d-flex align-items-center">
+                            <i class="bi bi-check-circle-fill text-success bg-success bg-opacity-10 rounded-circle p-1 me-3"></i>
+                            <span class="fw-medium text-dark">{{ item }}</span>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                <!-- Ekstra Bilgi -->
+                <div class="card-footer bg-light border-0 p-4 rounded-bottom-4">
+                    <div class="d-flex align-items-start">
+                        <i class="bi bi-info-circle-fill text-info me-2 mt-1"></i>
+                        <small class="text-muted">
+                            Bu tarifteki malzemelerin alerjiniz olan maddeleri içermediğinden emin olun.
+                        </small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<style>
+    .border-bottom-dashed {
+        border-bottom: 1px dashed #e2e8f0;
+    }
+    .border-bottom-dashed:last-child {
+        border-bottom: none;
+    }
+</style>
+{% endblock %}

@@ -1,0 +1,44 @@
+<div id="appointment-card-{{ appointment.id }}" class="card border-0 shadow-sm h-100 rounded-4 transition-hover" style="background: #fff;">
+    <div class="card-body p-4">
+        <div class="d-flex justify-content-between align-items-start mb-3">
+            <div class="d-flex align-items-center">
+                <div class="icon-square bg-light text-primary rounded-3 d-flex align-items-center justify-content-center me-3" style="width: 48px; height: 48px;">
+                    <i class="bi bi-calendar-event fs-4"></i>
+                </div>
+                <div>
+                    <h6 class="fw-bold mb-0 text-dark">{{ appointment.date|date:"d F Y" }}</h6>
+                    <small class="text-muted">{{ appointment.time|time:"H:i" }}</small>
+                </div>
+            </div>
+            {% if appointment.status == 'pending' %}
+                <span class="badge bg-warning bg-opacity-10 text-warning rounded-pill">Beklemede</span>
+            {% elif appointment.status == 'approved' %}
+                <span class="badge bg-success bg-opacity-10 text-success rounded-pill">Onaylandı</span>
+            {% elif appointment.status == 'rejected' %}
+                <span class="badge bg-danger bg-opacity-10 text-danger rounded-pill">Reddedildi</span>
+            {% elif appointment.status == 'cancelled' %}
+                <span class="badge bg-secondary bg-opacity-10 text-secondary rounded-pill">İptal</span>
+            {% endif %}
+        </div>
+        
+        {% if appointment.notes %}
+        <div class="bg-light rounded-3 p-3 mb-3">
+            <small class="text-muted d-block mb-1 fw-bold">Notlarınız:</small>
+            <p class="mb-0 small text-secondary">{{ appointment.notes }}</p>
+        </div>
+        {% endif %}
+
+        <div class="d-flex justify-content-end">
+            {% if appointment.status == 'pending' or appointment.status == 'approved' %}
+                <button class="btn btn-sm btn-outline-danger rounded-pill px-3"
+                        hx-post="{% url 'appointments:update_status' appointment.id %}?status=cancelled&context=card"
+                        hx-target="#appointment-card-{{ appointment.id }}"
+                        hx-swap="outerHTML"
+                        hx-disabled-elt="this"
+                        hx-confirm="Randevuyu iptal etmek istediğinize emin misiniz?">
+                    İptal Et
+                </button>
+            {% endif %}
+        </div>
+    </div>
+</div>

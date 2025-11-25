@@ -1,0 +1,2491 @@
+<!DOCTYPE html>
+<html lang="tr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>DietMaster - Sağlıklı Yaşam Yolculuğun</title>
+
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body class="font-inter text-gray-700 bg-gray-50">
+    <nav
+      class="sticky top-0 w-full z-50 transition-all duration-300"
+      id="navbar"
+    >
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between h-20 items-center">
+          <a href="#" class="flex items-center gap-2">
+            <div
+              class="w-10 h-10 rounded-xl bg-indigo-600 flex items-center justify-center text-white text-xl shadow-lg"
+            >
+              <i class="bi bi-heart-pulse-fill me-2"></i>
+            </div>
+            <a href="index.html" class="flex items-center gap-2">
+              <!-- İKON -->
+              <span class="text-indigo-600 text-3xl">
+                <i class="ph ph-leaf"></i>
+              </span>
+              <!-- ANA LOGO YAZISI -->
+              <span class="font-bold text-2xl text-gray-800 tracking-tight">
+                Diet<span class="text-indigo-600">Master</span>
+              </span>
+            </a>
+          </a>
+
+          <div class="hidden md:flex items-center gap-8 ml-auto">
+            <div class="flex space-x-8 items-center mr-8">
+              <a href="#hakkimda" class="nav-item">Hakkımda</a>
+              <a href="#hizmetler" class="nav-item">Hizmetler</a>
+              <a href="#degisimler" class="nav-item">Değişimler</a>
+              <a href="#basari-hikayeleri" class="nav-item">Yorumlar</a>
+              <a href="#paketler" class="nav-item">Paketler</a>
+            </div>
+            <a href="http://127.0.0.1:8000/accounts/login" class="btn-primary">Hemen Başla</a>
+          </div>
+
+          <button class="md:hidden text-gray-600 text-2xl" id="mobile-menu-btn">
+            <i class="fa-solid fa-bars"></i>
+          </button>
+        </div>
+      </div>
+      <div class="md:hidden hidden bg-white border-t" id="mobile-menu">
+        <div class="px-4 pt-2 pb-4 space-y-2">
+          <a href="#hakkimda" class="block py-2 text-gray-600">Hakkımda</a>
+          <a href="#hizmetler" class="block py-2 text-gray-600">Hizmetler</a>
+          <a href="#degisimler" class="block py-2 text-gray-600">Değişimler</a>
+          <a href="#basari-hikayeleri" class="block py-2 text-gray-600"
+            >Yorumlar</a
+          >
+          <a href="#paketler" class="block py-2 text-gray-600">Paketler</a>
+          <a href="/register.html" class="block py-2 text-indigo-600 font-bold"
+            >Hemen Başla</a
+          >
+        </div>
+      </div>
+    </nav>
+
+    <section
+      class="relative min-h-[calc(100vh-5rem)] flex items-center pb-12 overflow-hidden"
+    >
+      <div
+        class="absolute top-0 right-0 -z-10 w-1/2 h-full bg-indigo-50/50 rounded-bl-[100px]"
+      ></div>
+
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+        <div class="grid lg:grid-cols-2 gap-12 items-center">
+          <div class="space-y-6">
+            <div
+              class="inline-block py-2 px-4 rounded-full bg-indigo-50 border border-indigo-100 mb-4 shadow-sm fade-in-up"
+            >
+              <span
+                class="text-sm font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-indigo-600 via-purple-600 to-indigo-600 animate-text-flow tracking-wide uppercase"
+              >
+                Kişiye Özel Beslenme Programı
+              </span>
+            </div>
+            <h1
+              class="text-5xl lg:text-7xl font-bold text-gray-900 leading-tight fade-in-up delay-200"
+            >
+              Hayalindeki Sen,<br />
+              <span class="relative inline-block mt-2">
+                <span class="relative z-10 text-indigo-600"
+                  >Bir Adım Uzakta</span
+                >
+                <!-- Highlighter Effect -->
+                <span
+                  class="absolute bottom-1 left-0 w-full h-4 bg-indigo-100 -z-0 -rotate-1 rounded-sm"
+                ></span>
+              </span>
+            </h1>
+            <p class="text-base lg:text-lg text-gray-600 fade-in-up delay-300">
+              Hedeflerine uygun, dengeli ve sürdürülebilir bir beslenme
+              sistemiyle profesyonel bir yolculuğa başla.
+            </p>
+            <div
+              class="grid grid-cols-2 gap-4 pt-4 w-full fade-in-up delay-400"
+            >
+              <a href="#paketler" class="btn-primary text-center w-full"
+                >Paketlere Göz At &rarr;</a
+              >
+              <a
+                href="https://wa.me/905550129078"
+                class="btn-outline text-center flex items-center justify-center gap-2 w-full"
+              >
+                <i class="fa-brands fa-whatsapp"></i> İletişime Geç
+              </a>
+            </div>
+          </div>
+          <div class="relative fade-in-up delay-200">
+            <div
+              class="hero-frame w-full overflow-hidden rounded-2xl shadow-2xl hero-image-animate"
+              style="height: 420px"
+            >
+              <img
+                src="img/hero.png"
+                alt="Diyetisyen"
+                class="w-full h-full object-cover"
+                style="max-height: 560px"
+              />
+            </div>
+
+            <div
+              id="hero-stat-card"
+              class="absolute -top-8 -right-8 bg-white/80 backdrop-blur-md p-4 rounded-2xl shadow-lg animate-bounce-slow border border-white/50 hidden md:block w-48"
+            >
+              <div class="flex items-center justify-between mb-2">
+                <span
+                  class="text-[10px] font-bold text-gray-400 uppercase tracking-wider"
+                  >Aylık Değişim</span
+                >
+                <span class="flex h-2 w-2 relative">
+                  <span
+                    class="animate-ping absolute inline-flex h-full w-full rounded-full bg-indigo-400 opacity-75"
+                  ></span>
+                  <span
+                    class="relative inline-flex rounded-full h-2 w-2 bg-indigo-500"
+                  ></span>
+                </span>
+              </div>
+
+              <div class="flex items-end gap-1 mb-2">
+                <span
+                  id="hero-stat-number"
+                  class="text-2xl font-bold text-indigo-600"
+                  >0.0</span
+                >
+                <span class="text-xs font-medium text-gray-400 mb-1">kg</span>
+              </div>
+
+              <!-- Simple Line Graph SVG -->
+              <div class="w-full h-8 mb-2">
+                <svg
+                  viewBox="0 0 100 40"
+                  class="w-full h-full overflow-visible"
+                  preserveAspectRatio="none"
+                >
+                  <!-- Gradient definition -->
+                  <defs>
+                    <linearGradient
+                      id="gradient"
+                      x1="0%"
+                      y1="0%"
+                      x2="0%"
+                      y2="100%"
+                    >
+                      <stop
+                        offset="0%"
+                        style="stop-color: #6366f1; stop-opacity: 0.2"
+                      />
+                      <stop
+                        offset="100%"
+                        style="stop-color: #6366f1; stop-opacity: 0"
+                      />
+                    </linearGradient>
+                  </defs>
+                  <!-- Area under curve -->
+                  <path
+                    id="hero-graph-area"
+                    d="M0 10 Q 50 10, 100 35 L 100 40 L 0 40 Z"
+                    fill="url(#gradient)"
+                    class="opacity-0 transition-opacity duration-1000"
+                  />
+                  <!-- Line -->
+                  <path
+                    id="hero-graph-line"
+                    d="M0 10 Q 50 10, 100 35"
+                    fill="none"
+                    stroke="#6366f1"
+                    stroke-width="3"
+                    stroke-linecap="round"
+                  />
+                  <!-- End point dot -->
+                  <circle
+                    id="hero-graph-dot"
+                    cx="100"
+                    cy="35"
+                    r="3"
+                    fill="#6366f1"
+                    class="opacity-0 transition-opacity duration-300"
+                  />
+                </svg>
+              </div>
+
+              <div
+                id="hero-success-badge"
+                class="flex items-center gap-2 bg-indigo-50 px-2 py-1.5 rounded-lg opacity-0 transform translate-y-2 transition-all duration-500"
+              >
+                <div
+                  class="w-3.5 h-3.5 rounded-full bg-indigo-500 flex items-center justify-center"
+                >
+                  <i class="fa-solid fa-check text-[8px] text-white"></i>
+                </div>
+                <span class="text-[10px] font-bold text-indigo-700"
+                  >Hedef Başarılı</span
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="bg-indigo-600 py-12" id="stats-section">
+      <div class="max-w-7xl mx-auto px-4">
+        <div
+          class="grid grid-cols-2 md:grid-cols-4 gap-8 text-center text-white"
+        >
+          <div
+            class="stat-item opacity-0 translate-y-4 transition-all duration-700"
+          >
+            <div
+              class="text-4xl font-bold mb-1 flex justify-center items-center gap-0.5"
+            >
+              <span class="counter" data-target="5000">0</span><span>k+</span>
+            </div>
+            <div class="text-indigo-200 text-sm">Verilen Kilo</div>
+          </div>
+          <div
+            class="stat-item opacity-0 translate-y-4 transition-all duration-700 delay-100"
+          >
+            <div
+              class="text-4xl font-bold mb-1 flex justify-center items-center gap-0.5"
+            >
+              <span class="counter" data-target="1200">0</span><span>+</span>
+            </div>
+            <div class="text-indigo-200 text-sm">Aktif Danışan</div>
+          </div>
+          <div
+            class="stat-item opacity-0 translate-y-4 transition-all duration-700 delay-200"
+          >
+            <div
+              class="text-4xl font-bold mb-1 flex justify-center items-center gap-0.5"
+            >
+              <span>%</span><span class="counter" data-target="98">0</span>
+            </div>
+            <div class="text-indigo-200 text-sm">Memnuniyet</div>
+          </div>
+          <div
+            class="stat-item opacity-0 translate-y-4 transition-all duration-700 delay-300"
+          >
+            <div class="text-4xl font-bold mb-1">24/7</div>
+            <div class="text-indigo-200 text-sm">WhatsApp Destek</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ÖNCESİ & SONRASI SLIDER -->
+    <section
+      id="degisimler"
+      class="min-h-[calc(100vh-5rem)] flex flex-col justify-center py-20 bg-gray-50 overflow-hidden"
+    >
+      <div class="max-w-7xl mx-auto px-4">
+        <div class="text-center mb-12 relative z-10">
+          <span
+            class="inline-block py-1 px-3 rounded-full bg-indigo-50 text-indigo-600 text-xs font-bold tracking-widest mb-4 border border-indigo-100"
+            >BAŞARI HİKAYELERİ</span
+          >
+          <h2
+            class="text-4xl md:text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-gray-900 via-indigo-800 to-gray-900 mb-4 drop-shadow-sm"
+          >
+            Öncesi & Sonrası
+          </h2>
+          <p class="text-gray-500 text-lg max-w-2xl mx-auto font-medium">
+            Gerçek danışanlar, gerçek sonuçlar. Değişime tanık olun.
+          </p>
+        </div>
+
+        <div class="relative max-w-5xl mx-auto">
+          <!-- Decorative Background Elements -->
+          <div
+            class="absolute -top-10 -left-10 w-40 h-40 bg-indigo-200 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob"
+          ></div>
+          <div
+            class="absolute -bottom-10 -right-10 w-40 h-40 bg-purple-200 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-2000"
+          ></div>
+
+          <!-- Slider Container -->
+          <div
+            class="relative overflow-hidden rounded-3xl shadow-2xl bg-white border-4 border-white ring-1 ring-gray-100"
+          >
+            <div
+              class="flex transition-transform duration-1000 ease-in-out"
+              id="slider-track"
+            >
+              <!-- Slide 1 -->
+              <div class="w-full flex-shrink-0 relative">
+                <div class="relative h-[50vh] group overflow-hidden">
+                  <img
+                    src="img/beforeAndAfter1.png"
+                    alt="Öncesi ve Sonrası"
+                    class="w-full h-full object-cover object-top transition-transform duration-700 group-hover:scale-105"
+                  />
+                  <div
+                    class="absolute inset-0 bg-black/10 group-hover:bg-transparent transition-colors"
+                  ></div>
+                  <div
+                    class="absolute top-6 left-6 bg-white/90 backdrop-blur text-gray-800 px-4 py-1.5 rounded-full text-xs font-bold tracking-wider shadow-lg"
+                  >
+                    ÖNCESİ
+                  </div>
+                  <div
+                    class="absolute top-6 right-6 bg-indigo-600 text-white px-4 py-1.5 rounded-full text-xs font-bold tracking-wider shadow-lg"
+                  >
+                    SONRASI
+                  </div>
+                </div>
+
+                <!-- Central Divider (Visual) -->
+                <div
+                  class="absolute inset-y-0 left-1/2 w-1 bg-white/50 backdrop-blur hidden md:block transform -translate-x-1/2 z-10"
+                >
+                  <div
+                    class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-10 h-10 bg-white rounded-full shadow-lg flex items-center justify-center text-indigo-600"
+                  >
+                    <i class="fa-solid fa-arrows-left-right"></i>
+                  </div>
+                </div>
+
+                <!-- Floating Info Card -->
+                <div
+                  class="absolute bottom-8 left-1/2 transform -translate-x-1/2 w-[90%] md:w-auto md:min-w-[400px] bg-white/95 backdrop-blur rounded-2xl p-6 shadow-[0_8px_30px_rgb(0,0,0,0.12)] text-center z-20 border border-white/50"
+                >
+                  <div class="flex items-center justify-center gap-2 mb-2">
+                    <span
+                      class="text-indigo-600 font-bold tracking-wide text-sm uppercase"
+                      >Online Diyet</span
+                    >
+                    <span class="w-1 h-1 bg-gray-300 rounded-full"></span>
+                    <span class="text-gray-500 text-sm">6 Ay</span>
+                  </div>
+                  <div class="flex items-center justify-center gap-6">
+                    <div class="text-center">
+                      <div
+                        class="text-gray-400 text-xs uppercase font-semibold"
+                      >
+                        Başlangıç
+                      </div>
+                      <div class="text-xl font-bold text-gray-700">88 kg</div>
+                    </div>
+                    <div
+                      class="w-12 h-12 rounded-full bg-green-100 flex items-center justify-center text-green-600 text-xl"
+                    >
+                      <i class="fa-solid fa-arrow-right-long"></i>
+                    </div>
+                    <div class="text-center">
+                      <div
+                        class="text-indigo-400 text-xs uppercase font-semibold"
+                      >
+                        Hedef
+                      </div>
+                      <div class="text-3xl font-bold text-indigo-600">
+                        70 kg
+                      </div>
+                    </div>
+                  </div>
+                  <div class="mt-3 pt-3 border-t border-gray-100">
+                    <div class="flex items-center justify-center gap-2">
+                      <div
+                        class="w-6 h-6 rounded-full bg-gray-200 flex items-center justify-center text-xs text-gray-500"
+                      >
+                        <i class="fa-solid fa-user"></i>
+                      </div>
+                      <span class="font-medium text-gray-700">Ayşe K.</span>
+                      <span
+                        class="text-green-500 text-xs font-bold bg-green-50 px-2 py-0.5 rounded-full"
+                        >-18 KG VERİLDİ</span
+                      >
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Slide 2 -->
+              <div class="w-full flex-shrink-0 relative">
+                <div class="relative h-[50vh] group overflow-hidden">
+                  <img
+                    src="img/beforeAndAfter2.png"
+                    alt="Öncesi ve Sonrası"
+                    class="w-full h-full object-cover object-top transition-transform duration-700 group-hover:scale-105"
+                  />
+                  <div
+                    class="absolute inset-0 bg-black/10 group-hover:bg-transparent transition-colors"
+                  ></div>
+                  <div
+                    class="absolute top-6 left-6 bg-white/90 backdrop-blur text-gray-800 px-4 py-1.5 rounded-full text-xs font-bold tracking-wider shadow-lg"
+                  >
+                    ÖNCESİ
+                  </div>
+                  <div
+                    class="absolute top-6 right-6 bg-indigo-600 text-white px-4 py-1.5 rounded-full text-xs font-bold tracking-wider shadow-lg"
+                  >
+                    SONRASI
+                  </div>
+                </div>
+
+                <!-- Central Divider (Visual) -->
+                <div
+                  class="absolute inset-y-0 left-1/2 w-1 bg-white/50 backdrop-blur hidden md:block transform -translate-x-1/2 z-10"
+                >
+                  <div
+                    class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-10 h-10 bg-white rounded-full shadow-lg flex items-center justify-center text-indigo-600"
+                  >
+                    <i class="fa-solid fa-arrows-left-right"></i>
+                  </div>
+                </div>
+
+                <!-- Floating Info Card -->
+                <div
+                  class="absolute bottom-8 left-1/2 transform -translate-x-1/2 w-[90%] md:w-auto md:min-w-[400px] bg-white/95 backdrop-blur rounded-2xl p-6 shadow-[0_8px_30px_rgb(0,0,0,0.12)] text-center z-20 border border-white/50"
+                >
+                  <div class="flex items-center justify-center gap-2 mb-2">
+                    <span
+                      class="text-indigo-600 font-bold tracking-wide text-sm uppercase"
+                      >Online Diyet</span
+                    >
+                    <span class="w-1 h-1 bg-gray-300 rounded-full"></span>
+                    <span class="text-gray-500 text-sm">6 Ay</span>
+                  </div>
+                  <div class="flex items-center justify-center gap-6">
+                    <div class="text-center">
+                      <div
+                        class="text-gray-400 text-xs uppercase font-semibold"
+                      >
+                        Başlangıç
+                      </div>
+                      <div class="text-xl font-bold text-gray-700">100 kg</div>
+                    </div>
+                    <div
+                      class="w-12 h-12 rounded-full bg-green-100 flex items-center justify-center text-green-600 text-xl"
+                    >
+                      <i class="fa-solid fa-arrow-right-long"></i>
+                    </div>
+                    <div class="text-center">
+                      <div
+                        class="text-indigo-400 text-xs uppercase font-semibold"
+                      >
+                        Hedef
+                      </div>
+                      <div class="text-3xl font-bold text-indigo-600">
+                        75 kg
+                      </div>
+                    </div>
+                  </div>
+                  <div class="mt-3 pt-3 border-t border-gray-100">
+                    <div class="flex items-center justify-center gap-2">
+                      <div
+                        class="w-6 h-6 rounded-full bg-gray-200 flex items-center justify-center text-xs text-gray-500"
+                      >
+                        <i class="fa-solid fa-user"></i>
+                      </div>
+                      <span class="font-medium text-gray-700">Mehmet T.</span>
+                      <span
+                        class="text-green-500 text-xs font-bold bg-green-50 px-2 py-0.5 rounded-full"
+                        >-25 KG VERİLDİ</span
+                      >
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Slide 3 -->
+              <div class="w-full flex-shrink-0 relative">
+                <div class="relative h-[50vh] group overflow-hidden">
+                  <img
+                    src="img/beforeAndAfter3.png"
+                    alt="Öncesi ve Sonrası"
+                    class="w-full h-full object-cover object-top transition-transform duration-700 group-hover:scale-105"
+                  />
+                  <div
+                    class="absolute inset-0 bg-black/10 group-hover:bg-transparent transition-colors"
+                  ></div>
+                  <div
+                    class="absolute top-6 left-6 bg-white/90 backdrop-blur text-gray-800 px-4 py-1.5 rounded-full text-xs font-bold tracking-wider shadow-lg"
+                  >
+                    ÖNCESİ
+                  </div>
+                  <div
+                    class="absolute top-6 right-6 bg-indigo-600 text-white px-4 py-1.5 rounded-full text-xs font-bold tracking-wider shadow-lg"
+                  >
+                    SONRASI
+                  </div>
+                </div>
+
+                <!-- Central Divider (Visual) -->
+                <div
+                  class="absolute inset-y-0 left-1/2 w-1 bg-white/50 backdrop-blur hidden md:block transform -translate-x-1/2 z-10"
+                >
+                  <div
+                    class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-10 h-10 bg-white rounded-full shadow-lg flex items-center justify-center text-indigo-600"
+                  >
+                    <i class="fa-solid fa-arrows-left-right"></i>
+                  </div>
+                </div>
+
+                <!-- Floating Info Card -->
+                <div
+                  class="absolute bottom-8 left-1/2 transform -translate-x-1/2 w-[90%] md:w-auto md:min-w-[400px] bg-white/95 backdrop-blur rounded-2xl p-6 shadow-[0_8px_30px_rgb(0,0,0,0.12)] text-center z-20 border border-white/50"
+                >
+                  <div class="flex items-center justify-center gap-2 mb-2">
+                    <span
+                      class="text-indigo-600 font-bold tracking-wide text-sm uppercase"
+                      >Online Diyet</span
+                    >
+                    <span class="w-1 h-1 bg-gray-300 rounded-full"></span>
+                    <span class="text-gray-500 text-sm">3 Ay</span>
+                  </div>
+                  <div class="flex items-center justify-center gap-6">
+                    <div class="text-center">
+                      <div
+                        class="text-gray-400 text-xs uppercase font-semibold"
+                      >
+                        Başlangıç
+                      </div>
+                      <div class="text-xl font-bold text-gray-700">78 kg</div>
+                    </div>
+                    <div
+                      class="w-12 h-12 rounded-full bg-green-100 flex items-center justify-center text-green-600 text-xl"
+                    >
+                      <i class="fa-solid fa-arrow-right-long"></i>
+                    </div>
+                    <div class="text-center">
+                      <div
+                        class="text-indigo-400 text-xs uppercase font-semibold"
+                      >
+                        Hedef
+                      </div>
+                      <div class="text-3xl font-bold text-indigo-600">
+                        66 kg
+                      </div>
+                    </div>
+                  </div>
+                  <div class="mt-3 pt-3 border-t border-gray-100">
+                    <div class="flex items-center justify-center gap-2">
+                      <div
+                        class="w-6 h-6 rounded-full bg-gray-200 flex items-center justify-center text-xs text-gray-500"
+                      >
+                        <i class="fa-solid fa-user"></i>
+                      </div>
+                      <span class="font-medium text-gray-700">Elif A.</span>
+                      <span
+                        class="text-green-500 text-xs font-bold bg-green-50 px-2 py-0.5 rounded-full"
+                        >-12 KG VERİLDİ</span
+                      >
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Navigation Buttons -->
+            <button
+              id="prev-slide"
+              class="absolute top-1/2 left-4 -translate-y-1/2 w-12 h-12 bg-white/80 backdrop-blur-sm hover:bg-white text-indigo-600 rounded-full flex items-center justify-center transition shadow-lg z-30"
+            >
+              <i class="fa-solid fa-chevron-left text-xl"></i>
+            </button>
+            <button
+              id="next-slide"
+              class="absolute top-1/2 right-4 -translate-y-1/2 w-12 h-12 bg-white/80 backdrop-blur-sm hover:bg-white text-indigo-600 rounded-full flex items-center justify-center transition shadow-lg z-30"
+            >
+              <i class="fa-solid fa-chevron-right text-xl"></i>
+            </button>
+          </div>
+
+          <!-- Dots -->
+          <div class="flex justify-center gap-2 mt-8" id="slider-dots">
+            <button
+              class="w-3 h-3 rounded-full bg-indigo-600 transition-all"
+            ></button>
+            <button
+              class="w-3 h-3 rounded-full bg-gray-300 hover:bg-indigo-400 transition-all"
+            ></button>
+            <button
+              class="w-3 h-3 rounded-full bg-gray-300 hover:bg-indigo-400 transition-all"
+            ></button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- HAKKIMDA SECTION -->
+    <section
+      id="hakkimda"
+      class="py-12 lg:py-0 lg:h-[calc(100vh-5rem)] flex items-center bg-white relative overflow-hidden scroll-mt-20"
+    >
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid lg:grid-cols-2 gap-12 items-center">
+          <!-- Image Side -->
+          <div
+            class="relative order-2 lg:order-1 h-full flex items-center justify-center"
+          >
+            <div
+              class="relative z-10 rounded-[2rem] overflow-hidden shadow-2xl w-full max-h-[500px] lg:max-h-[600px]"
+            >
+              <img
+                src="img/about.png"
+                alt="Hakkımızda"
+                class="w-full h-full object-cover transform hover:scale-105 transition-transform duration-700"
+              />
+            </div>
+            <!-- Minimal Decorative Element -->
+            <div
+              class="absolute -bottom-4 -left-4 w-full h-full border-2 border-indigo-100 rounded-[2rem] -z-0 max-h-[500px] lg:max-h-[600px]"
+            ></div>
+            <div
+              class="absolute -top-10 -right-10 w-40 h-40 bg-indigo-50 rounded-full blur-3xl -z-0"
+            ></div>
+          </div>
+
+          <!-- Text Side -->
+          <div class="order-1 lg:order-2">
+            <span
+              class="text-indigo-600 font-bold tracking-wider text-sm uppercase mb-2 block"
+              >Hakkımda</span
+            >
+            <h2
+              class="text-4xl md:text-5xl font-bold text-gray-900 mb-4 leading-tight"
+            >
+              Sağlıklı Bir Yaşam İçin <br />
+              <span class="text-indigo-600">Bilimsel Yaklaşım</span>
+            </h2>
+            <p class="text-gray-600 text-base leading-relaxed mb-4">
+              Meslek hayatım boyunca her bireyin hikayesinin farklı olduğunu
+              gördüm. Amacım, sizi kalıplaşmış listelere hapsetmek değil; yaşam
+              tarzınıza uygun, sürdürülebilir bir beslenme düzeni oluşturmaktır.
+            </p>
+            <p class="text-gray-600 text-base leading-relaxed mb-6">
+              Metabolizmanız parmak iziniz kadar eşsizdir. Bu yüzden yasaklar
+              yerine dengeyi öğreten, biyolojik ritminize ve sosyal yaşantınıza
+              tam uyum sağlayan, size özel dinamik bir program tasarlıyorum.
+            </p>
+
+            <!-- Personal Info / Credentials -->
+            <div class="mt-8 pt-8 border-t border-gray-100">
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                <!-- Education -->
+                <div class="flex items-start gap-4">
+                  <div
+                    class="w-12 h-12 rounded-xl bg-indigo-50 flex items-center justify-center text-indigo-600 text-xl shrink-0"
+                  >
+                    <i class="fa-solid fa-graduation-cap"></i>
+                  </div>
+                  <div>
+                    <h4 class="font-bold text-gray-900 text-lg">Eğitim</h4>
+                    <p class="text-gray-500 text-sm">
+                      Hacettepe Üniversitesi<br />Beslenme ve Diyetetik
+                    </p>
+                  </div>
+                </div>
+
+                <!-- Experience -->
+                <div class="flex items-start gap-4">
+                  <div
+                    class="w-12 h-12 rounded-xl bg-indigo-50 flex items-center justify-center text-indigo-600 text-xl shrink-0"
+                  >
+                    <i class="fa-solid fa-briefcase"></i>
+                  </div>
+                  <div>
+                    <h4 class="font-bold text-gray-900 text-lg">Deneyim</h4>
+                    <p class="text-gray-500 text-sm">
+                      10+ Yıl Klinik Tecrübe<br />5000+ Mutlu Danışan
+                    </p>
+                  </div>
+                </div>
+
+                <!-- Specialization -->
+                <div class="flex items-start gap-4">
+                  <div
+                    class="w-12 h-12 rounded-xl bg-indigo-50 flex items-center justify-center text-indigo-600 text-xl shrink-0"
+                  >
+                    <i class="fa-solid fa-certificate"></i>
+                  </div>
+                  <div>
+                    <h4 class="font-bold text-gray-900 text-lg">Uzmanlık</h4>
+                    <p class="text-gray-500 text-sm">
+                      Fonksiyonel Tıp<br />Sporcu Beslenmesi
+                    </p>
+                  </div>
+                </div>
+
+                <!-- Approach -->
+                <div class="flex items-start gap-4">
+                  <div
+                    class="w-12 h-12 rounded-xl bg-indigo-50 flex items-center justify-center text-indigo-600 text-xl shrink-0"
+                  >
+                    <i class="fa-solid fa-heart"></i>
+                  </div>
+                  <div>
+                    <h4 class="font-bold text-gray-900 text-lg">Yaklaşım</h4>
+                    <p class="text-gray-500 text-sm">
+                      Sürdürülebilir &<br />Bütüncül Beslenme
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="hizmetler" class="py-24 bg-gray-50 relative overflow-hidden">
+      <!-- Background decoration -->
+      <div
+        class="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none"
+      >
+        <div
+          class="absolute -top-24 -right-24 w-96 h-96 bg-indigo-100 rounded-full mix-blend-multiply filter blur-3xl opacity-50"
+        ></div>
+        <div
+          class="absolute top-1/2 -left-24 w-72 h-72 bg-purple-100 rounded-full mix-blend-multiply filter blur-3xl opacity-50"
+        ></div>
+      </div>
+
+      <div class="max-w-7xl mx-auto px-4 relative z-10">
+        <div class="text-center mb-16 relative z-10">
+          <span
+            class="inline-block py-1 px-3 rounded-full bg-indigo-50 text-indigo-600 text-xs font-bold tracking-widest mb-4 border border-indigo-100"
+            >UZMANLIK ALANLARI</span
+          >
+          <h2
+            class="text-4xl md:text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-gray-900 via-indigo-800 to-gray-900 mb-4 drop-shadow-sm"
+          >
+            Hizmetlerimiz
+          </h2>
+          <p class="text-gray-500 text-lg max-w-2xl mx-auto font-medium">
+            Bilimsel veriler ışığında, yaşam tarzınıza en uygun beslenme
+            programını birlikte oluşturalım.
+          </p>
+        </div>
+
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <!-- Service 1 -->
+          <div
+            class="group relative h-96 rounded-[2rem] overflow-hidden cursor-pointer shadow-lg hover:shadow-2xl transition-all duration-500"
+          >
+            <img
+              src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?q=80&w=800"
+              alt="Online Diyet"
+              class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+            />
+            <div
+              class="absolute inset-0 bg-gradient-to-t from-indigo-900/90 via-indigo-900/40 to-transparent opacity-80 group-hover:opacity-90 transition-opacity duration-500"
+            ></div>
+
+            <div
+              class="absolute top-6 right-6 w-14 h-14 bg-white/10 backdrop-blur-md border border-white/20 rounded-full flex items-center justify-center text-white text-2xl shadow-lg group-hover:bg-white group-hover:text-indigo-600 transition-all duration-500"
+            >
+              <i class="fa-solid fa-laptop-medical"></i>
+            </div>
+
+            <div
+              class="absolute bottom-0 left-0 p-8 w-full transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500"
+            >
+              <h3 class="text-2xl font-bold text-white mb-3">
+                Online Diyet Danışmanlığı
+              </h3>
+              <p
+                class="text-indigo-100 text-sm leading-relaxed opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-100 transform translate-y-4 group-hover:translate-y-0"
+              >
+                Dünyanın neresinde olursanız olun, görüntülü görüşmeler ve anlık
+                mesajlaşma ile diyetisyeniniz her an yanınızda.
+              </p>
+            </div>
+          </div>
+
+          <!-- Service 2 -->
+          <div
+            class="group relative h-96 rounded-[2rem] overflow-hidden cursor-pointer shadow-lg hover:shadow-2xl transition-all duration-500"
+          >
+            <img
+              src="https://images.unsplash.com/photo-1498837167922-ddd27525d352?q=80&w=800"
+              alt="Kilo Yönetimi"
+              class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+            />
+            <div
+              class="absolute inset-0 bg-gradient-to-t from-emerald-900/90 via-emerald-900/40 to-transparent opacity-80 group-hover:opacity-90 transition-opacity duration-500"
+            ></div>
+
+            <div
+              class="absolute top-6 right-6 w-14 h-14 bg-white/10 backdrop-blur-md border border-white/20 rounded-full flex items-center justify-center text-white text-2xl shadow-lg group-hover:bg-white group-hover:text-emerald-600 transition-all duration-500"
+            >
+              <i class="fa-solid fa-weight-scale"></i>
+            </div>
+
+            <div
+              class="absolute bottom-0 left-0 p-8 w-full transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500"
+            >
+              <h3 class="text-2xl font-bold text-white mb-3">Kilo Yönetimi</h3>
+              <p
+                class="text-emerald-100 text-sm leading-relaxed opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-100 transform translate-y-4 group-hover:translate-y-0"
+              >
+                İdeal kilonuza ulaşmak ve korumak için metabolizmanıza uygun,
+                sürdürülebilir ve yasaksız beslenme programları.
+              </p>
+            </div>
+          </div>
+
+          <!-- Service 3 -->
+          <div
+            class="group relative h-96 rounded-[2rem] overflow-hidden cursor-pointer shadow-lg hover:shadow-2xl transition-all duration-500"
+          >
+            <img
+              src="https://images.unsplash.com/photo-1517836357463-d25dfeac3438?q=80&w=800"
+              alt="Sporcu Beslenmesi"
+              class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+            />
+            <div
+              class="absolute inset-0 bg-gradient-to-t from-orange-900/90 via-orange-900/40 to-transparent opacity-80 group-hover:opacity-90 transition-opacity duration-500"
+            ></div>
+
+            <div
+              class="absolute top-6 right-6 w-14 h-14 bg-white/10 backdrop-blur-md border border-white/20 rounded-full flex items-center justify-center text-white text-2xl shadow-lg group-hover:bg-white group-hover:text-orange-600 transition-all duration-500"
+            >
+              <i class="fa-solid fa-dumbbell"></i>
+            </div>
+
+            <div
+              class="absolute bottom-0 left-0 p-8 w-full transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500"
+            >
+              <h3 class="text-2xl font-bold text-white mb-3">
+                Sporcu Beslenmesi
+              </h3>
+              <p
+                class="text-orange-100 text-sm leading-relaxed opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-100 transform translate-y-4 group-hover:translate-y-0"
+              >
+                Antrenman performansınızı maksimize edecek, kas onarımını
+                hızlandıracak profesyonel makro ve mikro besin planlaması.
+              </p>
+            </div>
+          </div>
+
+          <!-- Service 4 -->
+          <div
+            class="group relative h-96 rounded-[2rem] overflow-hidden cursor-pointer shadow-lg hover:shadow-2xl transition-all duration-500"
+          >
+            <img
+              src="img/momAndChild.png"
+              alt="Anne Çocuk"
+              class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+            />
+            <div
+              class="absolute inset-0 bg-gradient-to-t from-pink-900/90 via-pink-900/40 to-transparent opacity-80 group-hover:opacity-90 transition-opacity duration-500"
+            ></div>
+
+            <div
+              class="absolute top-6 right-6 w-14 h-14 bg-white/10 backdrop-blur-md border border-white/20 rounded-full flex items-center justify-center text-white text-2xl shadow-lg group-hover:bg-white group-hover:text-pink-600 transition-all duration-500"
+            >
+              <i class="fa-solid fa-baby"></i>
+            </div>
+
+            <div
+              class="absolute bottom-0 left-0 p-8 w-full transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500"
+            >
+              <h3 class="text-2xl font-bold text-white mb-3">
+                Anne & Çocuk Beslenmesi
+              </h3>
+              <p
+                class="text-pink-100 text-sm leading-relaxed opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-100 transform translate-y-4 group-hover:translate-y-0"
+              >
+                Gebelik, emzirme dönemi ve çocukluk çağında sağlıklı büyüme ve
+                gelişme için özel beslenme takibi.
+              </p>
+            </div>
+          </div>
+
+          <!-- Service 5 -->
+          <div
+            class="group relative h-96 rounded-[2rem] overflow-hidden cursor-pointer shadow-lg hover:shadow-2xl transition-all duration-500"
+          >
+            <img
+              src="https://images.unsplash.com/photo-1576091160550-2173dba999ef?q=80&w=800"
+              alt="Hastalıklarda Beslenme"
+              class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+            />
+            <div
+              class="absolute inset-0 bg-gradient-to-t from-blue-900/90 via-blue-900/40 to-transparent opacity-80 group-hover:opacity-90 transition-opacity duration-500"
+            ></div>
+
+            <div
+              class="absolute top-6 right-6 w-14 h-14 bg-white/10 backdrop-blur-md border border-white/20 rounded-full flex items-center justify-center text-white text-2xl shadow-lg group-hover:bg-white group-hover:text-blue-600 transition-all duration-500"
+            >
+              <i class="fa-solid fa-heart-pulse"></i>
+            </div>
+
+            <div
+              class="absolute bottom-0 left-0 p-8 w-full transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500"
+            >
+              <h3 class="text-2xl font-bold text-white mb-3">
+                Hastalıklarda Beslenme
+              </h3>
+              <p
+                class="text-blue-100 text-sm leading-relaxed opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-100 transform translate-y-4 group-hover:translate-y-0"
+              >
+                Diyabet, insülin direnci, tiroid, tansiyon gibi kronik
+                rahatsızlıklarda tedavi sürecini destekleyen tıbbi beslenme.
+              </p>
+            </div>
+          </div>
+
+          <!-- Service 6 -->
+          <div
+            class="group relative h-96 rounded-[2rem] overflow-hidden cursor-pointer shadow-lg hover:shadow-2xl transition-all duration-500"
+          >
+            <img
+              src="https://images.unsplash.com/photo-1552664730-d307ca884978?q=80&w=800"
+              alt="Kurumsal"
+              class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+            />
+            <div
+              class="absolute inset-0 bg-gradient-to-t from-gray-900/90 via-gray-900/40 to-transparent opacity-80 group-hover:opacity-90 transition-opacity duration-500"
+            ></div>
+
+            <div
+              class="absolute top-6 right-6 w-14 h-14 bg-white/10 backdrop-blur-md border border-white/20 rounded-full flex items-center justify-center text-white text-2xl shadow-lg group-hover:bg-white group-hover:text-gray-800 transition-all duration-500"
+            >
+              <i class="fa-solid fa-building"></i>
+            </div>
+
+            <div
+              class="absolute bottom-0 left-0 p-8 w-full transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500"
+            >
+              <h3 class="text-2xl font-bold text-white mb-3">
+                Kurumsal Danışmanlık
+              </h3>
+              <p
+                class="text-gray-100 text-sm leading-relaxed opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-100 transform translate-y-4 group-hover:translate-y-0"
+              >
+                Şirket çalışanlarının sağlığını, motivasyonunu ve iş
+                verimliliğini artırmaya yönelik kurumsal wellness projeleri.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section
+      id="basari-hikayeleri"
+      class="py-24 bg-white relative overflow-hidden"
+    >
+      <!-- Decorative Elements -->
+      <div
+        class="absolute top-0 right-0 -mr-20 -mt-20 w-96 h-96 bg-indigo-50 rounded-full blur-3xl opacity-50 pointer-events-none"
+      ></div>
+      <div
+        class="absolute bottom-0 left-0 -ml-20 -mb-20 w-80 h-80 bg-purple-50 rounded-full blur-3xl opacity-50 pointer-events-none"
+      ></div>
+
+      <div class="max-w-7xl mx-auto px-4 relative z-10">
+        <!-- Header -->
+        <div class="text-center mb-12 px-4">
+          <span
+            class="inline-block py-1 px-3 rounded-full bg-indigo-50 text-indigo-600 text-xs font-bold tracking-widest mb-4 border border-indigo-100"
+            >DANIŞAN YORUMLARI</span
+          >
+          <h2
+            class="text-4xl md:text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-gray-900 via-indigo-800 to-gray-900 mb-4 drop-shadow-sm"
+          >
+            Sizden Gelenler
+          </h2>
+          <p class="text-gray-500 text-lg max-w-2xl mx-auto font-medium">
+            Başarı hikayelerimizin kahramanları deneyimlerini paylaşıyor.
+          </p>
+        </div>
+
+        <!-- Marquee Container -->
+        <div class="marquee-container">
+          <div class="marquee-track">
+            <!-- SET 1 -->
+            <!-- Card 1 -->
+            <div class="w-[400px] flex-shrink-0 h-full flex flex-col">
+              <div
+                class="bg-gray-50 rounded-2xl p-8 h-full min-h-[300px] flex flex-col relative group hover:bg-indigo-600 hover:text-white transition-all duration-300 shadow-sm hover:shadow-xl hover:-translate-y-1 border border-gray-100 hover:border-transparent"
+              >
+                <div
+                  class="absolute top-6 right-8 text-6xl text-indigo-100 font-serif opacity-50 group-hover:text-indigo-500 group-hover:opacity-20"
+                >
+                  "
+                </div>
+                <div class="flex gap-1 text-yellow-400 mb-4 text-sm">
+                  <i class="fa-solid fa-star"></i
+                  ><i class="fa-solid fa-star"></i
+                  ><i class="fa-solid fa-star"></i
+                  ><i class="fa-solid fa-star"></i
+                  ><i class="fa-solid fa-star"></i>
+                </div>
+                <p
+                  class="text-gray-600 mb-6 leading-relaxed relative z-10 group-hover:text-indigo-50 flex-grow"
+                >
+                  Seda hanım ile 3 ayda 12 kilo verdim. Hiç aç kalmadan,
+                  yasaklar olmadan bu süreci tamamladık. Enerjim yerine geldi!
+                </p>
+                <div class="flex items-center gap-4 mt-auto">
+                  <div
+                    class="w-10 h-10 rounded-full bg-indigo-100 flex items-center justify-center text-indigo-600 font-bold text-sm group-hover:bg-white group-hover:text-indigo-600"
+                  >
+                    AY
+                  </div>
+                  <div>
+                    <h4
+                      class="font-bold text-gray-900 text-sm group-hover:text-white"
+                    >
+                      Ayşe Y.
+                    </h4>
+                    <span
+                      class="text-xs text-gray-400 group-hover:text-indigo-200"
+                      >Online Danışan</span
+                    >
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Card 2 -->
+            <div class="w-[400px] flex-shrink-0 h-full flex flex-col">
+              <div
+                class="bg-gray-50 rounded-2xl p-8 h-full min-h-[300px] flex flex-col relative group hover:bg-indigo-600 hover:text-white transition-all duration-300 shadow-sm hover:shadow-xl hover:-translate-y-1 border border-gray-100 hover:border-transparent"
+              >
+                <div
+                  class="absolute top-6 right-8 text-6xl text-indigo-100 font-serif opacity-50 group-hover:text-indigo-500 group-hover:opacity-20"
+                >
+                  "
+                </div>
+                <div class="flex gap-1 text-yellow-400 mb-4 text-sm">
+                  <i class="fa-solid fa-star"></i
+                  ><i class="fa-solid fa-star"></i
+                  ><i class="fa-solid fa-star"></i
+                  ><i class="fa-solid fa-star"></i
+                  ><i class="fa-solid fa-star-half-stroke"></i>
+                </div>
+                <p
+                  class="text-gray-600 mb-6 leading-relaxed relative z-10 group-hover:text-indigo-50 flex-grow"
+                >
+                  İnsülin direncim olmasına rağmen kilo vermemi sağlayan harika
+                  bir programdı. Kan değerlerim düzeldi, kendimi çok daha
+                  sağlıklı hissediyorum.
+                </p>
+                <div class="flex items-center gap-4 mt-auto">
+                  <div
+                    class="w-10 h-10 rounded-full bg-purple-100 flex items-center justify-center text-purple-600 font-bold text-sm group-hover:bg-white group-hover:text-indigo-600"
+                  >
+                    MK
+                  </div>
+                  <div>
+                    <h4
+                      class="font-bold text-gray-900 text-sm group-hover:text-white"
+                    >
+                      Mehmet K.
+                    </h4>
+                    <span
+                      class="text-xs text-gray-400 group-hover:text-indigo-200"
+                      >Kilo Yönetimi</span
+                    >
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Card 3 -->
+            <div class="w-[400px] flex-shrink-0 h-full flex flex-col">
+              <div
+                class="bg-gray-50 rounded-2xl p-8 h-full min-h-[300px] flex flex-col relative group hover:bg-indigo-600 hover:text-white transition-all duration-300 shadow-sm hover:shadow-xl hover:-translate-y-1 border border-gray-100 hover:border-transparent"
+              >
+                <div
+                  class="absolute top-6 right-8 text-6xl text-indigo-100 font-serif opacity-50 group-hover:text-indigo-500 group-hover:opacity-20"
+                >
+                  "
+                </div>
+                <div class="flex gap-1 text-yellow-400 mb-4 text-sm">
+                  <i class="fa-solid fa-star"></i
+                  ><i class="fa-solid fa-star"></i
+                  ><i class="fa-solid fa-star"></i
+                  ><i class="fa-solid fa-star"></i
+                  ><i class="fa-solid fa-star"></i>
+                </div>
+                <p
+                  class="text-gray-600 mb-6 leading-relaxed relative z-10 group-hover:text-indigo-50 flex-grow"
+                >
+                  Doğum kilolarımdan kurtulmak imkansız sanıyordum. Emzirme
+                  döneminde sütüm azalmadan kilo verdim. Teşekkürler!
+                </p>
+                <div class="flex items-center gap-4 mt-auto">
+                  <div
+                    class="w-10 h-10 rounded-full bg-pink-100 flex items-center justify-center text-pink-600 font-bold text-sm group-hover:bg-white group-hover:text-indigo-600"
+                  >
+                    ZT
+                  </div>
+                  <div>
+                    <h4
+                      class="font-bold text-gray-900 text-sm group-hover:text-white"
+                    >
+                      Zeynep T.
+                    </h4>
+                    <span
+                      class="text-xs text-gray-400 group-hover:text-indigo-200"
+                      >Anne & Çocuk</span
+                    >
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Card 4 -->
+            <div class="w-[400px] flex-shrink-0 h-full flex flex-col">
+              <div
+                class="bg-gray-50 rounded-2xl p-8 h-full min-h-[300px] flex flex-col relative group hover:bg-indigo-600 hover:text-white transition-all duration-300 shadow-sm hover:shadow-xl hover:-translate-y-1 border border-gray-100 hover:border-transparent"
+              >
+                <div
+                  class="absolute top-6 right-8 text-6xl text-indigo-100 font-serif opacity-50 group-hover:text-indigo-500 group-hover:opacity-20"
+                >
+                  "
+                </div>
+                <div class="flex gap-1 text-yellow-400 mb-4 text-sm">
+                  <i class="fa-solid fa-star"></i
+                  ><i class="fa-solid fa-star"></i
+                  ><i class="fa-solid fa-star"></i
+                  ><i class="fa-solid fa-star"></i
+                  ><i class="fa-solid fa-star"></i>
+                </div>
+                <p
+                  class="text-gray-600 mb-6 leading-relaxed relative z-10 group-hover:text-indigo-50 flex-grow"
+                >
+                  Online diyet ile bu kadar verim alabileceğimi düşünmemiştim.
+                  Her an destek oldular, sorularımı hiç yanıtsız bırakmadılar.
+                </p>
+                <div class="flex items-center gap-4 mt-auto">
+                  <div
+                    class="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 font-bold text-sm group-hover:bg-white group-hover:text-indigo-600"
+                  >
+                    EA
+                  </div>
+                  <div>
+                    <h4
+                      class="font-bold text-gray-900 text-sm group-hover:text-white"
+                    >
+                      Ece A.
+                    </h4>
+                    <span
+                      class="text-xs text-gray-400 group-hover:text-indigo-200"
+                      >Online Diyet</span
+                    >
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Card 5 -->
+            <div class="w-[400px] flex-shrink-0 h-full flex flex-col">
+              <div
+                class="bg-gray-50 rounded-2xl p-8 h-full min-h-[300px] flex flex-col relative group hover:bg-indigo-600 hover:text-white transition-all duration-300 shadow-sm hover:shadow-xl hover:-translate-y-1 border border-gray-100 hover:border-transparent"
+              >
+                <div
+                  class="absolute top-6 right-8 text-6xl text-indigo-100 font-serif opacity-50 group-hover:text-indigo-500 group-hover:opacity-20"
+                >
+                  "
+                </div>
+                <div class="flex gap-1 text-yellow-400 mb-4 text-sm">
+                  <i class="fa-solid fa-star"></i
+                  ><i class="fa-solid fa-star"></i
+                  ><i class="fa-solid fa-star"></i
+                  ><i class="fa-solid fa-star"></i
+                  ><i class="fa-solid fa-star"></i>
+                </div>
+                <p
+                  class="text-gray-600 mb-6 leading-relaxed relative z-10 group-hover:text-indigo-50 flex-grow"
+                >
+                  Sporcu beslenmesi konusunda uzmanlar. Performansım arttı ve
+                  yağ oranım düştü. Antrenmanlarım artık çok daha verimli.
+                </p>
+                <div class="flex items-center gap-4 mt-auto">
+                  <div
+                    class="w-10 h-10 rounded-full bg-orange-100 flex items-center justify-center text-orange-600 font-bold text-sm group-hover:bg-white group-hover:text-indigo-600"
+                  >
+                    OD
+                  </div>
+                  <div>
+                    <h4
+                      class="font-bold text-gray-900 text-sm group-hover:text-white"
+                    >
+                      Ozan D.
+                    </h4>
+                    <span
+                      class="text-xs text-gray-400 group-hover:text-indigo-200"
+                      >Sporcu Beslenmesi</span
+                    >
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Card 6 -->
+            <div class="w-[400px] flex-shrink-0 h-full flex flex-col">
+              <div
+                class="bg-gray-50 rounded-2xl p-8 h-full min-h-[300px] flex flex-col relative group hover:bg-indigo-600 hover:text-white transition-all duration-300 shadow-sm hover:shadow-xl hover:-translate-y-1 border border-gray-100 hover:border-transparent"
+              >
+                <div
+                  class="absolute top-6 right-8 text-6xl text-indigo-100 font-serif opacity-50 group-hover:text-indigo-500 group-hover:opacity-20"
+                >
+                  "
+                </div>
+                <div class="flex gap-1 text-yellow-400 mb-4 text-sm">
+                  <i class="fa-solid fa-star"></i
+                  ><i class="fa-solid fa-star"></i
+                  ><i class="fa-solid fa-star"></i
+                  ><i class="fa-solid fa-star"></i
+                  ><i class="fa-solid fa-star"></i>
+                </div>
+                <p
+                  class="text-gray-600 mb-6 leading-relaxed relative z-10 group-hover:text-indigo-50 flex-grow"
+                >
+                  Yıllardır veremediğim kiloları 4 ayda verdim. En önemlisi
+                  sağlıklı beslenmeyi bir yaşam tarzı haline getirdim.
+                </p>
+                <div class="flex items-center gap-4 mt-auto">
+                  <div
+                    class="w-10 h-10 rounded-full bg-emerald-100 flex items-center justify-center text-emerald-600 font-bold text-sm group-hover:bg-white group-hover:text-indigo-600"
+                  >
+                    BK
+                  </div>
+                  <div>
+                    <h4
+                      class="font-bold text-gray-900 text-sm group-hover:text-white"
+                    >
+                      Burcu K.
+                    </h4>
+                    <span
+                      class="text-xs text-gray-400 group-hover:text-indigo-200"
+                      >Kilo Verme</span
+                    >
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- SET 2 (DUPLICATE FOR INFINITE SCROLL) -->
+            <!-- Card 1 -->
+            <div class="w-[400px] flex-shrink-0 h-full flex flex-col">
+              <div
+                class="bg-gray-50 rounded-2xl p-8 h-full min-h-[300px] flex flex-col relative group hover:bg-indigo-600 hover:text-white transition-all duration-300 shadow-sm hover:shadow-xl hover:-translate-y-1 border border-gray-100 hover:border-transparent"
+              >
+                <div
+                  class="absolute top-6 right-8 text-6xl text-indigo-100 font-serif opacity-50 group-hover:text-indigo-500 group-hover:opacity-20"
+                >
+                  "
+                </div>
+                <div class="flex gap-1 text-yellow-400 mb-4 text-sm">
+                  <i class="fa-solid fa-star"></i
+                  ><i class="fa-solid fa-star"></i
+                  ><i class="fa-solid fa-star"></i
+                  ><i class="fa-solid fa-star"></i
+                  ><i class="fa-solid fa-star"></i>
+                </div>
+                <p
+                  class="text-gray-600 mb-6 leading-relaxed relative z-10 group-hover:text-indigo-50 flex-grow"
+                >
+                  Seda hanım ile 3 ayda 12 kilo verdim. Hiç aç kalmadan,
+                  yasaklar olmadan bu süreci tamamladık. Enerjim yerine geldi!
+                </p>
+                <div class="flex items-center gap-4 mt-auto">
+                  <div
+                    class="w-10 h-10 rounded-full bg-indigo-100 flex items-center justify-center text-indigo-600 font-bold text-sm group-hover:bg-white group-hover:text-indigo-600"
+                  >
+                    AY
+                  </div>
+                  <div>
+                    <h4
+                      class="font-bold text-gray-900 text-sm group-hover:text-white"
+                    >
+                      Ayşe Y.
+                    </h4>
+                    <span
+                      class="text-xs text-gray-400 group-hover:text-indigo-200"
+                      >Online Danışan</span
+                    >
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Card 2 -->
+            <div class="w-[400px] flex-shrink-0 h-full flex flex-col">
+              <div
+                class="bg-gray-50 rounded-2xl p-8 h-full min-h-[300px] flex flex-col relative group hover:bg-indigo-600 hover:text-white transition-all duration-300 shadow-sm hover:shadow-xl hover:-translate-y-1 border border-gray-100 hover:border-transparent"
+              >
+                <div
+                  class="absolute top-6 right-8 text-6xl text-indigo-100 font-serif opacity-50 group-hover:text-indigo-500 group-hover:opacity-20"
+                >
+                  "
+                </div>
+                <div class="flex gap-1 text-yellow-400 mb-4 text-sm">
+                  <i class="fa-solid fa-star"></i
+                  ><i class="fa-solid fa-star"></i
+                  ><i class="fa-solid fa-star"></i
+                  ><i class="fa-solid fa-star"></i
+                  ><i class="fa-solid fa-star-half-stroke"></i>
+                </div>
+                <p
+                  class="text-gray-600 mb-6 leading-relaxed relative z-10 group-hover:text-indigo-50 flex-grow"
+                >
+                  İnsülin direncim olmasına rağmen kilo vermemi sağlayan harika
+                  bir programdı. Kan değerlerim düzeldi, kendimi çok daha
+                  sağlıklı hissediyorum.
+                </p>
+                <div class="flex items-center gap-4 mt-auto">
+                  <div
+                    class="w-10 h-10 rounded-full bg-purple-100 flex items-center justify-center text-purple-600 font-bold text-sm group-hover:bg-white group-hover:text-indigo-600"
+                  >
+                    MK
+                  </div>
+                  <div>
+                    <h4
+                      class="font-bold text-gray-900 text-sm group-hover:text-white"
+                    >
+                      Mehmet K.
+                    </h4>
+                    <span
+                      class="text-xs text-gray-400 group-hover:text-indigo-200"
+                      >Kilo Yönetimi</span
+                    >
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Card 3 -->
+            <div class="w-[400px] flex-shrink-0 h-full flex flex-col">
+              <div
+                class="bg-gray-50 rounded-2xl p-8 h-full min-h-[300px] flex flex-col relative group hover:bg-indigo-600 hover:text-white transition-all duration-300 shadow-sm hover:shadow-xl hover:-translate-y-1 border border-gray-100 hover:border-transparent"
+              >
+                <div
+                  class="absolute top-6 right-8 text-6xl text-indigo-100 font-serif opacity-50 group-hover:text-indigo-500 group-hover:opacity-20"
+                >
+                  "
+                </div>
+                <div class="flex gap-1 text-yellow-400 mb-4 text-sm">
+                  <i class="fa-solid fa-star"></i
+                  ><i class="fa-solid fa-star"></i
+                  ><i class="fa-solid fa-star"></i
+                  ><i class="fa-solid fa-star"></i
+                  ><i class="fa-solid fa-star"></i>
+                </div>
+                <p
+                  class="text-gray-600 mb-6 leading-relaxed relative z-10 group-hover:text-indigo-50 flex-grow"
+                >
+                  Doğum kilolarımdan kurtulmak imkansız sanıyordum. Emzirme
+                  döneminde sütüm azalmadan kilo verdim. Teşekkürler!
+                </p>
+                <div class="flex items-center gap-4 mt-auto">
+                  <div
+                    class="w-10 h-10 rounded-full bg-pink-100 flex items-center justify-center text-pink-600 font-bold text-sm group-hover:bg-white group-hover:text-indigo-600"
+                  >
+                    ZT
+                  </div>
+                  <div>
+                    <h4
+                      class="font-bold text-gray-900 text-sm group-hover:text-white"
+                    >
+                      Zeynep T.
+                    </h4>
+                    <span
+                      class="text-xs text-gray-400 group-hover:text-indigo-200"
+                      >Anne & Çocuk</span
+                    >
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Card 4 -->
+            <div class="w-[400px] flex-shrink-0 h-full flex flex-col">
+              <div
+                class="bg-gray-50 rounded-2xl p-8 h-full min-h-[300px] flex flex-col relative group hover:bg-indigo-600 hover:text-white transition-all duration-300 shadow-sm hover:shadow-xl hover:-translate-y-1 border border-gray-100 hover:border-transparent"
+              >
+                <div
+                  class="absolute top-6 right-8 text-6xl text-indigo-100 font-serif opacity-50 group-hover:text-indigo-500 group-hover:opacity-20"
+                >
+                  "
+                </div>
+                <div class="flex gap-1 text-yellow-400 mb-4 text-sm">
+                  <i class="fa-solid fa-star"></i
+                  ><i class="fa-solid fa-star"></i
+                  ><i class="fa-solid fa-star"></i
+                  ><i class="fa-solid fa-star"></i
+                  ><i class="fa-solid fa-star"></i>
+                </div>
+                <p
+                  class="text-gray-600 mb-6 leading-relaxed relative z-10 group-hover:text-indigo-50 flex-grow"
+                >
+                  Online diyet ile bu kadar verim alabileceğimi düşünmemiştim.
+                  Her an destek oldular, sorularımı hiç yanıtsız bırakmadılar.
+                </p>
+                <div class="flex items-center gap-4 mt-auto">
+                  <div
+                    class="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 font-bold text-sm group-hover:bg-white group-hover:text-indigo-600"
+                  >
+                    EA
+                  </div>
+                  <div>
+                    <h4
+                      class="font-bold text-gray-900 text-sm group-hover:text-white"
+                    >
+                      Ece A.
+                    </h4>
+                    <span
+                      class="text-xs text-gray-400 group-hover:text-indigo-200"
+                      >Online Diyet</span
+                    >
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Card 5 -->
+            <div class="w-[400px] flex-shrink-0 h-full flex flex-col">
+              <div
+                class="bg-gray-50 rounded-2xl p-8 h-full min-h-[300px] flex flex-col relative group hover:bg-indigo-600 hover:text-white transition-all duration-300 shadow-sm hover:shadow-xl hover:-translate-y-1 border border-gray-100 hover:border-transparent"
+              >
+                <div
+                  class="absolute top-6 right-8 text-6xl text-indigo-100 font-serif opacity-50 group-hover:text-indigo-500 group-hover:opacity-20"
+                >
+                  "
+                </div>
+                <div class="flex gap-1 text-yellow-400 mb-4 text-sm">
+                  <i class="fa-solid fa-star"></i
+                  ><i class="fa-solid fa-star"></i
+                  ><i class="fa-solid fa-star"></i
+                  ><i class="fa-solid fa-star"></i
+                  ><i class="fa-solid fa-star"></i>
+                </div>
+                <p
+                  class="text-gray-600 mb-6 leading-relaxed relative z-10 group-hover:text-indigo-50 flex-grow"
+                >
+                  Sporcu beslenmesi konusunda uzmanlar. Performansım arttı ve
+                  yağ oranım düştü. Antrenmanlarım artık çok daha verimli.
+                </p>
+                <div class="flex items-center gap-4 mt-auto">
+                  <div
+                    class="w-10 h-10 rounded-full bg-orange-100 flex items-center justify-center text-orange-600 font-bold text-sm group-hover:bg-white group-hover:text-indigo-600"
+                  >
+                    OD
+                  </div>
+                  <div>
+                    <h4
+                      class="font-bold text-gray-900 text-sm group-hover:text-white"
+                    >
+                      Ozan D.
+                    </h4>
+                    <span
+                      class="text-xs text-gray-400 group-hover:text-indigo-200"
+                      >Sporcu Beslenmesi</span
+                    >
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Card 6 -->
+            <div class="w-[400px] flex-shrink-0 h-full flex flex-col">
+              <div
+                class="bg-gray-50 rounded-2xl p-8 h-full min-h-[300px] flex flex-col relative group hover:bg-indigo-600 hover:text-white transition-all duration-300 shadow-sm hover:shadow-xl hover:-translate-y-1 border border-gray-100 hover:border-transparent"
+              >
+                <div
+                  class="absolute top-6 right-8 text-6xl text-indigo-100 font-serif opacity-50 group-hover:text-indigo-500 group-hover:opacity-20"
+                >
+                  "
+                </div>
+                <div class="flex gap-1 text-yellow-400 mb-4 text-sm">
+                  <i class="fa-solid fa-star"></i
+                  ><i class="fa-solid fa-star"></i
+                  ><i class="fa-solid fa-star"></i
+                  ><i class="fa-solid fa-star"></i
+                  ><i class="fa-solid fa-star"></i>
+                </div>
+                <p
+                  class="text-gray-600 mb-6 leading-relaxed relative z-10 group-hover:text-indigo-50 flex-grow"
+                >
+                  Yıllardır veremediğim kiloları 4 ayda verdim. En önemlisi
+                  sağlıklı beslenmeyi bir yaşam tarzı haline getirdim.
+                </p>
+                <div class="flex items-center gap-4 mt-auto">
+                  <div
+                    class="w-10 h-10 rounded-full bg-emerald-100 flex items-center justify-center text-emerald-600 font-bold text-sm group-hover:bg-white group-hover:text-indigo-600"
+                  >
+                    BK
+                  </div>
+                  <div>
+                    <h4
+                      class="font-bold text-gray-900 text-sm group-hover:text-white"
+                    >
+                      Burcu K.
+                    </h4>
+                    <span
+                      class="text-xs text-gray-400 group-hover:text-indigo-200"
+                      >Kilo Verme</span
+                    >
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="paketler" class="py-24 bg-gray-50 relative">
+      <!-- Background Decoration -->
+      <div class="absolute inset-0 overflow-hidden pointer-events-none">
+        <div
+          class="absolute top-1/4 left-0 w-64 h-64 bg-indigo-100 rounded-full blur-3xl opacity-30"
+        ></div>
+        <div
+          class="absolute bottom-1/4 right-0 w-64 h-64 bg-purple-100 rounded-full blur-3xl opacity-30"
+        ></div>
+      </div>
+
+      <div class="max-w-7xl mx-auto px-4 relative z-10">
+        <div class="text-center mb-16">
+          <span
+            class="inline-block py-1 px-3 rounded-full bg-indigo-50 text-indigo-600 text-xs font-bold tracking-widest mb-4 border border-indigo-100"
+            >FİYATLANDIRMA</span
+          >
+          <h2
+            class="text-4xl md:text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-gray-900 via-indigo-800 to-gray-900 mb-4 drop-shadow-sm"
+          >
+            Diyet Paketlerimiz
+          </h2>
+          <p class="text-gray-500 text-lg max-w-2xl mx-auto font-medium">
+            Hedefinize ve yaşam tarzınıza en uygun paketi seçerek değişime bugün
+            başlayın.
+          </p>
+        </div>
+
+        <div class="grid md:grid-cols-3 gap-8 items-start">
+          <!-- Standard Plan -->
+          <div
+            class="bg-white rounded-3xl p-8 border border-gray-100 shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 relative group"
+          >
+            <div
+              class="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-indigo-400 to-purple-400 rounded-t-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+            ></div>
+            <h3 class="text-xl font-bold text-gray-800 mb-2">Online Diyet</h3>
+            <p class="text-gray-400 text-sm mb-6">Başlangıç için ideal</p>
+            <div class="mb-6">
+              <span class="text-4xl font-bold text-gray-900">3450₺</span>
+              <span class="text-gray-400 text-sm">/aylık</span>
+            </div>
+            <ul class="space-y-4 text-gray-600 text-sm mb-8">
+              <li class="flex items-center gap-3">
+                <div
+                  class="w-6 h-6 rounded-full bg-indigo-50 flex items-center justify-center text-indigo-600 flex-shrink-0"
+                >
+                  <i class="fa-solid fa-check text-xs"></i>
+                </div>
+                Kişiye Özel Diyet Listesi
+              </li>
+              <li class="flex items-center gap-3">
+                <div
+                  class="w-6 h-6 rounded-full bg-indigo-50 flex items-center justify-center text-indigo-600 flex-shrink-0"
+                >
+                  <i class="fa-solid fa-check text-xs"></i>
+                </div>
+                Haftalık Kontrol
+              </li>
+              <li class="flex items-center gap-3">
+                <div
+                  class="w-6 h-6 rounded-full bg-indigo-50 flex items-center justify-center text-indigo-600 flex-shrink-0"
+                >
+                  <i class="fa-solid fa-check text-xs"></i>
+                </div>
+                WhatsApp İletişim
+              </li>
+            </ul>
+            <a
+              href="#"
+              class="block w-full py-4 rounded-xl border-2 border-indigo-100 text-indigo-600 font-bold text-center hover:border-indigo-600 hover:bg-indigo-600 hover:text-white transition-all duration-300"
+              >Paketi Seç</a
+            >
+          </div>
+
+          <!-- VIP Plan -->
+          <div
+            class="bg-indigo-600 rounded-3xl p-8 border border-indigo-500 shadow-2xl relative transform md:-translate-y-4 hover:-translate-y-6 transition-all duration-300 overflow-hidden group"
+          >
+            <!-- Glow Effect -->
+            <div
+              class="absolute top-0 right-0 -mr-20 -mt-20 w-64 h-64 bg-white rounded-full blur-3xl opacity-10 group-hover:opacity-20 transition-opacity duration-500"
+            ></div>
+
+            <div
+              class="absolute top-0 right-0 bg-white text-indigo-600 text-xs font-bold px-4 py-1.5 rounded-bl-xl"
+            >
+              EN POPÜLER
+            </div>
+
+            <h3 class="text-xl font-bold text-white mb-2">VIP Online Diyet</h3>
+            <p class="text-indigo-100 text-sm mb-6">Maksimum ilgi ve takip</p>
+            <div class="mb-6">
+              <span class="text-5xl font-bold text-white">6950₺</span>
+              <span class="text-indigo-100 text-sm">/aylık</span>
+            </div>
+            <ul class="space-y-4 text-indigo-50 text-sm mb-8">
+              <li class="flex items-center gap-3">
+                <div
+                  class="w-6 h-6 rounded-full bg-white/20 flex items-center justify-center text-white flex-shrink-0"
+                >
+                  <i class="fa-solid fa-check text-xs"></i>
+                </div>
+                Görüntülü Görüşme (Haftalık)
+              </li>
+              <li class="flex items-center gap-3">
+                <div
+                  class="w-6 h-6 rounded-full bg-white/20 flex items-center justify-center text-white flex-shrink-0"
+                >
+                  <i class="fa-solid fa-check text-xs"></i>
+                </div>
+                Günlük Öğün Takibi
+              </li>
+              <li class="flex items-center gap-3">
+                <div
+                  class="w-6 h-6 rounded-full bg-white/20 flex items-center justify-center text-white flex-shrink-0"
+                >
+                  <i class="fa-solid fa-check text-xs"></i>
+                </div>
+                7/24 WhatsApp Desteği
+              </li>
+              <li class="flex items-center gap-3">
+                <div
+                  class="w-6 h-6 rounded-full bg-white/20 flex items-center justify-center text-white flex-shrink-0"
+                >
+                  <i class="fa-solid fa-check text-xs"></i>
+                </div>
+                Detaylı Kan Tahlili Analizi
+              </li>
+            </ul>
+            <a
+              href="#"
+              class="block w-full py-4 rounded-xl bg-white text-indigo-600 font-bold text-center hover:shadow-lg hover:shadow-indigo-900/30 transition-all duration-300 transform hover:scale-[1.02]"
+              >Hemen Başla</a
+            >
+          </div>
+
+          <!-- Face to Face Plan -->
+          <div
+            class="bg-white rounded-3xl p-8 border border-gray-100 shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 relative group"
+          >
+            <div
+              class="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-purple-400 to-pink-400 rounded-t-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+            ></div>
+            <h3 class="text-xl font-bold text-gray-800 mb-2">Yüz Yüze Diyet</h3>
+            <p class="text-gray-400 text-sm mb-6">Ofiste birebir görüşme</p>
+            <div class="mb-6">
+              <span class="text-4xl font-bold text-gray-900">4500₺</span>
+              <span class="text-gray-400 text-sm">/aylık</span>
+            </div>
+            <ul class="space-y-4 text-gray-600 text-sm mb-8">
+              <li class="flex items-center gap-3">
+                <div
+                  class="w-6 h-6 rounded-full bg-purple-50 flex items-center justify-center text-purple-600 flex-shrink-0"
+                >
+                  <i class="fa-solid fa-check text-xs"></i>
+                </div>
+                Ofiste Ölçüm ve Analiz
+              </li>
+              <li class="flex items-center gap-3">
+                <div
+                  class="w-6 h-6 rounded-full bg-purple-50 flex items-center justify-center text-purple-600 flex-shrink-0"
+                >
+                  <i class="fa-solid fa-check text-xs"></i>
+                </div>
+                Haftalık Yüz Yüze Görüşme
+              </li>
+              <li class="flex items-center gap-3">
+                <div
+                  class="w-6 h-6 rounded-full bg-purple-50 flex items-center justify-center text-purple-600 flex-shrink-0"
+                >
+                  <i class="fa-solid fa-check text-xs"></i>
+                </div>
+                Vücut Analiz Cihazı Ölçümü
+              </li>
+            </ul>
+            <a
+              href="#"
+              class="block w-full py-4 rounded-xl border-2 border-purple-100 text-purple-600 font-bold text-center hover:border-purple-600 hover:bg-purple-600 hover:text-white transition-all duration-300"
+              >Paketi Seç</a
+            >
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="sss" class="py-24 bg-white relative overflow-hidden">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        <div class="text-center mb-16">
+          <span
+            class="inline-block py-1 px-3 rounded-full bg-indigo-50 text-indigo-600 text-xs font-bold tracking-widest mb-4 border border-indigo-100"
+            >MERAK EDİLENLER</span
+          >
+          <h2
+            class="text-4xl md:text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-gray-900 via-indigo-800 to-gray-900 mb-4 drop-shadow-sm"
+          >
+            Sıkça Sorulan Sorular
+          </h2>
+          <p class="text-gray-500 text-lg max-w-2xl mx-auto font-medium">
+            DietMaster hakkında merak ettiğiniz her şey ve süreçlerimiz hakkında
+            detaylı bilgiler.
+          </p>
+        </div>
+
+        <div class="grid md:grid-cols-12 gap-8 lg:gap-12 items-start">
+          <!-- Sidebar Categories -->
+          <div class="md:col-span-4 lg:col-span-3 space-y-2 sticky top-24">
+            <h3
+              class="text-sm font-bold text-indigo-600 uppercase tracking-wider mb-4 px-4"
+            >
+              Kategoriler
+            </h3>
+            <button
+              data-category="genel"
+              class="category-btn w-full text-left px-4 py-3 rounded-lg bg-indigo-50 text-indigo-700 font-bold border-l-4 border-indigo-600 transition-all"
+            >
+              Genel Bilgiler
+            </button>
+            <button
+              data-category="beslenme"
+              class="category-btn w-full text-left px-4 py-3 rounded-lg text-gray-600 hover:bg-gray-50 hover:text-gray-900 border-l-4 border-transparent transition-all"
+            >
+              Beslenme Programları
+            </button>
+            <button
+              data-category="odeme"
+              class="category-btn w-full text-left px-4 py-3 rounded-lg text-gray-600 hover:bg-gray-50 hover:text-gray-900 border-l-4 border-transparent transition-all"
+            >
+              Ödeme ve Üyelik
+            </button>
+            <button
+              data-category="online"
+              class="category-btn w-full text-left px-4 py-3 rounded-lg text-gray-600 hover:bg-gray-50 hover:text-gray-900 border-l-4 border-transparent transition-all"
+            >
+              Online Diyet
+            </button>
+            <button
+              data-category="saglik"
+              class="category-btn w-full text-left px-4 py-3 rounded-lg text-gray-600 hover:bg-gray-50 hover:text-gray-900 border-l-4 border-transparent transition-all"
+            >
+              Sağlık Durumları
+            </button>
+          </div>
+
+          <!-- FAQ Items -->
+          <div class="md:col-span-8 lg:col-span-9 space-y-4" id="faq-list">
+            <!-- KATEGORİ: GENEL BİLGİLER -->
+
+            <!-- Item 1.1 -->
+            <div
+              data-category="genel"
+              class="faq-item bg-white rounded-2xl border-2 border-indigo-600 shadow-lg transition-all duration-300"
+            >
+              <button
+                class="faq-btn w-full p-6 text-left flex justify-between items-center gap-4"
+              >
+                <span class="font-bold text-gray-900 text-lg"
+                  >DietMaster nedir?</span
+                >
+                <span
+                  class="flex-shrink-0 w-8 h-8 flex items-center justify-center text-indigo-600"
+                >
+                  <i class="fa-solid fa-minus"></i>
+                </span>
+              </button>
+              <div class="faq-content px-6 pb-6 text-gray-600 leading-relaxed">
+                <p class="mb-4">
+                  DietMaster, yapay zeka destekli analizler ve uzman diyetisyen
+                  görüşlerini birleştirerek size en uygun beslenme programını
+                  oluşturan yeni nesil bir sağlık platformudur.
+                </p>
+              </div>
+            </div>
+
+            <!-- Item 1.2 -->
+            <div
+              data-category="genel"
+              class="faq-item bg-gray-50 rounded-2xl border border-transparent hover:bg-gray-100 transition-all duration-300"
+            >
+              <button
+                class="faq-btn w-full p-6 text-left flex justify-between items-center gap-4"
+              >
+                <span class="font-bold text-gray-700 text-lg"
+                  >Süreç nasıl işliyor?</span
+                >
+                <span
+                  class="flex-shrink-0 w-8 h-8 flex items-center justify-center text-gray-400"
+                >
+                  <i class="fa-solid fa-plus"></i>
+                </span>
+              </button>
+              <div
+                class="faq-content hidden px-6 pb-6 text-gray-600 leading-relaxed"
+              >
+                <p class="mb-4">
+                  Kayıt olduktan sonra detaylı bir analiz formu doldurursunuz.
+                  Yapay zeka ve diyetisyenlerimiz bu verileri inceleyerek size
+                  özel planı oluşturur.
+                </p>
+              </div>
+            </div>
+
+            <!-- Item 1.3 -->
+            <div
+              data-category="genel"
+              class="faq-item bg-gray-50 rounded-2xl border border-transparent hover:bg-gray-100 transition-all duration-300"
+            >
+              <button
+                class="faq-btn w-full p-6 text-left flex justify-between items-center gap-4"
+              >
+                <span class="font-bold text-gray-700 text-lg"
+                  >Hangi cihazlarda kullanabilirim?</span
+                >
+                <span
+                  class="flex-shrink-0 w-8 h-8 flex items-center justify-center text-gray-400"
+                >
+                  <i class="fa-solid fa-plus"></i>
+                </span>
+              </button>
+              <div
+                class="faq-content hidden px-6 pb-6 text-gray-600 leading-relaxed"
+              >
+                <p class="mb-4">
+                  DietMaster tamamen web tabanlı ve mobil uyumludur. Dilediğiniz
+                  cihazdan hesabınıza erişebilirsiniz.
+                </p>
+              </div>
+            </div>
+
+            <!-- Item 1.4 -->
+            <div
+              data-category="genel"
+              class="faq-item bg-gray-50 rounded-2xl border border-transparent hover:bg-gray-100 transition-all duration-300"
+            >
+              <button
+                class="faq-btn w-full p-6 text-left flex justify-between items-center gap-4"
+              >
+                <span class="font-bold text-gray-700 text-lg"
+                  >Üyelik dondurma var mı?</span
+                >
+                <span
+                  class="flex-shrink-0 w-8 h-8 flex items-center justify-center text-gray-400"
+                >
+                  <i class="fa-solid fa-plus"></i>
+                </span>
+              </button>
+              <div
+                class="faq-content hidden px-6 pb-6 text-gray-600 leading-relaxed"
+              >
+                <p class="mb-4">
+                  Evet, tatil veya hastalık gibi durumlarda üyeliğinizi belirli
+                  bir süre için dondurabilirsiniz.
+                </p>
+              </div>
+            </div>
+
+            <!-- KATEGORİ: BESLENME PROGRAMLARI -->
+
+            <!-- Item 2.1 -->
+            <div
+              data-category="beslenme"
+              class="faq-item hidden bg-gray-50 rounded-2xl border border-transparent hover:bg-gray-100 transition-all duration-300"
+            >
+              <button
+                class="faq-btn w-full p-6 text-left flex justify-between items-center gap-4"
+              >
+                <span class="font-bold text-gray-700 text-lg"
+                  >Listeler kişiye özel mi hazırlanıyor?</span
+                >
+                <span
+                  class="flex-shrink-0 w-8 h-8 flex items-center justify-center text-gray-400"
+                >
+                  <i class="fa-solid fa-plus"></i>
+                </span>
+              </button>
+              <div
+                class="faq-content hidden px-6 pb-6 text-gray-600 leading-relaxed"
+              >
+                <p class="mb-4">
+                  Kesinlikle. Diyet listeleriniz; yaşınız, boyunuz, kilonuz, kan
+                  tahlilleriniz, yaşam tarzınız ve beslenme alışkanlıklarınız
+                  detaylıca analiz edildikten sonra sadece size özel olarak
+                  hazırlanır.
+                </p>
+              </div>
+            </div>
+
+            <!-- Item 2.2 -->
+            <div
+              data-category="beslenme"
+              class="faq-item hidden bg-gray-50 rounded-2xl border border-transparent hover:bg-gray-100 transition-all duration-300"
+            >
+              <button
+                class="faq-btn w-full p-6 text-left flex justify-between items-center gap-4"
+              >
+                <span class="font-bold text-gray-700 text-lg"
+                  >Yasaklı besinler var mı?</span
+                >
+                <span
+                  class="flex-shrink-0 w-8 h-8 flex items-center justify-center text-gray-400"
+                >
+                  <i class="fa-solid fa-plus"></i>
+                </span>
+              </button>
+              <div
+                class="faq-content hidden px-6 pb-6 text-gray-600 leading-relaxed"
+              >
+                <p class="mb-4">
+                  Sürdürülebilir beslenmede yasaklara yer yoktur. Porsiyon
+                  kontrolü ve dengeleme yöntemleri ile sevdiğiniz yiyecekleri de
+                  tüketebilirsiniz.
+                </p>
+              </div>
+            </div>
+
+            <!-- Item 2.3 -->
+            <div
+              data-category="beslenme"
+              class="faq-item hidden bg-gray-50 rounded-2xl border border-transparent hover:bg-gray-100 transition-all duration-300"
+            >
+              <button
+                class="faq-btn w-full p-6 text-left flex justify-between items-center gap-4"
+              >
+                <span class="font-bold text-gray-700 text-lg"
+                  >Vejetaryen/Vegan seçenekler var mı?</span
+                >
+                <span
+                  class="flex-shrink-0 w-8 h-8 flex items-center justify-center text-gray-400"
+                >
+                  <i class="fa-solid fa-plus"></i>
+                </span>
+              </button>
+              <div
+                class="faq-content hidden px-6 pb-6 text-gray-600 leading-relaxed"
+              >
+                <p class="mb-4">
+                  Evet, bitkisel beslenen danışanlarımız için protein dengesi
+                  gözetilerek özel listeler hazırlanmaktadır.
+                </p>
+              </div>
+            </div>
+
+            <!-- Item 2.4 -->
+            <div
+              data-category="beslenme"
+              class="faq-item hidden bg-gray-50 rounded-2xl border border-transparent hover:bg-gray-100 transition-all duration-300"
+            >
+              <button
+                class="faq-btn w-full p-6 text-left flex justify-between items-center gap-4"
+              >
+                <span class="font-bold text-gray-700 text-lg"
+                  >Dışarıda yerken ne yapacağım?</span
+                >
+                <span
+                  class="flex-shrink-0 w-8 h-8 flex items-center justify-center text-gray-400"
+                >
+                  <i class="fa-solid fa-plus"></i>
+                </span>
+              </button>
+              <div
+                class="faq-content hidden px-6 pb-6 text-gray-600 leading-relaxed"
+              >
+                <p class="mb-4">
+                  Sosyal hayatınızdan kopmanıza gerek yok. Restoran menülerine
+                  göre alternatifler ve dengeleme yöntemleri öğretiyoruz.
+                </p>
+              </div>
+            </div>
+
+            <!-- KATEGORİ: ÖDEME VE ÜYELİK -->
+
+            <!-- Item 3.1 -->
+            <div
+              data-category="odeme"
+              class="faq-item hidden bg-gray-50 rounded-2xl border border-transparent hover:bg-gray-100 transition-all duration-300"
+            >
+              <button
+                class="faq-btn w-full p-6 text-left flex justify-between items-center gap-4"
+              >
+                <span class="font-bold text-gray-700 text-lg"
+                  >Ödeme yöntemleri nelerdir?</span
+                >
+                <span
+                  class="flex-shrink-0 w-8 h-8 flex items-center justify-center text-gray-400"
+                >
+                  <i class="fa-solid fa-plus"></i>
+                </span>
+              </button>
+              <div
+                class="faq-content hidden px-6 pb-6 text-gray-600 leading-relaxed"
+              >
+                <p class="mb-4">
+                  Kredi kartı, banka kartı ve havale/EFT ile güvenli ödeme
+                  yapabilirsiniz. Tüm işlemler 256-bit SSL ile korunmaktadır.
+                </p>
+              </div>
+            </div>
+
+            <!-- Item 3.2 -->
+            <div
+              data-category="odeme"
+              class="faq-item hidden bg-gray-50 rounded-2xl border border-transparent hover:bg-gray-100 transition-all duration-300"
+            >
+              <button
+                class="faq-btn w-full p-6 text-left flex justify-between items-center gap-4"
+              >
+                <span class="font-bold text-gray-700 text-lg"
+                  >İade politikanız nedir?</span
+                >
+                <span
+                  class="flex-shrink-0 w-8 h-8 flex items-center justify-center text-gray-400"
+                >
+                  <i class="fa-solid fa-plus"></i>
+                </span>
+              </button>
+              <div
+                class="faq-content hidden px-6 pb-6 text-gray-600 leading-relaxed"
+              >
+                <p class="mb-4">
+                  Hizmetten memnun kalmamanız durumunda, program başlangıcından
+                  itibaren ilk 7 gün içinde koşulsuz iade talep edebilirsiniz.
+                </p>
+              </div>
+            </div>
+
+            <!-- Item 3.3 -->
+            <div
+              data-category="odeme"
+              class="faq-item hidden bg-gray-50 rounded-2xl border border-transparent hover:bg-gray-100 transition-all duration-300"
+            >
+              <button
+                class="faq-btn w-full p-6 text-left flex justify-between items-center gap-4"
+              >
+                <span class="font-bold text-gray-700 text-lg"
+                  >Paket değişikliği yapabilir miyim?</span
+                >
+                <span
+                  class="flex-shrink-0 w-8 h-8 flex items-center justify-center text-gray-400"
+                >
+                  <i class="fa-solid fa-plus"></i>
+                </span>
+              </button>
+              <div
+                class="faq-content hidden px-6 pb-6 text-gray-600 leading-relaxed"
+              >
+                <p class="mb-4">
+                  Evet, dilediğiniz zaman paketinizi yükseltebilirsiniz. Aradaki
+                  farkı ödeyerek üst pakete geçiş anında gerçekleşir.
+                </p>
+              </div>
+            </div>
+
+            <!-- Item 3.4 -->
+            <div
+              data-category="odeme"
+              class="faq-item hidden bg-gray-50 rounded-2xl border border-transparent hover:bg-gray-100 transition-all duration-300"
+            >
+              <button
+                class="faq-btn w-full p-6 text-left flex justify-between items-center gap-4"
+              >
+                <span class="font-bold text-gray-700 text-lg"
+                  >Otomatik yenileme var mı?</span
+                >
+                <span
+                  class="flex-shrink-0 w-8 h-8 flex items-center justify-center text-gray-400"
+                >
+                  <i class="fa-solid fa-plus"></i>
+                </span>
+              </button>
+              <div
+                class="faq-content hidden px-6 pb-6 text-gray-600 leading-relaxed"
+              >
+                <p class="mb-4">
+                  Hayır, siz onay vermeden hiçbir ödeme çekilmez. Üyelik süreniz
+                  dolmadan önce size hatırlatma yapılır.
+                </p>
+              </div>
+            </div>
+
+            <!-- KATEGORİ: ONLINE DİYET -->
+
+            <!-- Item 4.1 -->
+            <div
+              data-category="online"
+              class="faq-item hidden bg-gray-50 rounded-2xl border border-transparent hover:bg-gray-100 transition-all duration-300"
+            >
+              <button
+                class="faq-btn w-full p-6 text-left flex justify-between items-center gap-4"
+              >
+                <span class="font-bold text-gray-700 text-lg"
+                  >Görüşmeler nasıl yapılıyor?</span
+                >
+                <span
+                  class="flex-shrink-0 w-8 h-8 flex items-center justify-center text-gray-400"
+                >
+                  <i class="fa-solid fa-plus"></i>
+                </span>
+              </button>
+              <div
+                class="faq-content hidden px-6 pb-6 text-gray-600 leading-relaxed"
+              >
+                <p class="mb-4">
+                  Görüşmelerimiz görüntülü arama (Zoom/WhatsApp) üzerinden
+                  gerçekleşir. Ayrıca WhatsApp üzerinden sürekli iletişim
+                  halindeyiz.
+                </p>
+              </div>
+            </div>
+
+            <!-- Item 4.2 -->
+            <div
+              data-category="online"
+              class="faq-item hidden bg-gray-50 rounded-2xl border border-transparent hover:bg-gray-100 transition-all duration-300"
+            >
+              <button
+                class="faq-btn w-full p-6 text-left flex justify-between items-center gap-4"
+              >
+                <span class="font-bold text-gray-700 text-lg"
+                  >Takip süreci nasıl?</span
+                >
+                <span
+                  class="flex-shrink-0 w-8 h-8 flex items-center justify-center text-gray-400"
+                >
+                  <i class="fa-solid fa-plus"></i>
+                </span>
+              </button>
+              <div
+                class="faq-content hidden px-6 pb-6 text-gray-600 leading-relaxed"
+              >
+                <p class="mb-4">
+                  Haftalık tartı kontrolleri, öğün fotoğrafları üzerinden anlık
+                  geri bildirimler ve düzenli motivasyon görüşmeleri ile sizi
+                  takip ediyoruz.
+                </p>
+              </div>
+            </div>
+
+            <!-- Item 4.3 -->
+            <div
+              data-category="online"
+              class="faq-item hidden bg-gray-50 rounded-2xl border border-transparent hover:bg-gray-100 transition-all duration-300"
+            >
+              <button
+                class="faq-btn w-full p-6 text-left flex justify-between items-center gap-4"
+              >
+                <span class="font-bold text-gray-700 text-lg"
+                  >Diyetisyenimle ne sıklıkla görüşeceğim?</span
+                >
+                <span
+                  class="flex-shrink-0 w-8 h-8 flex items-center justify-center text-gray-400"
+                >
+                  <i class="fa-solid fa-plus"></i>
+                </span>
+              </button>
+              <div
+                class="faq-content hidden px-6 pb-6 text-gray-600 leading-relaxed"
+              >
+                <p class="mb-4">
+                  Paketinize göre değişmekle birlikte, genellikle haftada bir
+                  görüntülü görüşme ve her gün mesajlaşma desteği sunuyoruz.
+                </p>
+              </div>
+            </div>
+
+            <!-- Item 4.4 -->
+            <div
+              data-category="online"
+              class="faq-item hidden bg-gray-50 rounded-2xl border border-transparent hover:bg-gray-100 transition-all duration-300"
+            >
+              <button
+                class="faq-btn w-full p-6 text-left flex justify-between items-center gap-4"
+              >
+                <span class="font-bold text-gray-700 text-lg"
+                  >Yurt dışından katılabilir miyim?</span
+                >
+                <span
+                  class="flex-shrink-0 w-8 h-8 flex items-center justify-center text-gray-400"
+                >
+                  <i class="fa-solid fa-plus"></i>
+                </span>
+              </button>
+              <div
+                class="faq-content hidden px-6 pb-6 text-gray-600 leading-relaxed"
+              >
+                <p class="mb-4">
+                  Evet, dünyanın her yerinden danışanlarımız var. Saat farkına
+                  göre görüşme saatlerini ayarlıyoruz.
+                </p>
+              </div>
+            </div>
+
+            <!-- KATEGORİ: SAĞLIK DURUMLARI -->
+
+            <!-- Item 5.1 -->
+            <div
+              data-category="saglik"
+              class="faq-item hidden bg-gray-50 rounded-2xl border border-transparent hover:bg-gray-100 transition-all duration-300"
+            >
+              <button
+                class="faq-btn w-full p-6 text-left flex justify-between items-center gap-4"
+              >
+                <span class="font-bold text-gray-700 text-lg"
+                  >İnsülin direncim var, uygun mu?</span
+                >
+                <span
+                  class="flex-shrink-0 w-8 h-8 flex items-center justify-center text-gray-400"
+                >
+                  <i class="fa-solid fa-plus"></i>
+                </span>
+              </button>
+              <div
+                class="faq-content hidden px-6 pb-6 text-gray-600 leading-relaxed"
+              >
+                <p class="mb-4">
+                  Evet, insülin direnci, diyabet gibi metabolik hastalıklarda
+                  beslenme tedavisi uzmanlık alanımızdır.
+                </p>
+              </div>
+            </div>
+
+            <!-- Item 5.2 -->
+            <div
+              data-category="saglik"
+              class="faq-item hidden bg-gray-50 rounded-2xl border border-transparent hover:bg-gray-100 transition-all duration-300"
+            >
+              <button
+                class="faq-btn w-full p-6 text-left flex justify-between items-center gap-4"
+              >
+                <span class="font-bold text-gray-700 text-lg"
+                  >Hamilelikte diyet yapabilir miyim?</span
+                >
+                <span
+                  class="flex-shrink-0 w-8 h-8 flex items-center justify-center text-gray-400"
+                >
+                  <i class="fa-solid fa-plus"></i>
+                </span>
+              </button>
+              <div
+                class="faq-content hidden px-6 pb-6 text-gray-600 leading-relaxed"
+              >
+                <p class="mb-4">
+                  Hamilelikte amaç kilo vermek değil, bebeğin sağlıklı
+                  gelişimini sağlarken annenin de kontrolsüz kilo alımını
+                  önlemektir.
+                </p>
+              </div>
+            </div>
+
+            <!-- Item 5.3 -->
+            <div
+              data-category="saglik"
+              class="faq-item hidden bg-gray-50 rounded-2xl border border-transparent hover:bg-gray-100 transition-all duration-300"
+            >
+              <button
+                class="faq-btn w-full p-6 text-left flex justify-between items-center gap-4"
+              >
+                <span class="font-bold text-gray-700 text-lg"
+                  >Tiroid hastaları için program var mı?</span
+                >
+                <span
+                  class="flex-shrink-0 w-8 h-8 flex items-center justify-center text-gray-400"
+                >
+                  <i class="fa-solid fa-plus"></i>
+                </span>
+              </button>
+              <div
+                class="faq-content hidden px-6 pb-6 text-gray-600 leading-relaxed"
+              >
+                <p class="mb-4">
+                  Hipotiroidi veya Haşimato gibi durumlarda metabolizmayı
+                  hızlandıracak özel besin kombinasyonları ile program
+                  hazırlıyoruz.
+                </p>
+              </div>
+            </div>
+
+            <!-- Item 5.4 -->
+            <div
+              data-category="saglik"
+              class="faq-item hidden bg-gray-50 rounded-2xl border border-transparent hover:bg-gray-100 transition-all duration-300"
+            >
+              <button
+                class="faq-btn w-full p-6 text-left flex justify-between items-center gap-4"
+              >
+                <span class="font-bold text-gray-700 text-lg"
+                  >Sporcu beslenmesi yapıyor musunuz?</span
+                >
+                <span
+                  class="flex-shrink-0 w-8 h-8 flex items-center justify-center text-gray-400"
+                >
+                  <i class="fa-solid fa-plus"></i>
+                </span>
+              </button>
+              <div
+                class="faq-content hidden px-6 pb-6 text-gray-600 leading-relaxed"
+              >
+                <p class="mb-4">
+                  Evet, amatör veya profesyonel sporcular için performans
+                  artırıcı ve kas gelişimini destekleyici programlar sunuyoruz.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <footer id="iletisim" class="bg-gray-900 text-gray-300 py-16">
+      <div class="max-w-7xl mx-auto px-4">
+        <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-12 mb-12">
+          <!-- Brand -->
+          <div class="space-y-6">
+            <a href="#" class="flex items-center gap-2">
+              <div
+                class="w-8 h-8 rounded-lg bg-indigo-600 flex items-center justify-center text-white"
+              >
+                <i class="bi bi-heart-pulse-fill me-2"></i>
+              </div>
+              <span class="font-bold text-xl text-white tracking-tight"
+                >DietMaster</span
+              >
+            </a>
+            <p class="text-gray-400 text-sm leading-relaxed">
+              Sağlıklı yaşam yolculuğunuzda size rehberlik ediyoruz. Bilimsel
+              yaklaşım, kişisel çözümler.
+            </p>
+            <div class="flex gap-4">
+              <a
+                href="#"
+                class="text-gray-400 hover:text-white transition-colors"
+                ><i class="fa-brands fa-instagram text-lg"></i
+              ></a>
+              <a
+                href="#"
+                class="text-gray-400 hover:text-white transition-colors"
+                ><i class="fa-brands fa-twitter text-lg"></i
+              ></a>
+              <a
+                href="#"
+                class="text-gray-400 hover:text-white transition-colors"
+                ><i class="fa-brands fa-linkedin text-lg"></i
+              ></a>
+            </div>
+          </div>
+
+          <!-- Links -->
+          <div>
+            <h4 class="text-white font-semibold mb-6">Kurumsal</h4>
+            <ul class="space-y-3 text-sm">
+              <li>
+                <a
+                  href="#hakkimda"
+                  class="hover:text-indigo-400 transition-colors"
+                  >Hakkımızda</a
+                >
+              </li>
+              <li>
+                <a
+                  href="#ekibimiz"
+                  class="hover:text-indigo-400 transition-colors"
+                  >Ekibimiz</a
+                >
+              </li>
+              <li>
+                <a
+                  href="#kariyer"
+                  class="hover:text-indigo-400 transition-colors"
+                  >Kariyer</a
+                >
+              </li>
+              <li>
+                <a
+                  href="#iletisim"
+                  class="hover:text-indigo-400 transition-colors"
+                  >İletişim</a
+                >
+              </li>
+            </ul>
+          </div>
+
+          <!-- Services -->
+          <div>
+            <h4 class="text-white font-semibold mb-6">Hizmetler</h4>
+            <ul class="space-y-3 text-sm">
+              <li>
+                <a href="#" class="hover:text-indigo-400 transition-colors"
+                  >Online Diyet</a
+                >
+              </li>
+              <li>
+                <a href="#" class="hover:text-indigo-400 transition-colors"
+                  >Kurumsal Beslenme</a
+                >
+              </li>
+              <li>
+                <a href="#" class="hover:text-indigo-400 transition-colors"
+                  >Sporcu Beslenmesi</a
+                >
+              </li>
+              <li>
+                <a href="#" class="hover:text-indigo-400 transition-colors"
+                  >Detoks Programları</a
+                >
+              </li>
+            </ul>
+          </div>
+
+          <!-- Contact -->
+          <div>
+            <h4 class="text-white font-semibold mb-6">İletişim</h4>
+            <ul class="space-y-4 text-sm">
+              <li class="flex items-start gap-3">
+                <i class="fa-solid fa-location-dot mt-1 text-indigo-500"></i>
+                <span>Levent, Büyükdere Cd. No:123<br />Şişli/İstanbul</span>
+              </li>
+              <li class="flex items-center gap-3">
+                <i class="fa-solid fa-phone text-indigo-500"></i>
+                <span>+90 (212) 555 00 00</span>
+              </li>
+              <li class="flex items-center gap-3">
+                <i class="fa-solid fa-envelope text-indigo-500"></i>
+                <span>info@diyetmaster.com</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div
+          class="border-t border-gray-800 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-gray-500"
+        >
+          <p>&copy; 2025 DietMaster. Tüm hakları saklıdır.</p>
+          <div class="flex gap-6">
+            <a href="#" class="hover:text-white transition-colors">Gizlilik</a>
+            <a href="#" class="hover:text-white transition-colors"
+              >Kullanım Şartları</a
+            >
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <script src="script.js"></script>
+  </body>
+</html>
