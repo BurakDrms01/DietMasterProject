@@ -35,9 +35,8 @@ değerlendirme amacıyla paylaşılmaktadır.
 
 ## 🧑‍💻 Geliştirici
 
-**Turgut Kır, Abdurrahman Küpeli, Sena Önal, Burak Durmuş, Elif Ayar**  
-📍 Türkiye  
-📫 E-posta: info@turgutkr.com 
+**Abdurrahman Küpeli, Sena Önal, Burak Durmuş, Elif Ayar**
+📍 Türkiye
 
 ---
 
@@ -46,13 +45,13 @@ değerlendirme amacıyla paylaşılmaktadır.
 Bu projedeki tüm yazılım ve tasarım bileşenleri **All Rights Reserved** kapsamında
 korunmaktadır.
 
-> Bu proje, Turgut Kır’ın açık yazılı izni olmadan **kopyalanamaz, değiştirilemez, dağıtılamaz ve ticari olarak kullanılamaz**.
+**Bu proje, Burak Durmuş'un açık yazılı izni olmadan kopyalanamaz, değiştirilemez, dağıtılamaz ve ticari olarak kullanılamaz.**
 
 ---
 
 ## 📌 Not
 
-Bu proje ilerleyen aşamalarda ticari olarak geliştirilecektir.  
+Bu proje ilerleyen aşamalarda ticari olarak geliştirilecektir.
 Bu nedenle kaynak kodu yalnızca **ders ve inceleme** amacıyla görüntülenebilir.
 
 ---
