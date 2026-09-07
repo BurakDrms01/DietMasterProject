@@ -35,7 +35,7 @@ değerlendirme amacıyla paylaşılmaktadır.
 
 ## 🧑‍💻 Geliştirici
 
-**Abdurrahman Küpeli, Sena Önal, Burak Durmuş, Elif Ayar**
+**Burak Durmuş**
 📍 Türkiye
 
 ---
