@@ -1,11 +1,11 @@
-Copyright (c) 2025 Turgut Kır
+Copyright (c) 2025 Burak Durmuş
 All Rights Reserved.
 
-Bu yazılım ve kaynak kodu, Turgut Kır’ın açık yazılı izni olmadan
+Bu yazılım ve kaynak kodu, Burak Durmuş'un açık yazılı izni olmadan
 kesinlikle kopyalanamaz, değiştirilemez, dağıtılamaz, yayınlanamaz,
 veya ticari amaçlarla kullanılamaz.
 
-Bu proje yalnızca akademik değerlendirme ve eğitim amaçlı paylaşılmaktadır.
+Bu proje yalnızca akademik değerlendirme ve eğitim amacılı paylaşılmaktadır.
 Herhangi bir şekilde ürünleştirilmesi, satışı veya yeniden kullanımı
 hukuki yaptırımlara tabidir.
 
